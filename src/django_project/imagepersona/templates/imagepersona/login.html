@@ -1,37 +1,97 @@
-{% extends 'imagepersona/base.html' %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 
-{% block title %} : Login{% endblock %}
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
 
-{% block body %}
-<div class="container">
-    <div class="row">
-        <h3>Sign in to your Account</h3>
-    </div>
-    {% if error_message %}
-        <p><strong><div class="danger">{{ error_message }}</div></strong></p>
-    {% endif %}
-    <div class="row">
-        <form class="s12" role="form" action="{% url 'imagepersona:login' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="row"><div class="input-field s6">
-                <input id="id_username" name="username" maxlength="30" type="text">
-                <label for="id_username">Username</label>
-            </div></div>
-            <div class="row"><div class="input-field s6">
-                <input id="id_password" name="password" maxlength="30" type="password">
-                <label for="id_password">Password</label>
-            </div></div>
-            <div class="row"><div class="s6">
-                <button type="submit" class="btn btn-success"><i class="material-icons right">send</i>Submit</button>
-            </div></div>
-        </form>
-    </div>
-    <div class="row">
-        Don't have an account? Click <a href="">here</a> to register.
-    </div>
-</div>
-{% endblock %}
-{% block script %}
-    <!-- MATERIALIZECSS Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
-{% endblock %}
+  <body class="blue darken-2">
+    <div class="row" style="padding-top: 60px;">
+   <div class="col s12 m6" style="margin:0 auto; float: none; vertical-align: center;">
+     <div class="card blue darken-4">
+       <div class="card-tabs">
+          <ul class="tabs tabs-fixed-width tabs-transparent">
+            <li class="tab"><a href="#login">Login</a></li>
+            <li class="tab"><a href="#register">Register</a></li>
+          </ul>
+        </div>
+        <div class="card-content grey lighten-4">
+          <div id="login">
+            <div class="card-content black-text ">
+              <div class="row">
+               <form class="col s12">
+                 <div class="row">
+                   <div class="input-field col s12 ">
+                     <input id="email" type="email" class="validate">
+                     <label for="email">Email</label>
+                   </div>
+                 </div>
+                 <div class="row">
+                   <div class="input-field col s12">
+                     <input id="password" type="password" class="validate">
+                     <label for="password">Password</label>
+                   </div>
+                 </div>
+                 <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Submit
+                   <i class="material-icons right">send</i>
+                 </button>
+               </form>
+             </div>
+            </div>
+          </div>
+          <div id="register">
+            <div class="card-content black-text">
+              <div class="row">
+               <form class="col s12">
+                 <div class="row">
+                   <div class="input-field col s6">
+                     <input id="name" type="text" class="validate">
+                     <label for="name">Name</label>
+                   </div>
+                   <div class="input-field col s6">
+                     <input id="username" type="text" class="validate">
+                     <label for="username">Username</label>
+                   </div>
+                 </div>
+
+                 <div class="row">
+                   <div class="input-field col s12">
+                     <input id="email" type="email" class="validate">
+                     <label for="email">Email</label>
+                   </div>
+                 </div>
+                 <div class="row">
+                   <div class="input-field col s12">
+                     <input id="password" type="password" class="validate">
+                     <label for="password">Password</label>
+                   </div>
+                 </div>
+                 <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Submit
+                   <i class="material-icons right">send</i>
+                 </button>
+               </form>
+             </div>
+            </div>
+          </div>
+        </div>
+
+       <!-- <div class="card-action">
+         <a href="#">This is a link</a>
+         <a href="#">This is a link</a>
+       </div> -->
+     </div>
+   </div>
+ </div>
+
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+  </body>
+</html>
