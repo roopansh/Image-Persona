@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 # Images
 class Image(models.Model):
@@ -22,5 +24,20 @@ class ImageFolder(models.Model):
 
 # User
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)
-    albums = models.ManyToManyField(ImageFolder)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    albums = models.ManyToManyField(ImageFolder, blank=True)
+    profilepic = models.ImageField(verbose_name="Profile Pic", upload_to="users/", default="profilepic.jpg")
+    coverpic = models.ImageField(verbose_name="Cover Pic", upload_to="users/", default="coverpic.jpg")
+
+
+    def __str__(self):
+    	return self.user.get_full_name()
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.userprofile.save()

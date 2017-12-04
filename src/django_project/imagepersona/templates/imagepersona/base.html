@@ -30,11 +30,11 @@
       <ul id="slide-out" class="side-nav">
       <li><div class="user-view">
         <div class="background">
-          <img src="https://media.istockphoto.com/photos/family-fun-time-in-the-sun-picture-id496799381?k=6&m=496799381&s=612x612&w=0&h=CIpSwwa2ZhRTeT13kgSYjkAMP76T15UKn0OOb0o86HQ=" width="100%">
+          <img src="{{ user.userprofile.coverpic.url }}">
         </div>
-        <a href="#!user"><img class="circle" src="https://i.pinimg.com/736x/25/c7/74/25c774fa39c0d33ca7cd1c5df7d107e9--men-portrait-photo-portrait.jpg"></a>
-        <a href="#!name"><span class="white-text name">{{ user.first_name }} {{ user.last_name }}</span></a>
-        <a href="#!email"><span class="white-text email">{{ user.email }}</span></a>
+        <a href="{% url 'imagepersona:profile' %}"><img class="circle" src="{{ user.userprofile.profilepic.url }}"></a>
+        <a href="{% url 'imagepersona:profile' %}"><span class="white-text name">{{ user.get_full_name }}</span></a>
+        <a href="{% url 'imagepersona:profile' %}"><span class="white-text email">{{ user.email }}</span></a>
       </div></li>
       <li><a class="waves-effect" href="{% url 'imagepersona:upload' %}">Upload Images</a></li>
       <li><a class="waves-effect" href="{% url 'imagepersona:photos' %}">My Photos</a></li>
@@ -72,7 +72,6 @@
              console.log(input.files[i]);
              reader.readAsDataURL(input.files[i]);
            }
-
        }
    }
     </script>

@@ -1,3 +1,4 @@
+import cognitive_face as CF
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
@@ -53,4 +54,13 @@ def upload(request):
 
 @login_required(login_url='/imagepersona/login/')
 def photos(request):
-	return HttpResponse("Photos")
+	albums = request.user.userprofile.albums.all()
+	context = {}
+	if albums is not None:
+		context['albums'] = albums
+	return render(request, 'imagepersona/photos.html', context)
+
+
+@login_required(login_url='/imagepersona/login/')
+def profile(request):
+	return HttpResponse("Profile")
