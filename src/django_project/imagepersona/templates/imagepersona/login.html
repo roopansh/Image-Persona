@@ -3,35 +3,86 @@
 {% block title %} : Login{% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="row">
-        <h3>Sign in to your Account</h3>
-    </div>
-    {% if error_message %}
-        <p><strong><div class="danger">{{ error_message }}</div></strong></p>
-    {% endif %}
-    <div class="row">
-        <form class="s12" role="form" action="{% url 'imagepersona:login' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="row"><div class="input-field s6">
-                <input id="id_username" name="username" maxlength="30" type="text">
-                <label for="id_username">Username</label>
-            </div></div>
-            <div class="row"><div class="input-field s6">
-                <input id="id_password" name="password" maxlength="30" type="password">
-                <label for="id_password">Password</label>
-            </div></div>
-            <div class="row"><div class="s6">
-                <button type="submit" class="btn btn-success"><i class="material-icons right">send</i>Submit</button>
-            </div></div>
-        </form>
-    </div>
-    <div class="row">
-        Don't have an account? Click <a href="">here</a> to register.
-    </div>
-</div>
-{% endblock %}
-{% block script %}
-    <!-- MATERIALIZECSS Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+    <div class="row" style="padding-top: 60px;">
+    <div class="col s12 m6" style="margin:0 auto; float: none; vertical-align: center;">
+     <div class="card blue darken-4">
+       <div class="card-tabs">
+          <ul class="tabs tabs-fixed-width tabs-transparent">
+            <li class="tab"><a href="#login">Login</a></li>
+            <li class="tab"><a href="#register">Register</a></li>
+          </ul>
+        </div>
+        <div class="card-content grey lighten-4">
+          <div id="login">
+            <div class="card-content black-text ">
+              <div class="row">
+               <form class="col s12" role="form" action="{% url 'imagepersona:login' %}" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="warning">{{ login_error_message }}</div>
+                  </div>
+                 <div class="row">
+                   <div class="input-field col s12 ">
+                     <input id="id_username" name="username" maxlength="30" type="text" class="validate">
+                     <label for="id_username">Username</label>
+                   </div>
+                 </div>
+                 <div class="row">
+                   <div class="input-field col s12">
+                     <input id="id_password" name="password" maxlength="30" type="password" class="validate">
+                     <label for="id_password">Password</label>
+                   </div>
+                 </div>
+                 <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Submit
+                   <i class="material-icons right">send</i>
+                 </button>
+               </form>
+             </div>
+            </div>
+          </div>
+          <div id="register">
+            <div class="card-content black-text">
+              <div class="row">
+               <form class="col s12" role="form" action="{% url 'imagepersona:register' %}" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                 <div class="row">
+                   <div class="input-field col s6">
+                     <input id="id_firstname" name="firstname" type="text" class="validate">
+                     <label for="id_firstname">First Name</label>
+                   </div>
+                   <div class="input-field col s6">
+                     <input id="id_lastname" name="lastname" type="text" class="validate">
+                     <label for="id_lastname">Last Name</label>
+                   </div>
+                 </div>
+                 
+                 <div class="row">
+                   <div class="input-field col s12">
+                     <input id="id_email" name="email" type="email" class="validate">
+                     <label for="id_email">Email</label>
+                   </div>
+                 </div>
+                 
+                 <div class="row">
+                   <div class="input-field col s6">
+                     <input id="id_username" name="username" type="text" class="validate">
+                     <label for="id_username">Username</label>
+                   </div>
+
+                   <div class="input-field col s6">
+                     <input id="id_password" name="password" type="password" class="validate">
+                     <label for="id_password">Password</label>
+                   </div>
+                 </div>
+                 <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Submit
+                   <i class="material-icons right">send</i>
+                 </button>
+               </form>
+             </div>
+            </div>
+          </div>
+        </div>
+     </div>
+   </div>
+ </div>
 {% endblock %}
