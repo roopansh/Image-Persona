@@ -1,0 +1,31 @@
+{% extends 'imagepersona/base.html' %}
+
+{% block title %}: Upload {% endblock %}
+
+{% block body %}
+
+<div class="row">
+  <div class="col s6 offset-s3" style="padding-top: 20px;">
+    Some guidelines and a status bar showing upload status.
+    <form action="#">
+      <div class="file-field input-field">
+        <div class="btn">
+          <span>File</span>
+          <input type="file" multiple onchange="readURL(this);">
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text" placeholder="Upload one or more files">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row">
+  <div class="col s10 offset-s1">
+      <div id="abcd" class="gallery">
+
+      </div>
+  </div>
+</div>
+
+{% endblock %}

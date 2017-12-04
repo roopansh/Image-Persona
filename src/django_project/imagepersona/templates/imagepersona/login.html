@@ -58,7 +58,7 @@
                      <label for="username">Username</label>
                    </div>
                  </div>
-                 
+
                  <div class="row">
                    <div class="input-field col s12">
                      <input id="email" type="email" class="validate">
@@ -92,76 +92,6 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-        $('.carousel').carousel();
-      });
-    </script>
+
   </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- {% extends 'imagepersona/base.html' %}
-
-{% block title %} : Login{% endblock %}
-
-{% block body %}
-<div class="container">
-    <div class="row">
-        <h3>Sign in to your Account</h3>
-    </div>
-    {% if error_message %}
-        <p><strong><div class="danger">{{ error_message }}</div></strong></p>
-    {% endif %}
-    <div class="row">
-        <form class="s12" role="form" action="{% url 'imagepersona:login' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="row"><div class="input-field s6">
-                <input id="id_username" name="username" maxlength="30" type="text">
-                <label for="id_username">Username</label>
-            </div></div>
-            <div class="row"><div class="input-field s6">
-                <input id="id_password" name="password" maxlength="30" type="password">
-                <label for="id_password">Password</label>
-            </div></div>
-            <div class="row"><div class="s6">
-                <button type="submit" class="btn btn-success"><i class="material-icons right">send</i>Submit</button>
-            </div></div>
-        </form>
-    </div>
-    <div class="row">
-        Don't have an account? Click <a href="">here</a> to register.
-    </div>
-</div>
-{% endblock %}
-{% block script %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
-{% endblock %} -->
