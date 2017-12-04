@@ -14,73 +14,15 @@
 
     <meta charset="UTF-8">
 
-    <title>Image Persona {% block title %}{% endblock %}</title>
-    <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Image Persona{% block title %}{% endblock %}</title>
 
 </head>
-<body>
-      <nav>
-        <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
-        <div class="nav-wrapper">
-          <a href="#" class="left">My Upload</a>
-          <a href="#" class="brand-logo right">Image Persona</a>
-        </div>
-      </nav>
-      <ul id="slide-out" class="side-nav">
-      <li><div class="user-view">
-        <div class="background">
-          <img src="https://media.istockphoto.com/photos/family-fun-time-in-the-sun-picture-id496799381?k=6&m=496799381&s=612x612&w=0&h=CIpSwwa2ZhRTeT13kgSYjkAMP76T15UKn0OOb0o86HQ=" width="100%">
-        </div>
-        <a href="#!user"><img class="circle" src="https://i.pinimg.com/736x/25/c7/74/25c774fa39c0d33ca7cd1c5df7d107e9--men-portrait-photo-portrait.jpg"></a>
-        <a href="#!name"><span class="white-text name">John Doe</span></a>
-        <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
-      </div></li>
-      <li><a class="waves-effect" href="#!">Upload Images</a></li>
-      <li><a class="waves-effect" href="#!">My Photos</a></li>
-      <li><div class="divider"></div></li>
-      <!-- <li><a class="subheader">Subheader</a></li> -->
-      <li><a class="waves-effect" href="#!">Logout</a></li>
-    </ul>
+<body class="blue darken-2">
 
     <main>
         {% block body %}
-
-
-
-
         {% endblock %}
     </main>
-    <!--Import jQuery before materialize.js-->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    <script type="text/javascript">
-      $(".button-collapse").sideNav();
-      function readURL(input) {
-       if (input.files && input.files[0]) {
-
-
-         $('#abcd').html("");
-
-           for (var i = 0; i < input.files.length; i++) {
-             var reader = new FileReader();
-             reader.onload = function (e) {
-               console.log(e);
-                 $('#abcd').append('<img src="'+ e.target.result +  '" width="250" style="padding: 10px 10px"/>');
-             };
-             console.log(input.files[i]);
-             reader.readAsDataURL(input.files[i]);
-           }
-
-       }
-   }
-    </script>
 
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
