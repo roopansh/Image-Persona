@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-
+from django.contrib.auth.decorators import login_required
 
 def index(request):
 	return HttpResponse("Main Index Page")
@@ -46,6 +46,11 @@ def register_user(request):
 				login(request, user)
 				return render(request, 'imagepersona/upload.html')
 	return render(request, 'imagepersona/login.html')
+
+@login_required(login_url='/imagepersona/login/')
 def upload(request):
-	#Do we need to check the user.authenticate here?
 	return render(request, 'imagepersona/upload.html')
+
+@login_required(login_url='/imagepersona/login/')
+def photos(request):
+	return HttpResponse("Photos")

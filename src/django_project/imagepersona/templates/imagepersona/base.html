@@ -4,24 +4,19 @@
 {% load staticfiles %}
 
 <head>
-	<!--Import Google Icon Font-->
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<!-- Compiled and minified CSS -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <meta charset="UTF-8">
+  <title>Image Persona {% block title %}{% endblock %}</title>
+  
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 
-	<!--Let browser know website is optimized for mobile-->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <meta charset="UTF-8">
-
-    <title>Image Persona {% block title %}{% endblock %}</title>
-    <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
 
 </head>
 <body>
@@ -29,7 +24,7 @@
         <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
         <div class="nav-wrapper">
           <a href="#" class="left">My Upload</a>
-          <a href="#" class="brand-logo right">Image Persona</a>
+          <a href="#" class="brand-logo right" style="font-family:'Satisfy',cursive;">Image Persona</a>
         </div>
       </nav>
       <ul id="slide-out" class="side-nav">
@@ -38,14 +33,14 @@
           <img src="https://media.istockphoto.com/photos/family-fun-time-in-the-sun-picture-id496799381?k=6&m=496799381&s=612x612&w=0&h=CIpSwwa2ZhRTeT13kgSYjkAMP76T15UKn0OOb0o86HQ=" width="100%">
         </div>
         <a href="#!user"><img class="circle" src="https://i.pinimg.com/736x/25/c7/74/25c774fa39c0d33ca7cd1c5df7d107e9--men-portrait-photo-portrait.jpg"></a>
-        <a href="#!name"><span class="white-text name">John Doe</span></a>
-        <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
+        <a href="#!name"><span class="white-text name">{{ user.first_name }} {{ user.last_name }}</span></a>
+        <a href="#!email"><span class="white-text email">{{ user.email }}</span></a>
       </div></li>
-      <li><a class="waves-effect" href="/imagepersona/upload/">Upload Images</a></li>
-      <li><a class="waves-effect" href="#!">My Photos</a></li>
+      <li><a class="waves-effect" href="{% url 'imagepersona:upload' %}">Upload Images</a></li>
+      <li><a class="waves-effect" href="{% url 'imagepersona:photos' %}">My Photos</a></li>
       <li><div class="divider"></div></li>
       <!-- <li><a class="subheader">Subheader</a></li> -->
-      <li><a class="waves-effect" href="#!">Logout</a></li>
+      <li><a class="waves-effect" href="{% url 'imagepersona:logout' %}">Logout</a></li>
     </ul>
 
     <main>
