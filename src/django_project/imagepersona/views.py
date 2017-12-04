@@ -26,7 +26,7 @@ def login_user(request):
 # User Log Out
 def logout_user(request):
     logout(request)
-    return HttpResponse("Logged Out Successfully!")
+    return render(request, 'imagepersona/login.html')
 
 # Register New User
 def register_user(request):
