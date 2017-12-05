@@ -4,7 +4,8 @@
 {% block nav-title %}
 <div class="col s6" style="height: 0px;">
   <a href="/imagepersona/photos/" class="breadcrumb">My Photos</a>
-  <a href="#!" class="breadcrumb">{{album_name}}</a>
+  <a href="{% url 'imagepersona:album' album_id=album_pk %}" class="breadcrumb">{{album_name}}</a>
+  <a href="/imagepersona/photos/" class="breadcrumb">My Photos</a>
 </div>
 
 {% endblock %}
