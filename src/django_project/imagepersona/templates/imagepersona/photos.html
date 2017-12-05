@@ -1,12 +1,16 @@
 {% extends 'imagepersona/base.html' %}
 
 {% block title %}: My Photos{% endblock %}
+{% block nav-title %}My Photos{% endblock %}
 
 {% block body %}
 <h1> NEEDS FRONT END</h1>
 {% if albums %}
-  {% for album in albums %}
-      {{ album.name }}  
+<ul>
+  {% for myalbum in albums %}
+      <li><a href="{% url 'imagepersona:album' album_id=myalbum.pk %}">{{ myalbum.name }}</a></li>  
   {% endfor %}
+	
+</ul>
 {% endif %}
 {% endblock %}

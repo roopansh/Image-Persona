@@ -1,0 +1,15 @@
+{% extends 'imagepersona/base.html' %}
+
+{% block title %}: {{album_name}}{% endblock %}
+{% block nav-title %}{{album_name}}{% endblock %}
+
+{% block body %}
+<h1> NEEDS FRONT END</h1>
+<h2>{{album_name}}</h2>
+<ul>
+  {% for item in people %}
+      <li><a href="#">{{ item.name }}</a></li>  
+  {% endfor %}
+	
+</ul>
+{% endblock %}

@@ -19,6 +19,10 @@ class ImageSubFolder(models.Model):
 	# directory = models.ForeignKey(ImageFolder, on_delete=models.CASCADE)
 	images = models.ManyToManyField(Image)
 
+	def __str__(self):
+		return self.name
+
+
 # Main Albums uploaded by the user
 class ImageFolder(models.Model):
 	name = models.CharField(max_length=20)
@@ -27,6 +31,7 @@ class ImageFolder(models.Model):
 
 	def __str__(self):
 		return self.name
+
 
 # User
 class UserProfile(models.Model):
@@ -38,6 +43,7 @@ class UserProfile(models.Model):
 
     def __str__(self):
     	return self.user.get_full_name()
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

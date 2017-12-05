@@ -1,11 +1,10 @@
 import cognitive_face as CF
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, Http404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import *
-
 def index(request):
 	return HttpResponse("Main Index Page")
 
@@ -61,6 +60,7 @@ def upload(request):
 			newImage = Image()
 			newImage.image = file
 			newImage.save()
+			print(newImage.image.url)
 	return render(request, 'imagepersona/upload.html')
 
 @login_required(login_url='/imagepersona/login/')
@@ -74,4 +74,12 @@ def photos(request):
 
 @login_required(login_url='/imagepersona/login/')
 def profile(request):
-	return HttpResponse("Profile")
+	return render(request, 'imagepersona/profile.html')
+	
+@login_required(login_url='/imagepersona/login/')
+def album(request, album_id):
+	album = get_object_or_404(ImageFolder, pk = album_id)
+	myalbums = request.user.userprofile.albums.all()
+	if(album in myalbums):
+		return render(request, 'imagepersona/album.html', {'album_name':album.name, 'people':album.subfolders.all()})
+	raise Http404("Album does not exist!")
