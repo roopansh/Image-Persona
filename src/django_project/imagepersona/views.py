@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from .models import *
 
 def index(request):
 	return HttpResponse("Main Index Page")
@@ -50,6 +51,16 @@ def register_user(request):
 
 @login_required(login_url='/imagepersona/login/')
 def upload(request):
+	if request.method=='POST':
+		files = request.FILES.getlist("files")
+		newAlbum = ImageFolder()
+		newAlbum.name = request.POST["albumname"]
+		newAlbum.save()
+		request.user.userprofile.albums.add(newAlbum)
+		for file in files:
+			newImage = Image()
+			newImage.image = file
+			newImage.save()
 	return render(request, 'imagepersona/upload.html')
 
 @login_required(login_url='/imagepersona/login/')

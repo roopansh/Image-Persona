@@ -6,9 +6,12 @@ from django.db.models.signals import post_save
 # Images
 class Image(models.Model):
 	# album = models.ForeignKey(ImageFolder, on_delete=models.CASCADE)
-	image = models.ImageField(max_length=50)
+	image = models.ImageField(upload_to="images/")
 	# owner = models.ForeignKey(UserProfile)
 	# people = models.ManyToManyField(ImageSubFolder)
+	def __str__(self):
+		return self.image.name
+
 
 # In the Main Albums, Divided in sub-folders according to the persons
 class ImageSubFolder(models.Model):
@@ -21,6 +24,9 @@ class ImageFolder(models.Model):
 	name = models.CharField(max_length=20)
 	# owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 	subfolders = models.ManyToManyField(ImageSubFolder)
+
+	def __str__(self):
+		return self.name
 
 # User
 class UserProfile(models.Model):
