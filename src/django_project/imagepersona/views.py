@@ -80,7 +80,6 @@ def upload(request):
 			newImage.image = file
 			newImage.save()
 			img_url = "http://" + request.get_host() + newImage.image.url
-			# img_url = "https://upload.wikimedia.org/wikipedia/commons/9/90/PM_Modi_2015.jpg"
 			body = json.dumps({ 'url': img_url })
 			try:
 				conn = httplib.HTTPSConnection(settings.CF_BASE_URL)
@@ -88,30 +87,36 @@ def upload(request):
 				response = conn.getresponse()
 				data = response.read()
 				res = json.loads(data)
-				res = res[0]
-				res = res["faceId"]
-				res = res.encode('ascii')
-				FaceIDs.append(res)
+				count = len(res)
+				for x in range(0,count):
+					resx = res[x]
+					resx = resx["faceId"]
+					resx = resx.encode('ascii')
+					FaceIDs.append(resx)
 				conn.close()
 			except Exception as e:
+				return HttpResponse(e)
 				print(e)
-				# print("[Errno {0}] {1}".format(e.errno, e.strerror))
+				print("[Errno {0}] {1}".format(e.errno, e.strerror))
 
 			newImage.json_response = data
 			newImage.save()
 		body = json.dumps({"faceIds" : FaceIDs })
+		print(FaceIDs)
 		try:
 			conn = httplib.HTTPSConnection(settings.CF_BASE_URL)
 			conn.request("POST", "/face/v1.0/group?%s" % CF_group_params, body, CF_headers)
 			response = conn.getresponse()
 			data = response.read()
+			print(data)
 			res = json.loads(data)
-			res = res["groups"]
+			print(res)
+			# res = res["groups"]
 			conn.close()
 		except Exception as e:
 			print(e)
-			# print("[Errno {0}] {1}".format(e.errno, e.strerror))
-		return HttpResponse(res)
+			print("[Errno {0}] {1}".format(e.errno, e.strerror))
+		return JsonResponse({'res':res})
 
 	return render(request, 'imagepersona/upload.html')
 
