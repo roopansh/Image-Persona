@@ -127,6 +127,9 @@ def photos(request):
 @login_required(login_url='/imagepersona/login/')
 def profile(request):
 	if request.method=='POST':
+		updates = { 'profilepic' : 'not-updated',
+						'coverpic' : 'not-updated'
+						}
 		if request.FILES.getlist("profile"):
 			profile = request.FILES.getlist("profile")
 			print request.user, profile[0]
@@ -137,7 +140,7 @@ def profile(request):
 			userpro.save()
 			# newImage.image = profile
 			# newImage.save()
-			return JsonResponse({'profilepic':'Updated'})
+			updates['profilepic'] = 'updated'
 		if request.FILES.getlist("cover"):
 			cover = request.FILES.getlist("cover")
 			print request.user, cover[0]
@@ -148,7 +151,8 @@ def profile(request):
 			userpro.save()
 			# newImage.image = cover
 			# newImage.save()
-			return JsonResponse({'coverpic':'Updated'})
+			updates['coverpic'] = 'updated'
+		return render(request, 'imagepersona/profile.html', updates)
 	return render(request, 'imagepersona/profile.html')
 
 @login_required(login_url='/imagepersona/login/')
