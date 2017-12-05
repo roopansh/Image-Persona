@@ -9,55 +9,76 @@
 <div class="row">
   <div class="col s6 offset-s2" style="padding-top: 20px;">
     <!-- Some guidelines and a status bar showing upload status, etc. -->
-      <form action="{% url 'imagepersona:profile' %}" method="post" role="form" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="file-field input-field">
-          <div class="btn">
-            <span>Choose</span>
-            <input type="file" name="profile" onchange="readURL(this);">
-          </div>
-          <div class="file-path-wrapper">
-            <input class="file-path validate" type="text" placeholder="Profile photo">
-          </div>
-        </div>
-        <button class="btn waves-effect waves-light blue darken-4 right" type="submit" name="action">Submit
-          <i class="material-icons right">send</i>
-        </button>
-      </form>
-  </div>
-  <div class="col s3">
-    <div id="abcd" class="gallery">
 
-    </div>
   </div>
+
 </div>
 <div class="row">
 
-  <div class="col s6 offset-s2" style="padding-top: 20px;">
+  <div class="col s12 offset-s2" style="padding-top: 20px;">
 
       <form action="{% url 'imagepersona:profile' %}" method="post" role="form" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="file-field input-field">
-          <div class="btn">
-            <span>Choose</span>
-            <input type="file" name="cover"  onchange="readURL1(this);">
+        <div class="row">
+          <div class="col s4">
+            <div class="file-field input-field">
+              <div class="btn">
+                <span>Choose</span>
+                <input type="file" name="profile" onchange="readURL(this);">
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="Profile photo">
+              </div>
+            </div>
           </div>
-          <div class="file-path-wrapper">
-            <input class="file-path validate" type="text" placeholder="Cover photo">
+          <div class="col s4">
+            <div class="file-field input-field">
+              <div class="btn">
+                <span>Choose</span>
+                <input type="file" name="cover" onchange="readURL1(this);">
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="Cover photo">
+              </div>
+            </div>
           </div>
         </div>
-        <button class="btn waves-effect waves-light blue darken-4 right" type="submit" name="action">Submit
+        <!-- <button class="btn waves-effect waves-light blue darken-4 right" type="submit" name="action">Submit
           <i class="material-icons right">send</i>
-        </button>
+        </button> -->
+        <div class="row">
+          <div class="col s8">
+            <button class="btn waves-effect waves-light blue darken-4 right" type="submit" name="action" onclick="loading()">Update
+              <i class="material-icons right">send</i>
+            </button>
+          </div>
+        </div>
+
       </form>
     </div>
+
+
+
+</div>
+<div class="row">
+  <div class="progress col s6 offset-s3 " style="display:none;" id="loader">
+      <div class="indeterminate"></div>
+  </div>
+</div>
+<div class="row">
+  <div class="col s4 offset-s3">
+    <div class="col s3">
+      <div id="abcd" class="gallery">
+
+      </div>
+    </div>
+  </div>
+  <div class="col s3">
     <div class="col s3">
       <div id="abcd1" class="gallery">
 
       </div>
     </div>
-
-
+  </div>
 </div>
-
 {% endblock %}

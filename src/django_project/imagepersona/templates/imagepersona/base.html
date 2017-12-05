@@ -22,7 +22,7 @@
 <body class="grey lighten-4">
       <nav>
         <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
-        <div class="nav-wrapper">
+        <div class="nav-wrapper" style="font-size: 18px;">
           {% block nav-title %}{% endblock %}
           <a href="#" class="brand-logo right" style="font-family:'Satisfy',cursive; display: inline-block;">Image Persona</a>
         </div>
@@ -97,6 +97,12 @@
   function loading() {
     $('#loader').css('display', 'block');
   }
+    if(String('{{profilepic}}') == 'updated') {
+      Materialize.toast('Profile Photo updated!', 4000)
+    }
+    if(String('{{coverpic}}') == 'updated') {
+      Materialize.toast('Cover Photo updated!', 4000)
+    }
     </script>
 
     <!--Import jQuery before materialize.js-->
