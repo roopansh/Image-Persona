@@ -125,3 +125,6 @@ ALLOWED_HOSTS = ip_addresses()
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL = '/uploads/'
+
+CF_BASE_URL = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0"
+CF_KEY = "41e8def285514e09bf6e5f66c24181d8"
