@@ -30,7 +30,7 @@
       <ul id="slide-out" class="side-nav">
       <li><div class="user-view">
         <div class="background">
-          <img src="{{ user.userprofile.coverpic.url }}">
+          <img src="{{ user.userprofile.coverpic.url }}" width="100%">
         </div>
         <a href="{% url 'imagepersona:profile' %}"><img class="circle" src="{{ user.userprofile.profilepic.url }}"></a>
         <a href="{% url 'imagepersona:profile' %}"><span class="white-text name">{{ user.get_full_name }}</span></a>
@@ -40,6 +40,7 @@
       <li><a class="waves-effect" href="{% url 'imagepersona:photos' %}">My Photos</a></li>
       <li><div class="divider"></div></li>
       <!-- <li><a class="subheader">Subheader</a></li> -->
+      <li><a class="waves-effect" href="{% url 'imagepersona:profile' %}">Edit Profile and Cover photo</a></li>
       <li><a class="waves-effect" href="{% url 'imagepersona:logout' %}">Logout</a></li>
     </ul>
 
@@ -91,6 +92,10 @@
             reader.readAsDataURL(input.files[i]);
           }
       }
+  }
+
+  function loading() {
+    $('#loader').css('display', 'block');
   }
     </script>
 

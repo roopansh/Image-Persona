@@ -22,11 +22,15 @@
       <label for="id_albumname">Album Name</label>
       <input type="text" id="id_albumname" name="albumname" required="true">
 
-      <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Submit
+      <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action" onclick="loading()">Submit
         <i class="material-icons right">send</i>
       </button>
     </form>
   </div>
+  <div class="progress col s6 offset-s3 " style="display:none;" id="loader">
+      <div class="indeterminate"></div>
+  </div>
+
 </div>
 <div class="row">
   <div class="col s10 offset-s1">

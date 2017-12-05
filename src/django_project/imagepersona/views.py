@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from django.conf import settings
 import httplib, urllib, base64, json
+from django.http import JsonResponse
 
 CF_headers = {
 	# Request headers for CF API
@@ -111,7 +112,7 @@ def upload(request):
 			print(e)
 			# print("[Errno {0}] {1}".format(e.errno, e.strerror))
 		return HttpResponse(res)
-	
+
 	return render(request, 'imagepersona/upload.html')
 
 @login_required(login_url='/imagepersona/login/')
@@ -119,12 +120,35 @@ def photos(request):
 	albums = request.user.userprofile.albums.all()
 	context = {}
 	if albums is not None:
-		context['albums'] = albums
+		context	['albums'] = albums
 	return render(request, 'imagepersona/photos.html', context)
 
 
 @login_required(login_url='/imagepersona/login/')
 def profile(request):
+	if request.method=='POST':
+		if request.FILES.getlist("profile"):
+			profile = request.FILES.getlist("profile")
+			print request.user, profile[0]
+			userpro = UserProfile.objects.filter(user=request.user)[0]
+			userpro.profilepic = profile[0]
+			print userpro.profilepic
+			# userpro = request.user.userprofile()
+			userpro.save()
+			# newImage.image = profile
+			# newImage.save()
+			return JsonResponse({'profilepic':'Updated'})
+		if request.FILES.getlist("cover"):
+			cover = request.FILES.getlist("cover")
+			print request.user, cover[0]
+			userpro = UserProfile.objects.filter(user=request.user)[0]
+			userpro.coverpic = cover[0]
+			print userpro.coverpic
+			# userpro = request.user.usercover()
+			userpro.save()
+			# newImage.image = cover
+			# newImage.save()
+			return JsonResponse({'coverpic':'Updated'})
 	return render(request, 'imagepersona/profile.html')
 
 @login_required(login_url='/imagepersona/login/')
