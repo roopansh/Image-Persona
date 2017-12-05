@@ -7,16 +7,23 @@
 <div class="row">
   <div class="col s6 offset-s3" style="padding-top: 20px;">
     Some guidelines and a status bar showing upload status, etc.
-    <form action="#">
+    <form action="{% url 'imagepersona:upload' %}" method="post" role="form" enctype="multipart/form-data">
+      {% csrf_token %}
       <div class="file-field input-field">
         <div class="btn">
           <span>File</span>
-          <input type="file" multiple onchange="readURL(this);">
+          <input type="file" name="files" multiple onchange="readURL(this);">
         </div>
         <div class="file-path-wrapper">
           <input class="file-path validate" type="text" placeholder="Upload one or more files">
         </div>
       </div>
+      <label for="id_albumname">Album Name</label>
+      <input type="text" id="id_albumname" name="albumname" required="true">
+
+      <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Submit
+        <i class="material-icons right">send</i>
+      </button>
     </form>
   </div>
 </div>
