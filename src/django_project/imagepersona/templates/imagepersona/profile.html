@@ -4,8 +4,60 @@
 {% block nav-title %}My Profile{% endblock %}
 
 {% block body %}
-<h1> NEEDS FRONT END</h1>
 
-TO BE IMPLEMENTED LATER - Form for Coverpic and Profile Pic of the User.
+<!-- TO BE IMPLEMENTED LATER - Form for Coverpic and Profile Pic of the User. -->
+<div class="row">
+  <div class="col s6 offset-s2" style="padding-top: 20px;">
+    <!-- Some guidelines and a status bar showing upload status, etc. -->
+      <form action="{% url 'imagepersona:upload' %}" method="post" role="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>Choose</span>
+            <input type="file" name="files" multiple onchange="readURL(this);">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text" placeholder="Profile photo">
+          </div>
+        </div>
+        <button class="btn waves-effect waves-light blue darken-4 right" type="submit" name="action">Submit
+          <i class="material-icons right">send</i>
+        </button>
+      </form>
+  </div>
+  <div class="col s3">
+    <div id="abcd" class="gallery">
+
+    </div>
+  </div>
+</div>
+<div class="row">
+
+  <div class="col s6 offset-s2" style="padding-top: 20px;">
+
+      <form action="{% url 'imagepersona:upload' %}" method="post" role="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>Choose</span>
+            <input type="file" name="files" multiple onchange="readURL1(this);">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text" placeholder="Cover photo">
+          </div>
+        </div>
+        <button class="btn waves-effect waves-light blue darken-4 right" type="submit" name="action">Submit
+          <i class="material-icons right">send</i>
+        </button>
+      </form>
+    </div>
+    <div class="col s3">
+      <div id="abcd1" class="gallery">
+
+      </div>
+    </div>
+
+
+</div>
 
 {% endblock %}
