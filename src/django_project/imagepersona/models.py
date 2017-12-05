@@ -7,6 +7,7 @@ from django.db.models.signals import post_save
 class Image(models.Model):
 	# album = models.ForeignKey(ImageFolder, on_delete=models.CASCADE)
 	image = models.ImageField(upload_to="images/")
+	json_response = models.CharField(blank=True, max_length=1000)
 	# owner = models.ForeignKey(UserProfile)
 	# people = models.ManyToManyField(ImageSubFolder)
 	def __str__(self):

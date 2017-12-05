@@ -5,6 +5,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import *
+from django.conf import settings
+from django.core.exceptions import SuspiciousOperation
+
+CF.Key.set(settings.CF_KEY)
+CF.BaseUrl.set(settings.CF_BASE_URL)
+
 def index(request):
 	return HttpResponse("Main Index Page")
 
@@ -56,11 +62,22 @@ def upload(request):
 		newAlbum.name = request.POST["albumname"]
 		newAlbum.save()
 		request.user.userprofile.albums.add(newAlbum)
+		FaceIDs = []
+		finalresult = ""
 		for file in files:
 			newImage = Image()
 			newImage.image = file
 			newImage.save()
-			print(newImage.image.url)
+			img_url = request.get_host() + 	newImage.image.url
+			try:
+				result = CF.face.detect(img_url)
+			except:
+				raise SuspiciousOperation('Server Error!')
+			# print (result)
+			finalresult = finalresult + "\n" + result
+			newImage.json_response = result
+			newImage.save()
+		return HttpResponse(finalresult)
 	return render(request, 'imagepersona/upload.html')
 
 @login_required(login_url='/imagepersona/login/')
