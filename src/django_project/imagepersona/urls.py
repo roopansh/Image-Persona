@@ -13,4 +13,6 @@ urlpatterns = [
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^photos/$', views.photos, name='photos'),
     url(r'^album/(?P<album_id>[0-9]+)/$', views.album, name='album'),
+    url(r'^images/$', views.images, name='images'),
+
 ]

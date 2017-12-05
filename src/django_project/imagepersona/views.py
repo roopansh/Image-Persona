@@ -75,7 +75,7 @@ def photos(request):
 @login_required(login_url='/imagepersona/login/')
 def profile(request):
 	return render(request, 'imagepersona/profile.html')
-	
+
 @login_required(login_url='/imagepersona/login/')
 def album(request, album_id):
 	album = get_object_or_404(ImageFolder, pk = album_id)
@@ -83,3 +83,7 @@ def album(request, album_id):
 	if(album in myalbums):
 		return render(request, 'imagepersona/album.html', {'album_name':album.name, 'people':album.subfolders.all()})
 	raise Http404("Album does not exist!")
+
+@login_required(login_url='/imagepersona/login/')
+def images(request):
+	return render(request, 'imagepersona/images.html')
