@@ -1,4 +1,3 @@
-import cognitive_face as CF
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.contrib.auth import authenticate, login, logout
@@ -6,10 +5,22 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import *
 from django.conf import settings
-from django.core.exceptions import SuspiciousOperation
+import httplib, urllib, base64, json
 
-CF.Key.set(settings.CF_KEY)
-CF.BaseUrl.set(settings.CF_BASE_URL)
+CF_headers = {
+	# Request headers for CF API
+	'Content-Type': 'application/json',
+	'Ocp-Apim-Subscription-Key': settings.CF_KEY,
+}
+
+CF_detect_params = urllib.urlencode({
+	# Request parameters
+	'returnFaceId': 'true',
+	'returnFaceLandmarks': 'false',
+})
+
+CF_group_params = urllib.urlencode({
+})
 
 def index(request):
 	return HttpResponse("Main Index Page")
@@ -63,21 +74,44 @@ def upload(request):
 		newAlbum.save()
 		request.user.userprofile.albums.add(newAlbum)
 		FaceIDs = []
-		finalresult = ""
 		for file in files:
 			newImage = Image()
 			newImage.image = file
 			newImage.save()
-			img_url = request.get_host() + 	newImage.image.url
+			img_url = "http://" + request.get_host() + newImage.image.url
+			# img_url = "https://upload.wikimedia.org/wikipedia/commons/9/90/PM_Modi_2015.jpg"
+			body = json.dumps({ 'url': img_url })
 			try:
-				result = CF.face.detect(img_url)
-			except:
-				raise SuspiciousOperation('Server Error!')
-			# print (result)
-			finalresult = finalresult + "\n" + result
-			newImage.json_response = result
+				conn = httplib.HTTPSConnection(settings.CF_BASE_URL)
+				conn.request("POST", "/face/v1.0/detect?%s" % CF_detect_params, body, CF_headers)
+				response = conn.getresponse()
+				data = response.read()
+				res = json.loads(data)
+				res = res[0]
+				res = res["faceId"]
+				res = res.encode('ascii')
+				FaceIDs.append(res)
+				conn.close()
+			except Exception as e:
+				print(e)
+				# print("[Errno {0}] {1}".format(e.errno, e.strerror))
+
+			newImage.json_response = data
 			newImage.save()
-		return HttpResponse(finalresult)
+		body = json.dumps({"faceIds" : FaceIDs })
+		try:
+			conn = httplib.HTTPSConnection(settings.CF_BASE_URL)
+			conn.request("POST", "/face/v1.0/group?%s" % CF_group_params, body, CF_headers)
+			response = conn.getresponse()
+			data = response.read()
+			res = json.loads(data)
+			res = res["groups"]
+			conn.close()
+		except Exception as e:
+			print(e)
+			# print("[Errno {0}] {1}".format(e.errno, e.strerror))
+		return HttpResponse(res)
+	
 	return render(request, 'imagepersona/upload.html')
 
 @login_required(login_url='/imagepersona/login/')
