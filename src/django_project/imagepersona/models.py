@@ -19,7 +19,7 @@ class ImageSubFolder(models.Model):
 	name = models.CharField(max_length=20)
 	# directory = models.ForeignKey(ImageFolder, on_delete=models.CASCADE)
 	images = models.ManyToManyField(Image)
-
+	#displayPic = models.ImageField(upload_to="displaypic/")
 	def __str__(self):
 		return self.name
 

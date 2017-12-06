@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse#, HttpResponceRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import *
 from django.conf import settings
 import httplib, urllib, base64, json
-from django.http import JsonResponse
 
 CF_headers = {
 	# Request headers for CF API
@@ -75,6 +74,7 @@ def upload(request):
 		newAlbum.save()
 		request.user.userprofile.albums.add(newAlbum)
 		FaceIDs = []
+		FaceID_Img_Map = {}
 		for file in files:
 			newImage = Image()
 			newImage.image = file
@@ -88,19 +88,21 @@ def upload(request):
 				data = response.read()
 				res = json.loads(data)
 				count = len(res)
-				for x in range(0,count):
+				for x in range(0,count):	# For all the people present in the photo
 					resx = res[x]
 					resx = resx["faceId"]
 					resx = resx.encode('ascii')
 					FaceIDs.append(resx)
+					FaceID_Img_Map[resx] = newImage.pk
 				conn.close()
 			except Exception as e:
-				return HttpResponse(e)
 				print(e)
 				print("[Errno {0}] {1}".format(e.errno, e.strerror))
+				return JsonResponse(e)
 
 			newImage.json_response = data
 			newImage.save()
+	
 		body = json.dumps({"faceIds" : FaceIDs })
 		print(FaceIDs)
 		try:
@@ -116,8 +118,23 @@ def upload(request):
 		except Exception as e:
 			print(e)
 			print("[Errno {0}] {1}".format(e.errno, e.strerror))
-		return JsonResponse({'res':res})
+			return JsonResponse(e)
+		# return JsonResponse({'res':res})
 
+		# Grouped people
+		res_group = res["groups"]
+		for count,personList in enumerate(res_group):
+			newPerson = ImageSubFolder()
+			newPerson.name = str(count+1)
+			newPerson.save()
+			for id in personList:
+				imgpk = FaceID_Img_Map[id]
+				newPerson.images.add(imgpk)
+			newPerson.save()
+			newAlbum.subfolders.add(newPerson)
+
+		newAlbum.save()
+		return redirect('imagepersona:album', album_id = newAlbum.pk)
 	return render(request, 'imagepersona/upload.html')
 
 @login_required(login_url='/imagepersona/login/')
