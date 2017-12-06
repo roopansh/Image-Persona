@@ -102,7 +102,7 @@ def upload(request):
 
 			newImage.json_response = data
 			newImage.save()
-	
+
 		body = json.dumps({"faceIds" : FaceIDs })
 		print(FaceIDs)
 		try:
@@ -186,5 +186,9 @@ def album(request, album_id):
 	raise Http404("Album does not exist!")
 
 @login_required(login_url='/imagepersona/login/')
-def images(request):
+def images(request, album_id, person_id):
+	album = get_object_or_404(ImageFolder, pk = album_id)
+	person = get_object_or_404(ImageSubFolder, pk = person_id)
+	
+	personFolder = get_object_or_404(album.subfolders, pk = person_id)
 	return render(request, 'imagepersona/images.html')
