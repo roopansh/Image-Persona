@@ -1,33 +1,22 @@
 {% extends 'imagepersona/base.html' %}
 
-{% block title %}: {{album_name}}{% endblock %}
+{% block title %}: {{PersonName}}{% endblock %}
 {% block nav-title %}
 <div class="col s6" style="height: 0px;">
   <a href="/imagepersona/photos/" class="breadcrumb">My Photos</a>
-  <a href="{% url 'imagepersona:album' album_id=album_pk %}" class="breadcrumb">{{album_name}}</a>
-  <a href="/imagepersona/photos/" class="breadcrumb">My Photos</a>
+  <a href="{% url 'imagepersona:album' album_id=album.pk %}" class="breadcrumb">{{album.name}}</a>
+  <a href="#!" class="breadcrumb">{{PersonName}}</a>
 </div>
 
 {% endblock %}
 
 {% block body %}
+Need to improve this 
 <div class="row" style="padding: 20px 10px;">
-  {% for item in people %}
-  <div class="col s6 m4 l2">
-    <div class="card">
-      <div class="card-image">
-        <!-- need to change the image to static url -->
-        <img src="uploads/folder.png">
-        <!-- <span class="card-title">Card Title</span> -->
-      </div>
-      <!-- <div class="card-content orange darken-4" height="500px" style="he">
-        <p>I am a very simple card. I am</p>
-      </div> -->
-      <hr style="margin: 0px;">
-      <div class="card-content black-text" style="padding: 15px;">
-        <a href="#!" class="black-text" style="font-size: 14px;">{{ item.name }}</a>
-      </div>
-    </div>
+  {% for image in images %}
+
+  <div class="col s6 m4 l2"  style="border: thin solid #000000; height: auto;">
+    <img class="materialboxed" style="width: 100%; padding: 2px;" src="/uploads/{{image}}">
   </div>
   {% endfor %}
 </div>

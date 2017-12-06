@@ -1,5 +1,4 @@
 {% extends 'imagepersona/base.html' %}
-
 {% block title %}: {{album_name}}{% endblock %}
 {% block nav-title %}
 <div class="col s6" style="height: 0px;">
@@ -8,26 +7,26 @@
 </div>
 
 {% endblock %}
-
 {% block body %}
 <div class="row" style="padding: 20px 10px;">
   {% for item in people %}
   <div class="col s6 m4 l2">
-    <a href="#!" class="black-text" style="font-size: 14px;" style="color: white;">
-    <div class="card">
-      <div class="card-image">
-        <!-- need to change the image to static url -->
-        <img src="/uploads/folder.png">
-        <!-- <span class="card-title">Card Title</span> -->
-      </div>
-      <!-- <div class="card-content orange darken-4" height="500px" style="he">
+    <!-- NOTE: Please take a look at this and convert to django URL -->
+    <a href="/imagepersona/images/{{albumPk}}/{{item.pk}}" style="font-size: 14px;" style="color: white;">
+      <div class="card">
+        <div class="card-image">
+          <!-- need to change the image to static url -->
+          <img src="/uploads/folder.png">
+          <!-- <span class="card-title">Card Title</span> -->
+        </div>
+        <!-- <div class="card-content orange darken-4" height="500px" style="he">
         <p>I am a very simple card. I am</p>
       </div> -->
-      <hr style="margin: 0px;">
-      <div class="card-content black-text" style="padding: 15px;">
-        {{ item.name }}
+        <hr style="margin: 0px;">
+        <div class="card-content black-text" style="padding: 15px;">
+          {{ item.name }}
+        </div>
       </div>
-    </div>
     </a>
   </div>
   {% endfor %}

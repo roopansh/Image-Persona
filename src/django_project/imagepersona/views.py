@@ -182,13 +182,15 @@ def album(request, album_id):
 	album = get_object_or_404(ImageFolder, pk = album_id)
 	myalbums = request.user.userprofile.albums.all()
 	if(album in myalbums):
-		return render(request, 'imagepersona/album.html', {'album_name':album.name, 'people':album.subfolders.all()})
+		print(album)
+		return render(request, 'imagepersona/album.html', {'album_name':album.name, 'people':album.subfolders.all(), 'albumPk' : album.pk})
 	raise Http404("Album does not exist!")
 
 @login_required(login_url='/imagepersona/login/')
 def images(request, album_id, person_id):
 	album = get_object_or_404(ImageFolder, pk = album_id)
+	peopleInthisFolder = album.subfolders.all()
 	person = get_object_or_404(ImageSubFolder, pk = person_id)
-	
-	personFolder = get_object_or_404(album.subfolders, pk = person_id)
-	return render(request, 'imagepersona/images.html')
+	if(person in peopleInthisFolder):
+		return render(request, 'imagepersona/images.html', {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album})
+	raise Http404("Person group does not exist!")
