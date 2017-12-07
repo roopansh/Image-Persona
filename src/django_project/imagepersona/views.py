@@ -151,8 +151,11 @@ def photos(request):
 def profile(request):
 	if request.method=='POST':
 		updates = { 'profilepic' : 'not-updated',
-						'coverpic' : 'not-updated'
-						}
+					'coverpic' : 'not-updated',
+					'firstname' : 'not-updated',
+					'lastname' : 'not-updated',
+				}
+		
 		if request.FILES.getlist("profile"):
 			profile = request.FILES.getlist("profile")
 			print request.user, profile[0]
@@ -175,6 +178,16 @@ def profile(request):
 			# newImage.image = cover
 			# newImage.save()
 			updates['coverpic'] = 'updated'
+		if request.POST["firstname"]:
+			firstname = request.POST["firstname"].strip().encode("ascii")
+			if firstname != "":
+				request.user.first_name = firstname
+		if request.POST["lastname"]:
+			lastname = request.POST["lastname"].strip().encode("ascii")
+			if lastname != "":
+				request.user.last_name = lastname
+		request.user.save()
+
 		return render(request, 'imagepersona/profile.html', updates)
 	return render(request, 'imagepersona/profile.html')
 

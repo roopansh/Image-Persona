@@ -19,6 +19,24 @@
       <form action="{% url 'imagepersona:profile' %}" method="post" role="form" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
+         <div class="input-field col s4">
+           <input id="id_firstname" name="firstname" type="text" placeholder="{{user.first_name}}">
+           <label for="id_firstname">First Name</label>
+         </div>
+         <div class="input-field col s4">
+           <input id="id_lastname" name="lastname" type="text" placeholder="{{user.last_name}}">
+           <label for="id_lastname">Last Name</label>
+         </div>
+       </div>
+
+       <!--<div class="row">
+         <div class="input-field col s8">
+           <input id="id_email" name="email" type="email" placeholder="{{user.email}}">
+           <label for="id_email">Email</label>
+         </div>
+       </div>
+        -->
+        <div class="row">
           <div class="col s4">
             <div class="file-field input-field">
               <div class="btn">

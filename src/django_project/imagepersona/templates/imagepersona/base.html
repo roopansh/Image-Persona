@@ -45,7 +45,7 @@
       <div class="divider"></div>
     </li>
     <!-- <li><a class="subheader">Subheader</a></li> -->
-    <li><a class="waves-effect" href="{% url 'imagepersona:profile' %}">Edit Profile and Cover photo</a></li>
+    <li><a class="waves-effect" href="{% url 'imagepersona:profile' %}">Edit Profile</a></li>
     <li><a class="waves-effect" href="{% url 'imagepersona:logout' %}">Logout</a></li>
   </ul>
 
@@ -104,7 +104,13 @@
     if (String('{{coverpic}}') == 'updated') {
       Materialize.toast('Cover Photo updated!', 4000)
     }
-
+    if (String('{{firstname}}') == 'updated') {
+      Materialize.toast('First Name updated!', 4000)
+    }
+    if (String('{{lastname}}') == 'updated') {
+      Materialize.toast('Last Name updated!', 4000)
+    }
+    
     if (String('{{toast.display}}') == 'true') {
       Materialize.toast('{{toast.message}}', 4000)
     }
