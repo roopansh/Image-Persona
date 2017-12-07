@@ -10,6 +10,7 @@ class Image(models.Model):
 	json_response = models.CharField(blank=True, max_length=1000)
 	# owner = models.ForeignKey(UserProfile)
 	# people = models.ManyToManyField(ImageSubFolder)
+
 	def __str__(self):
 		return self.image.name
 
@@ -20,6 +21,7 @@ class ImageSubFolder(models.Model):
 	# directory = models.ForeignKey(ImageFolder, on_delete=models.CASCADE)
 	images = models.ManyToManyField(Image)
 	#displayPic = models.ImageField(upload_to="displaypic/")
+
 	def __str__(self):
 		return self.name
 
@@ -36,21 +38,30 @@ class ImageFolder(models.Model):
 
 # User
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    albums = models.ManyToManyField(ImageFolder, blank=True)
-    profilepic = models.ImageField(verbose_name="Profile Pic", upload_to="users/", default="profilepic.jpg")
-    coverpic = models.ImageField(verbose_name="Cover Pic", upload_to="users/", default="coverpic.jpg")
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	albums = models.ManyToManyField(ImageFolder, blank=True)
+	profilepic = models.ImageField(verbose_name="Profile Pic", upload_to="users/", default="profilepic.jpg")
+	coverpic = models.ImageField(verbose_name="Cover Pic", upload_to="users/", default="coverpic.jpg")
+
+	def __str__(self):
+		return self.user.get_full_name()
 
 
-    def __str__(self):
-    	return self.user.get_full_name()
+#Tags
+class ImageTag(models.Model):
+	name = models.CharField(max_length = 20, blank = False)
+	images = models.ManyToManyField(Image)
+
+	def __str__(self):
+		return self.name
+
 
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        UserProfile.objects.create(user=instance)
+	if created:
+		UserProfile.objects.create(user=instance)
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
-    instance.userprofile.save()
+	instance.userprofile.save()
