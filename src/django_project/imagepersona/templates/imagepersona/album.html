@@ -11,8 +11,7 @@
 <div class="row" style="padding: 20px 10px;">
   {% for item in people %}
   <div class="col s6 m4 l2">
-    <!-- NOTE: Please take a look at this and convert to django URL -->
-    <a href="/imagepersona/images/{{albumPk}}/{{item.pk}}" style="color: white;">
+    <a href="{% url 'imagepersona:images' album_id=albumPk person_id=item.pk %}" style="color: white;">
       <div class="card">
         <div class="card-image">
           <!-- need to change the image to static url -->
