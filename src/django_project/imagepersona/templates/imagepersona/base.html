@@ -97,8 +97,11 @@
 
     function loading() {
       $('#loader').css('display', 'block');
-      Materialize.toast('Uploading and Grouping Photos!', 4000, 'rounded');
     }
+    function uploading() {
+      Materialize.toast('Uploading and Grouping Photos!', 5000, 'rounded');
+    }
+
     if (String('{{profilepic}}') == 'updated') {
       Materialize.toast('Profile Photo updated!', 4000, 'rounded')
     }
