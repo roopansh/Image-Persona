@@ -1,10 +1,18 @@
 {% extends 'imagepersona/base.html' %} {% block title %}: {{PersonName}}{% endblock %} {% block nav-title %}
-<div class="col s6" style="height: 0px;">
+<div class="col s4" style="height: 0px;">
   <a href="{% url 'imagepersona:photos' %} " class="breadcrumb">My Photos</a>
   <a href="{% url 'imagepersona:album' album_id=album.pk %}" class="breadcrumb">{{album.name}}</a>
   <a href="#!" class="breadcrumb">{{PersonName}}</a>
 </div>
-
+<div class="col s3 offset-s0 search">
+  <div class="input-field">
+    <i class="material-icons prefix">search</i>
+    <input id="icon_prefix" type="text" placeholder="Search">
+  </div>
+</div>
+<div class="col s1">
+  <a class="btn btn-small waves-effect grey">Search</a>
+</div>
 {% endblock %} {% block body %}
 <!-- Need to improve this -->
 <div class="row" style="padding: 20px 10px 0px 10px;">
@@ -35,9 +43,11 @@
       </div>
     </div>
   </form>
-</div>
-<div class="row" style="padding: 0px 10px;">
-
+  <form action="{% url 'imagepersona:sharefolder' album_id=album.pk person_id=personId %}" method="post" role="form" enctype="multipart/form-data"> {% csrf_token %}
+    <button class="btn waves-effect waves-light right red" type="submit" name="action" style="margin: 20px;">Share via link
+    <i class="material-icons right">send</i>
+  </button>
+  </form>
 </div>
 <div class="row" style="padding: 20px 10px;">
   {% for image in images %}

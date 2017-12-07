@@ -17,17 +17,63 @@
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
+  <style>
+    /* label color */
 
+    .search .input-field label {
+      color: #000000 !important;
+    }
+
+    /* label focus color */
+
+    .search .input-field input[type=text]:focus+label {
+      color: #FFFFFF !important;
+    }
+
+    /* label underline focus color */
+
+    .search .input-field input[type=text]:focus {
+      border-bottom: 1px solid #FFFFFF !important;
+      box-shadow: 0 1px 0 0 #FFFFFF !important;
+    }
+
+    /* valid color */
+
+    .search .input-field input[type=text].valid {
+      border-bottom: 1px solid #FFFFFF !important;
+      box-shadow: 0 1px 0 0 #FFFFFF !important;
+    }
+
+    /* invalid color */
+
+    .search .input-field input[type=text].invalid {
+      border-bottom: 1px solid #FFFFFF !important;
+      box-shadow: 0 1px 0 0 #FFFFFF !important;
+    }
+
+    /* icon prefix focus color */
+
+    .search .input-field .prefix.active {
+      color: #FFFFFF !important;
+    }
+  </style>
 </head>
 
 <body class="grey lighten-4">
-  <nav>
-    <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
-    <div class="nav-wrapper" style="font-size: 18px;">
-      {% block nav-title %}{% endblock %}
-      <a href="{% url 'imagepersona:upload' %}" class="brand-logo right" style="font-family:'Satisfy',cursive; display: inline-block;">Image Persona</a>
+
+  <div class="row">
+    <div class="navbar-fixed">
+      <nav>
+        <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
+        <div class="nav-wrapper" style="font-size: 18px;">
+          {% block nav-title %}{% endblock %}
+          <a href="{% url 'imagepersona:upload' %}" class="brand-logo right" style="font-family:'Satisfy',cursive; display: inline-block;">Image Persona</a>
+        </div>
+      </nav>
     </div>
-  </nav>
+  </div>
+
+
   <ul id="slide-out" class="side-nav">
     <li>
       <div class="user-view">
@@ -98,6 +144,7 @@
     function loading() {
       $('#loader').css('display', 'block');
     }
+
     function uploading() {
       Materialize.toast('Uploading and Grouping Photos!', 5000, 'rounded');
     }
@@ -114,7 +161,7 @@
     if (String('{{lastname}}') == 'updated') {
       Materialize.toast('Last Name updated!', 4000, 'rounded')
     }
-    
+
     if (String('{{toast.display}}') == 'true') {
       Materialize.toast('{{toast.message}}', 4000, 'rounded')
     }
