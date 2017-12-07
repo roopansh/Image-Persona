@@ -262,3 +262,7 @@ def editSubfolder(request, album_id, person_id):
 			toast['message'] = 'Name updated to ' + person.name
 			return render(request, 'imagepersona/images.html', {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'toast' : toast})
 	raise Http404("Person group does not exist!")
+
+@login_required(login_url='/imagepersona/login/')
+def sharefolder(request, album_id, person_id):
+	return HttpResponse("hello")

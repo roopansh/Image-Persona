@@ -43,9 +43,11 @@
       </div>
     </div>
   </form>
-</div>
-<div class="row" style="padding: 0px 10px;">
-
+  <form action="{% url 'imagepersona:sharefolder' album_id=album.pk person_id=personId %}" method="post" role="form" enctype="multipart/form-data"> {% csrf_token %}
+    <button class="btn waves-effect waves-light right red" type="submit" name="action" style="margin: 20px;">Share via link
+    <i class="material-icons right">send</i>
+  </button>
+  </form>
 </div>
 <div class="row" style="padding: 20px 10px;">
   {% for image in images %}
