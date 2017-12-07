@@ -106,6 +106,7 @@ def upload(request):
 			# newImage.image = file
 			# newImage.save()
 			img_url = "http://" + request.get_host() + newImage.image.url
+			#img_url = "http://weknowyourdreams.com/images/family/family-13.jpg"
 			body = json.dumps({ 'url': img_url })
 
 			try:
@@ -262,3 +263,18 @@ def editSubfolder(request, album_id, person_id):
 			toast['message'] = 'Name updated to ' + person.name
 			return render(request, 'imagepersona/images.html', {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'toast' : toast})
 	raise Http404("Person group does not exist!")
+
+@login_required(login_url='/imagepersona/login/')
+def deleteAlbum(request, album_id):
+	album = get_object_or_404(ImageFolder, pk = album_id)
+	myalbums = request.user.userprofile.albums.all()
+	if(album in myalbums):
+		# Delete album and sub folders
+		for subalbum in album.subfolders.all():
+			for image in subalbum.images.all():
+				image.image.delete(False)
+				image.delete()
+			subalbum.delete()
+		album.delete()
+	return redirect('imagepersona:photos')
+	
