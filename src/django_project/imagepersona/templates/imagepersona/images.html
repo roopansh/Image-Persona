@@ -1,22 +1,51 @@
-{% extends 'imagepersona/base.html' %}
-
-{% block title %}: {{PersonName}}{% endblock %}
-{% block nav-title %}
+{% extends 'imagepersona/base.html' %} {% block title %}: {{PersonName}}{% endblock %} {% block nav-title %}
 <div class="col s6" style="height: 0px;">
   <a href="/imagepersona/photos/" class="breadcrumb">My Photos</a>
   <a href="{% url 'imagepersona:album' album_id=album.pk %}" class="breadcrumb">{{album.name}}</a>
   <a href="#!" class="breadcrumb">{{PersonName}}</a>
 </div>
 
-{% endblock %}
+{% endblock %} {% block body %}
+<!-- Need to improve this -->
+<div class="row" style="padding: 20px 10px 0px 10px;">
+  <form action="{% url 'imagepersona:editSubfolder' album_id=album.pk person_id=personId %}" method="post" role="form" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="input-field col s9 m3 l2">
+      <input value="{{PersonName}}" id="first_name2" type="text" class="validate" name="Personname" required="true">
+      <label class="active" for="first_name2">Name</label>
+    </div>
+    <div class="col s2 m1" style="margin: 20px;">
+      <button class="btn waves-effect waves-light blue darken-4 right" type="submit" name="action" onclick="loading()">Update
+       <i class="material-icons right">send</i>
+     </button>
+    </div>
+    <div class="col s1 m1 l1" style="display:none; margin: 20px 0px;" id="loader">
+      <div class="preloader-wrapper small active">
+        <div class="spinner-layer spinner-blue-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div>
+          <div class="gap-patch">
+            <div class="circle"></div>
+          </div>
+          <div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="row" style="padding: 0px 10px;">
 
-{% block body %}
-Need to improve this 
+</div>
 <div class="row" style="padding: 20px 10px;">
   {% for image in images %}
 
-  <div class="col s6 m4 l2"  style="border: thin solid #000000; height: auto;">
-    <img class="materialboxed" style="width: 100%; padding: 2px;" src="/uploads/{{image}}">
+  <div class="col s6 m4 l2" style="padding: 10px;">
+    <div style="border: thin solid #000000; height: auto;">
+      <img class="materialboxed" style="padding: 2px; height: auto; width: 100%;" src="/uploads/{{image}}">
+    </div>
   </div>
   {% endfor %}
 </div>

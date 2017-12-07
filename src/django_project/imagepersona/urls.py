@@ -14,5 +14,7 @@ urlpatterns = [
 	url(r'^photos/$', views.photos, name='photos'),
 	url(r'^album/(?P<album_id>[0-9]+)/$', views.album, name='album'),
 	url(r'^images/(?P<album_id>[0-9]+)/(?P<person_id>[0-9]+)/$', views.images, name='images'),
+	url(r'^editSubfolder/(?P<album_id>[0-9]+)/(?P<person_id>[0-9]+)/$', views.editSubfolder, name='editSubfolder'),
+
 #	url(r'^album/(?P<album_id>[0-9]+)/(?P<person_id>[0-9]+)$', views.subalbum, name='subalbum'),
 ]

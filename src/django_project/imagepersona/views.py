@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from django.conf import settings
 import httplib, urllib, base64, json
+import time
 
 CF_headers = {
 	# Request headers for CF API
@@ -192,5 +193,19 @@ def images(request, album_id, person_id):
 	peopleInthisFolder = album.subfolders.all()
 	person = get_object_or_404(ImageSubFolder, pk = person_id)
 	if(person in peopleInthisFolder):
-		return render(request, 'imagepersona/images.html', {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album})
+		return render(request, 'imagepersona/images.html', {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk})
+	raise Http404("Person group does not exist!")
+
+@login_required(login_url='/imagepersona/login/')
+def editSubfolder(request, album_id, person_id):
+	if request.method=='POST':
+		toast = {'display' : 'true', 'message' : 'Name not updated!'}
+		album = get_object_or_404(ImageFolder, pk = album_id)
+		peopleInthisFolder = album.subfolders.all()
+		person = get_object_or_404(ImageSubFolder, pk = person_id)
+		if(person in peopleInthisFolder):
+			person.name = request.POST['Personname']
+			person.save()
+			toast['message'] = 'Name updated to ' + person.name
+			return render(request, 'imagepersona/images.html', {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'toast' : toast})
 	raise Http404("Person group does not exist!")

@@ -105,12 +105,20 @@
       Materialize.toast('Cover Photo updated!', 4000)
     }
 
+    if (String('{{toast.display}}') == 'true') {
+      Materialize.toast('{{toast.message}}', 4000)
+    }
+
     $(document).ready(function() {
       $('.materialboxed').materialbox();
     });
 
     $(document).ready(function() {
       $('.carousel').carousel();
+    });
+
+    $(document).ready(function() {
+      Materialize.updateTextFields();
     });
   </script>
 
