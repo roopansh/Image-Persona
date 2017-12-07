@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404, JsonResponse#, HttpResponceRedirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -21,6 +22,18 @@ CF_detect_params = urllib.urlencode({
 })
 
 CF_group_params = urllib.urlencode({
+})
+
+CV_headers = {
+	# Request headers for CF API
+	'Content-Type': 'application/json',
+	'Ocp-Apim-Subscription-Key': settings.CV_KEY,
+}
+
+CV_params = urllib.urlencode({
+	# Request parameters. All of them are optional.
+	'visualFeatures': 'Tags',
+	'language': 'en',
 })
 
 def index(request):
@@ -82,47 +95,60 @@ def upload(request):
 			newImage.save()
 			img_url = "http://" + request.get_host() + newImage.image.url
 			body = json.dumps({ 'url': img_url })
+
 			try:
 				conn = httplib.HTTPSConnection(settings.CF_BASE_URL)
+
+				# Face Detection and retrieving FaceID's 
 				conn.request("POST", "/face/v1.0/detect?%s" % CF_detect_params, body, CF_headers)
 				response = conn.getresponse()
 				data = response.read()
 				res = json.loads(data)
 				count = len(res)
 				for x in range(0,count):	# For all the people present in the photo
-					resx = res[x]
-					resx = resx["faceId"]
-					resx = resx.encode('ascii')
+					resx = res[x]["faceId"].encode('ascii')
 					FaceIDs.append(resx)
 					FaceID_Img_Map[resx] = newImage.pk
+
+				'''				
 				conn.close()
+				conn = httplib.HTTPSConnection(settings.CV_BASE_URL)
+				'''
+				# Computer Vision for Tagging	
+				conn.request("POST", "/vision/v1.0/analyze?%s" % CV_params, body, CV_headers)
+				response = conn.getresponse()
+				data = response.read()
+				res = json.loads(data)
+				res = res[u'tags']
+				for tag in res:
+					if tag["confidence"] > settings.TAG_CONFIDENCE_THRESHHOLD:
+						TagObject, created = ImageTag.objects.get_or_create(name=tag["name"].encode("ascii"))
+						TagObject.images.add(newImage)
+						TagObject.save()
+				
+				conn.close()
+			
 			except Exception as e:
-				print(e)
-				print("[Errno {0}] {1}".format(e.errno, e.strerror))
+				e = json.dumps({'ERROR' : e})
 				return JsonResponse(e)
 
 			newImage.json_response = data
 			newImage.save()
 
 		body = json.dumps({"faceIds" : FaceIDs })
-		print(FaceIDs)
+		
 		try:
 			conn = httplib.HTTPSConnection(settings.CF_BASE_URL)
 			conn.request("POST", "/face/v1.0/group?%s" % CF_group_params, body, CF_headers)
 			response = conn.getresponse()
 			data = response.read()
-			print(data)
 			res = json.loads(data)
-			print(res)
-			# res = res["groups"]
 			conn.close()
 		except Exception as e:
-			print(e)
-			print("[Errno {0}] {1}".format(e.errno, e.strerror))
+			e = json.dumps({'ERROR' : e})
 			return JsonResponse(e)
-		# return JsonResponse({'res':res})
-
-		# Grouped people
+		
+		# Grouping people
 		res_group = res["groups"]
 		for count,personList in enumerate(res_group):
 			newPerson = ImageSubFolder()
