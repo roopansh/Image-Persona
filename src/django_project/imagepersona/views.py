@@ -278,3 +278,6 @@ def deleteAlbum(request, album_id):
 		album.delete()
 	return redirect('imagepersona:photos')
 	
+@login_required(login_url='/imagepersona/login/')
+def sharefolder(request, album_id, person_id):
+	return HttpResponse("hello")
