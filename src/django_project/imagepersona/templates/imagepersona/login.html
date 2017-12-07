@@ -23,19 +23,23 @@
                   </div>
                  <div class="row">
                    <div class="input-field col s12 ">
+                     <i class="material-icons prefix">person</i>
                      <input id="id_username" name="username" maxlength="30" required="true" type="text" class="validate">
                      <label for="id_username">Username</label>
                    </div>
                  </div>
                  <div class="row">
                    <div class="input-field col s12">
+                     <i class="material-icons prefix">lock</i>
                      <input id="id_password" name="password" maxlength="30" required="true" type="password" class="validate">
                      <label for="id_password">Password</label>
                    </div>
                  </div>
+                 <div class="card-action">
                  <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Submit
                    <i class="material-icons right">send</i>
                  </button>
+               </div>
                </form>
              </div>
             </div>
@@ -47,6 +51,7 @@
                   {% csrf_token %}
                  <div class="row">
                    <div class="input-field col s6">
+                     <i class="material-icons prefix">perm_identity</i>
                      <input id="id_firstname" name="firstname" type="text" class="validate" required="true">
                      <label for="id_firstname">First Name</label>
                    </div>
@@ -58,6 +63,7 @@
 
                  <div class="row">
                    <div class="input-field col s12">
+                     <i class="material-icons prefix">email</i>
                      <input id="id_email" name="email" type="email" class="validate" required="true">
                      <label for="id_email">Email</label>
                    </div>
@@ -65,18 +71,22 @@
 
                  <div class="row">
                    <div class="input-field col s6">
+                    <i class="material-icons prefix">person</i>
                      <input id="id_username" name="username" type="text" class="validate" required="true">
                      <label for="id_username">Username</label>
                    </div>
 
                    <div class="input-field col s6">
+                     <i class="material-icons prefix">lock</i>
                      <input id="id_password" name="password" type="password" class="validate" required="true">
                      <label for="id_password">Password</label>
                    </div>
                  </div>
-                 <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Submit
-                   <i class="material-icons right">send</i>
-                 </button>
+                 <div class="card-action">
+                   <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Submit
+                     <i class="material-icons right">send</i>
+                   </button>
+               </div>
                </form>
              </div>
             </div>

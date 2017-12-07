@@ -98,8 +98,7 @@ def upload(request):
 				conn.close()
 			except Exception as e:
 				print(e)
-				print("[Errno {0}] {1}".format(e.errno, e.strerror))
-				return JsonResponse(e)
+				return HttpResponse(e)
 
 			newImage.json_response = data
 			newImage.save()
@@ -118,8 +117,7 @@ def upload(request):
 			conn.close()
 		except Exception as e:
 			print(e)
-			print("[Errno {0}] {1}".format(e.errno, e.strerror))
-			return JsonResponse(e)
+			return HttpResponse(e)
 		# return JsonResponse({'res':res})
 
 		# Grouped people
