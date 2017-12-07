@@ -182,10 +182,12 @@ def profile(request):
 			firstname = request.POST["firstname"].strip().encode("ascii")
 			if firstname != "":
 				request.user.first_name = firstname
+				updates['firstname'] = 'updated'
 		if request.POST["lastname"]:
 			lastname = request.POST["lastname"].strip().encode("ascii")
 			if lastname != "":
 				request.user.last_name = lastname
+				updates['lastname'] = 'updated'
 		request.user.save()
 
 		return render(request, 'imagepersona/profile.html', updates)
