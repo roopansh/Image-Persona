@@ -11,7 +11,7 @@
   <form action="{% url 'imagepersona:editSubfolder' album_id=album.pk person_id=personId %}" method="post" role="form" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="input-field col s9 m3 l2">
-      <input value="{{PersonName}}" id="first_name2" type="text" class="validate" name="Personname" required="true">
+      <input value="{{PersonName}}" id="first_name2" type="text" class="validate" name="Personname" required="true" data-length="20">
       <label class="active" for="first_name2">Name</label>
     </div>
     <div class="col s2 m1" style="margin: 20px;">
