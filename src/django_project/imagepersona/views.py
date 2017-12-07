@@ -89,17 +89,29 @@ def upload(request):
 		request.user.userprofile.albums.add(newAlbum)
 		FaceIDs = []
 		FaceID_Img_Map = {}
+		savedImages = []
 		for file in files:
 			newImage = Image()
 			newImage.image = file
 			newImage.save()
+			savedImages.append(newImage)
+		# print(savedImages)
+		count = 0
+		for newImage in savedImages:
+			if count >= 20:
+				count = 0
+				time.sleep(61)
+			count = count + 1
+			# newImage = Image()
+			# newImage.image = file
+			# newImage.save()
 			img_url = "http://" + request.get_host() + newImage.image.url
 			body = json.dumps({ 'url': img_url })
 
 			try:
 				conn = httplib.HTTPSConnection(settings.CF_BASE_URL)
 
-				# Face Detection and retrieving FaceID's 
+				# Face Detection and retrieving FaceID's
 				conn.request("POST", "/face/v1.0/detect?%s" % CF_detect_params, body, CF_headers)
 				response = conn.getresponse()
 				data = response.read()
@@ -110,11 +122,11 @@ def upload(request):
 					FaceIDs.append(resx)
 					FaceID_Img_Map[resx] = newImage.pk
 
-				'''				
+				'''
 				conn.close()
 				conn = httplib.HTTPSConnection(settings.CV_BASE_URL)
 				'''
-				# Computer Vision for Tagging	
+				# Computer Vision for Tagging
 				conn.request("POST", "/vision/v1.0/analyze?%s" % CV_params, body, CV_headers)
 				response = conn.getresponse()
 				data = response.read()
@@ -125,9 +137,9 @@ def upload(request):
 						TagObject, created = ImageTag.objects.get_or_create(name=tag["name"].encode("ascii"))
 						TagObject.images.add(newImage)
 						TagObject.save()
-				
+
 				conn.close()
-			
+
 			except Exception as e:
 				print(e)
 				return HttpResponse(e)
@@ -136,7 +148,7 @@ def upload(request):
 			newImage.save()
 
 		body = json.dumps({"faceIds" : FaceIDs })
-		
+
 		try:
 			conn = httplib.HTTPSConnection(settings.CF_BASE_URL)
 			conn.request("POST", "/face/v1.0/group?%s" % CF_group_params, body, CF_headers)
@@ -181,7 +193,7 @@ def profile(request):
 					'firstname' : 'not-updated',
 					'lastname' : 'not-updated',
 				}
-		
+
 		if request.FILES.getlist("profile"):
 			profile = request.FILES.getlist("profile")
 			print request.user, profile[0]
