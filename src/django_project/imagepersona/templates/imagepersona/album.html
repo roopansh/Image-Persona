@@ -1,17 +1,19 @@
 {% extends 'imagepersona/base.html' %}
 {% block title %}: {{album_name}}{% endblock %}
 {% block nav-title %}
-<div class="col s3" style="height: 0px;">
+<div class="col s4" style="height: 0px;">
   <a href="/imagepersona/photos/" class="breadcrumb">My Photos</a>
   <a href="#!" class="breadcrumb">{{album_name}}</a>
 </div>
-<!-- <div class="col s2">
+<div class="col s3 offset-s0 search">
   <div class="input-field">
-    <i class="material-icons prefix">account_circle</i>
-    <input id="icon_prefix" type="text" class="validate">
-    <label for="icon_prefix">First Name</label>
+    <i class="material-icons prefix">search</i>
+    <input id="icon_prefix" type="text" placeholder="Search">
   </div>
-</div> -->
+</div>
+<div class="col s1">
+  <a class="btn btn-small waves-effect grey">Search</a>
+</div>
 
 {% endblock %}
 {% block body %}
