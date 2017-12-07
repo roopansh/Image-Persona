@@ -35,7 +35,7 @@
         </a>
         <div class="card-content black-text" style="padding: 15px;">
           {{ myalbum.name }}
-          <a href="{% url 'imagepersona:deleteAlbum' album_id=myalbum.pk %}"><i class="material-icons right">delete</i></a>
+          <a href="{% url 'imagepersona:deleteAlbum' album_id=myalbum.pk %}" onclick="deleting();"><i class="material-icons right">delete</i></a>
         </div>
       </div>
   </div>

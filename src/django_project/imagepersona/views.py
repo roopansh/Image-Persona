@@ -106,7 +106,7 @@ def upload(request):
 			# newImage.image = file
 			# newImage.save()
 			img_url = "http://" + request.get_host() + newImage.image.url
-			#img_url = "http://weknowyourdreams.com/images/family/family-13.jpg"
+			# img_url = "http://weknowyourdreams.com/images/family/family-13.jpg"
 			body = json.dumps({ 'url': img_url })
 
 			try:
