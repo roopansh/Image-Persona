@@ -2,7 +2,7 @@
 {% block title %}: {{album_name}}{% endblock %}
 {% block nav-title %}
 <div class="col s4" style="height: 0px;">
-  <a href="/imagepersona/photos/" class="breadcrumb">My Photos</a>
+  <a href="{% url 'imagepersona:photos' %}" class="breadcrumb">My Photos</a>
   <a href="#!" class="breadcrumb">{{album_name}}</a>
 </div>
 <div class="col s3 offset-s0 search">
