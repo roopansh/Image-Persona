@@ -26,34 +26,34 @@
 
     /* label focus color */
 
-    .search  .input-field input[type=text]:focus+label {
+    .search .input-field input[type=text]:focus+label {
       color: #FFFFFF !important;
     }
 
     /* label underline focus color */
 
-    .search  .input-field input[type=text]:focus {
+    .search .input-field input[type=text]:focus {
       border-bottom: 1px solid #FFFFFF !important;
       box-shadow: 0 1px 0 0 #FFFFFF !important;
     }
 
     /* valid color */
 
-    .search  .input-field input[type=text].valid {
+    .search .input-field input[type=text].valid {
       border-bottom: 1px solid #FFFFFF !important;
       box-shadow: 0 1px 0 0 #FFFFFF !important;
     }
 
     /* invalid color */
 
-    .search  .input-field input[type=text].invalid {
+    .search .input-field input[type=text].invalid {
       border-bottom: 1px solid #FFFFFF !important;
       box-shadow: 0 1px 0 0 #FFFFFF !important;
     }
 
     /* icon prefix focus color */
 
-    .search  .input-field .prefix.active {
+    .search .input-field .prefix.active {
       color: #FFFFFF !important;
     }
   </style>
@@ -62,14 +62,15 @@
 <body class="grey lighten-4">
 
   <div class="row">
-    <nav>
-      <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
-      <div class="nav-wrapper" style="font-size: 18px;">
-        {% block nav-title %}{% endblock %}
-        <a href="{% url 'imagepersona:upload' %}" class="brand-logo right" style="font-family:'Satisfy',cursive; display: inline-block;">Image Persona</a>
-      </div>
-    </nav>
-
+    <div class="navbar-fixed">
+      <nav>
+        <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
+        <div class="nav-wrapper" style="font-size: 18px;">
+          {% block nav-title %}{% endblock %}
+          <a href="{% url 'imagepersona:upload' %}" class="brand-logo right" style="font-family:'Satisfy',cursive; display: inline-block;">Image Persona</a>
+        </div>
+      </nav>
+    </div>
   </div>
 
 
