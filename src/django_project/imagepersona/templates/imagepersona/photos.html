@@ -5,12 +5,6 @@
 
 {% block body %}
 {% if albums %}
-<!-- <ul>
-  {% for myalbum in albums %}
-      <li><a href="{% url 'imagepersona:album' album_id=myalbum.pk %}">{{ myalbum.name }}</a></li>
-  {% endfor %}
-
-</ul> -->
 <div class="row" style="padding: 20px 10px;">
   {% for myalbum in albums %}
   <div class="col s6 m4 l2">
