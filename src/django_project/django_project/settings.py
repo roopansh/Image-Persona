@@ -134,3 +134,9 @@ CF_KEY = "41e8def285514e09bf6e5f66c24181d8"
 CV_BASE_URL = "westcentralus.api.cognitive.microsoft.com"
 CV_KEY = "1f05f5c2ad21413a825a189da1e74170"
 TAG_CONFIDENCE_THRESHHOLD = 0.8
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'contact.imagepersona@gmail.com'
+EMAIL_HOST_PASSWORD = 'thisispassword'
