@@ -11,7 +11,7 @@ import httplib, urllib, base64, json
 import time
 from django.core.mail import send_mail
 from collections import Counter
-import PIL
+from PIL import Image as PILImage
 
 CF_headers = {
 	# Request headers for CF API
@@ -328,7 +328,7 @@ def images(request, album_id, person_id):
 			if not person.croppedDP :
 				person.croppedDP.save(displaypic.image.url.split('/')[-1],displaypic.image.file,save=True)
 				person.save()				
-				temp = PIL.Image.open(person.croppedDP.path)
+				temp = PILImage.open(person.croppedDP.path)
 				tempImg = temp.crop((left, top, right, bottom))
 				tempImg.save(person.croppedDP.path)
 				
