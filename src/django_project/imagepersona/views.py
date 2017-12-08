@@ -9,6 +9,7 @@ from .models import *
 from django.conf import settings
 import httplib, urllib, base64, json
 import time
+from django.core.mail import send_mail
 
 CF_headers = {
 	# Request headers for CF API
@@ -51,7 +52,7 @@ def login_user(request):
 				login(request, user)
 				return render(request, 'imagepersona/upload.html')
 			else:
-				return render(request, 'imagepersona/login.html', {'login_error_message': 'Your account has been disabled'})
+				return render(request, 'imagepersona/login.html', {'login_error_message': 'Pending email verfication'})
 		else:
 			return render(request, 'imagepersona/login.html', {'login_error_message': 'Invalid login'})
 	return render(request, 'imagepersona/login.html')
@@ -77,7 +78,23 @@ def register_user(request):
 		if user is not None:
 			if user.is_active:
 				login(request, user)
-				return render(request, 'imagepersona/upload.html')
+				unique_id = get_random_string(length=20)
+				ver = verifyEmail()
+				ver.reference = unique_id
+				ver.user = user
+				ver.save()
+				link_url = "http://" + request.get_host() + '/imagepersona/verify/' + unique_id
+				# TODO: Convert this to HTML
+				send_mail(
+				    'Verify your email',
+				    'Click on this link to verify your email. If you didnt register, please ignore.' + link_url,
+				    'contact.imagepersona@gmail.com',
+				    [user.email],
+				    fail_silently=False,
+				)
+				user.is_active = False
+				user.save()
+				return render(request, 'imagepersona/login.html', {'login_error_message': 'An email has been sent. Verify your email.'})
 	return render(request, 'imagepersona/login.html')
 
 @login_required(login_url='/imagepersona/login/')
@@ -282,7 +299,7 @@ def deleteAlbum(request, album_id):
 			subalbum.delete()
 		album.delete()
 	return redirect('imagepersona:photos')
-	
+
 @login_required(login_url='/imagepersona/login/')
 def sharefolder(request, album_id, person_id):
 	album = get_object_or_404(ImageFolder, pk = album_id)
@@ -292,7 +309,6 @@ def sharefolder(request, album_id, person_id):
 		person = get_object_or_404(ImageSubFolder, pk = person_id)
 		if(person in peopleInthisFolder):
 			about = linksharing.objects.filter(real=person.pk)
-			print('abput',about)
 			if(len(about) > 0):
 				unique_id = about[0].reference
 				link_url = "http://" + request.get_host() + '/imagepersona/share/' + unique_id
@@ -310,6 +326,12 @@ def sharefolder(request, album_id, person_id):
 def share(request, unique_id):
 	# links = linksharing.all()
 	foundlink = get_object_or_404(linksharing, reference = unique_id)
-	print(foundlink)
 	person = get_object_or_404(ImageSubFolder, pk = foundlink.real)
 	return render(request, 'imagepersona/imagesShared.html', {'images' : person.images.all(), 'PersonName' : person.name})
+
+def verify(request, unique_id):
+	ver = get_object_or_404(verifyEmail, reference = unique_id)
+	user = ver.user
+	user.is_active = True
+	user.save()
+	return render(request, 'imagepersona/login.html', {'login_error_message': 'Email has been verified!'})

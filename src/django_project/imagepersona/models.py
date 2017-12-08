@@ -63,6 +63,14 @@ class linksharing(models.Model):
 	def __str__(self):
 		return self.reference
 
+# Verify email
+class verifyEmail(models.Model):
+	reference = models.CharField(max_length = 50, blank = False)
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.reference
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
 	if created:
