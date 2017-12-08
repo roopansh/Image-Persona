@@ -221,22 +221,25 @@ def searchPhotos(request):
 		for tag in tags:
 			for image in tag.images.all():
 				if image.owner is request.user:
-					result[image] += 1
+					result[image] += 2
 		# Person Search
 		persons = ImageSubFolder.objects.filter(name__icontains = keyword)
 		for person in persons:
 			for image in person.images.all():
 				if image.owner == request.user:
-					result[image] += 2
+					result[image] += 3
 		# Album Search
 		albums = ImageFolder.objects.filter(name__icontains = keyword)
 		for album in albums:
 			for person in album.subfolders.all():
 				for image in person.images.all():
 					if image.owner == request.user:
-						result[image] += 1.5
+						result[image] += 1
 	res = result.most_common()
-	topScore = res[0][1]
+	try:
+		topScore = res[0][1]
+	except Exception:
+		topScore = 0
 	result = []
 	for item in res:
 		if item[1] <= settings.SEARCH_FACTOR * topScore :
@@ -371,9 +374,6 @@ def deleteSubAlbum(request, album_id, person_id):
 	albumname = album.name
 	toast = {'display' : 'true', 'message' : 'Person Not Deleted!'}
 	if(person in album.subfolders.all()):
-		for image in person.images.all():
-			image.image.delete(False)
-			image.delete()
 		person.delete()
 		toast["message"] = "Deleted photos of '" + personname + "' from '" + albumname + "'!"
 	return render(request, 'imagepersona/album.html', {'album_name':albumname, 'people':album.subfolders.all(), 'albumPk' : album_id, 'toast':toast})
