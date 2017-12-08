@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.utils.crypto import get_random_string
 from .models import *
 from django.conf import settings
 import httplib, urllib, base64, json
@@ -244,10 +245,12 @@ def album(request, album_id):
 @login_required(login_url='/imagepersona/login/')
 def images(request, album_id, person_id):
 	album = get_object_or_404(ImageFolder, pk = album_id)
-	peopleInthisFolder = album.subfolders.all()
-	person = get_object_or_404(ImageSubFolder, pk = person_id)
-	if(person in peopleInthisFolder):
-		return render(request, 'imagepersona/images.html', {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk})
+	myalbums = request.user.userprofile.albums.all()
+	if(album in myalbums):
+		peopleInthisFolder = album.subfolders.all()
+		person = get_object_or_404(ImageSubFolder, pk = person_id)
+		if(person in peopleInthisFolder):
+			return render(request, 'imagepersona/images.html', {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk})
 	raise Http404("Person group does not exist!")
 
 @login_required(login_url='/imagepersona/login/')
@@ -255,13 +258,15 @@ def editSubfolder(request, album_id, person_id):
 	if request.method=='POST':
 		toast = {'display' : 'true', 'message' : 'Name not updated!'}
 		album = get_object_or_404(ImageFolder, pk = album_id)
-		peopleInthisFolder = album.subfolders.all()
-		person = get_object_or_404(ImageSubFolder, pk = person_id)
-		if(person in peopleInthisFolder):
-			person.name = request.POST['Personname']
-			person.save()
-			toast['message'] = 'Name updated to ' + person.name
-			return render(request, 'imagepersona/images.html', {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'toast' : toast})
+		myalbums = request.user.userprofile.albums.all()
+		if(album in myalbums):
+			peopleInthisFolder = album.subfolders.all()
+			person = get_object_or_404(ImageSubFolder, pk = person_id)
+			if(person in peopleInthisFolder):
+				person.name = request.POST['Personname']
+				person.save()
+				toast['message'] = 'Name updated to ' + person.name
+				return render(request, 'imagepersona/images.html', {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'toast' : toast})
 	raise Http404("Person group does not exist!")
 
 @login_required(login_url='/imagepersona/login/')
@@ -280,4 +285,31 @@ def deleteAlbum(request, album_id):
 	
 @login_required(login_url='/imagepersona/login/')
 def sharefolder(request, album_id, person_id):
+	album = get_object_or_404(ImageFolder, pk = album_id)
+	myalbums = request.user.userprofile.albums.all()
+	if(album in myalbums):
+		peopleInthisFolder = album.subfolders.all()
+		person = get_object_or_404(ImageSubFolder, pk = person_id)
+		if(person in peopleInthisFolder):
+			about = linksharing.objects.filter(real=person.pk)
+			print('abput',about)
+			if(len(about) > 0):
+				unique_id = about[0].reference
+				link_url = "http://" + request.get_host() + '/imagepersona/share/' + unique_id
+				return JsonResponse({'Link' : link_url})
+			unique_id = get_random_string(length=20)
+			# Check whether this string has already been made or not
+			link = linksharing()
+			link.reference = unique_id
+			link.real = person.pk
+			link.save()
+			link_url = "http://" + request.get_host() + '/imagepersona/share/' + unique_id
+			return JsonResponse({'Link' : link_url})
 	return HttpResponse("hello")
+
+def share(request, unique_id):
+	# links = linksharing.all()
+	foundlink = get_object_or_404(linksharing, reference = unique_id)
+	print(foundlink)
+	person = get_object_or_404(ImageSubFolder, pk = foundlink.real)
+	return render(request, 'imagepersona/imagesShared.html', {'images' : person.images.all(), 'PersonName' : person.name})
