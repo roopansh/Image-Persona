@@ -325,7 +325,14 @@ def images(request, album_id, person_id):
 					right = item["faceRectangle"]["left"] + item["faceRectangle"]["width"] 
 					bottom = item["faceRectangle"]["top"] + item["faceRectangle"]["height"] 
 					break
-			context = {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'displaypic':displaypic.image.url, 'top' : top, 'left' : left, 'right' : right, 'bottom' : bottom,}
+			if not person.croppedDP :
+				person.croppedDP.save(displaypic.image.url.split('/')[-1],displaypic.image.file,save=True)
+				person.save()				
+				temp = PIL.Image.open(person.croppedDP.path)
+				tempImg = temp.crop((left, top, right, bottom))
+				tempImg.save(person.croppedDP.path)
+				
+			context = {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'displaypic':person.croppedDP.url}
 			return render(request, 'imagepersona/images.html', context)
 	raise Http404("Person group does not exist!")
 
@@ -342,7 +349,7 @@ def editSubfolder(request, album_id, person_id):
 				person.name = request.POST['Personname']
 				person.save()
 				toast['message'] = 'Name updated to ' + person.name
-				return render(request, 'imagepersona/images.html', {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'toast' : toast})
+				return render(request, 'imagepersona/images.html', {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'toast' : toast, 'displaypic':person.croppedDP.url})
 	raise Http404("Person group does not exist!")
 
 @login_required(login_url='/imagepersona/login/')
@@ -370,12 +377,14 @@ def deleteAlbum(request, album_id):
 def deleteSubAlbum(request, album_id, person_id):
 	album = get_object_or_404(ImageFolder, pk = album_id)
 	person = get_object_or_404(ImageSubFolder, pk = person_id)
+	myalbums = request.user.userprofile.albums.all()
 	personname = person.name
 	albumname = album.name
 	toast = {'display' : 'true', 'message' : 'Person Not Deleted!'}
-	if(person in album.subfolders.all()):
-		person.delete()
-		toast["message"] = "Deleted photos of '" + personname + "' from '" + albumname + "'!"
+	if(album in myalbums):
+		if(person in album.subfolders.all()):
+			person.delete()
+			toast["message"] = "Deleted photos of '" + personname + "' from '" + albumname + "'!"
 	return render(request, 'imagepersona/album.html', {'album_name':albumname, 'people':album.subfolders.all(), 'albumPk' : album_id, 'toast':toast})
 
 	return redirect('imagepersona:photos', {'toast':toast})
