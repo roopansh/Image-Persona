@@ -13,6 +13,7 @@
 
 {% block body %}
 
+<img src="{{displaypic}}" style="position: absolute; clip: rect({{top}}px,{{right}}px,{{bottom}}px,{{left}}px);">
 <!-- Need to improve this -->
 <div class="row" style="padding: 20px 10px 0px 10px;">
   <form action="{% url 'imagepersona:editSubfolder' album_id=album.pk person_id=personId %}" method="post" role="form" enctype="multipart/form-data">

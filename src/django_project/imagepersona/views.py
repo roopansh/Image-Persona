@@ -11,6 +11,7 @@ import httplib, urllib, base64, json
 import time
 from django.core.mail import send_mail
 from collections import Counter
+import PIL
 
 CF_headers = {
 	# Request headers for CF API
@@ -142,7 +143,8 @@ def upload(request):
 					resx = res[x]["faceId"].encode('ascii')
 					FaceIDs.append(resx)
 					FaceID_Img_Map[resx] = newImage.pk
-
+				newImage.json_response = data
+			
 				'''
 				conn.close()
 				conn = httplib.HTTPSConnection(settings.CV_BASE_URL)
@@ -165,7 +167,6 @@ def upload(request):
 				print(e)
 				return HttpResponse(e)
 
-			newImage.json_response = data
 			newImage.save()
 
 		body = json.dumps({"faceIds" : FaceIDs })
@@ -187,9 +188,14 @@ def upload(request):
 			newPerson = ImageSubFolder()
 			newPerson.name = str(count+1)
 			newPerson.save()
+			flag = True
 			for id in personList:
 				imgpk = FaceID_Img_Map[id]
 				newPerson.images.add(imgpk)
+				if flag:
+					newPerson.displaypic = imgpk
+					newPerson.personid = id
+					flag = False
 			newPerson.save()
 			newAlbum.subfolders.add(newPerson)
 
@@ -296,7 +302,18 @@ def images(request, album_id, person_id):
 		peopleInthisFolder = album.subfolders.all()
 		person = get_object_or_404(ImageSubFolder, pk = person_id)
 		if(person in peopleInthisFolder):
-			return render(request, 'imagepersona/images.html', {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk})
+			displaypic = Image.objects.get(pk = person.displaypic)
+			displayid = person.personid
+			json_response = json.loads(displaypic.json_response)
+			for item in json_response:
+				if item["faceId"] == displayid:
+					top = item["faceRectangle"]["top"]
+					left = item["faceRectangle"]["left"]
+					right = item["faceRectangle"]["left"] + item["faceRectangle"]["width"] 
+					bottom = item["faceRectangle"]["left"] + item["faceRectangle"]["height"] 
+					break
+			context = {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'displaypic':displaypic.image.url, 'top' : top, 'left' : left, 'right' : right, 'bottom' : bottom,}
+			return render(request, 'imagepersona/images.html', context)
 	raise Http404("Person group does not exist!")
 
 @login_required(login_url='/imagepersona/login/')
