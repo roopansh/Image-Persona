@@ -228,6 +228,13 @@ def searchPhotos(request):
 			for image in person.images.all():
 				if image.owner == request.user:
 					result[image] += 2
+		# Album Search
+		albums = ImageFolder.objects.filter(name__icontains = keyword)
+		for album in albums:
+			for person in album.subfolders.all():
+				for image in person.images.all():
+					if image.owner == request.user:
+						result[image] += 1.5
 	res = result.most_common()
 	result = []
 	for item in res:
