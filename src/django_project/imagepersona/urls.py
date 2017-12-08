@@ -17,4 +17,6 @@ urlpatterns = [
 	url(r'^editSubfolder/(?P<album_id>[0-9]+)/(?P<person_id>[0-9]+)/$', views.editSubfolder, name='editSubfolder'),
 	url(r'^album/delete/(?P<album_id>[0-9]+)/$', views.deleteAlbum, name='deleteAlbum'),
 	url(r'^sharefolder/(?P<album_id>[0-9]+)/(?P<person_id>[0-9]+)/$', views.sharefolder, name='sharefolder'),
+	url(r'^share/(?P<unique_id>[a-zA-Z0-9]+)/$', views.share, name='share'),
+
 ]

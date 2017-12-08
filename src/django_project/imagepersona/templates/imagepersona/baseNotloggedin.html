@@ -17,7 +17,9 @@
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
-  
+  <style>
+    /* label color */
+
   <!-- Favicon -->
   <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
   <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
@@ -68,7 +70,6 @@
   <div class="row">
     <div class="navbar-fixed">
       <nav>
-        <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
         <div class="nav-wrapper" style="font-size: 18px;">
           {% block nav-title %}{% endblock %}
           <a href="{% url 'imagepersona:upload' %}" class="brand-logo right" style="font-family:'Satisfy',cursive; display: inline-block;">Image Persona</a>
@@ -76,28 +77,6 @@
       </nav>
     </div>
   </div>
-
-
-  <ul id="slide-out" class="side-nav">
-    <li>
-      <div class="user-view">
-        <div class="background">
-          <img src="{{ user.userprofile.coverpic.url }}" width="100%" class="responsive-img">
-        </div>
-        <a href="{% url 'imagepersona:profile' %}"><img class="circle responsive-img" src="{{ user.userprofile.profilepic.url }}"></a>
-        <a href="{% url 'imagepersona:profile' %}"><span class="white-text name">{{ user.get_full_name }}</span></a>
-        <a href="{% url 'imagepersona:profile' %}"><span class="white-text email">{{ user.email }}</span></a>
-      </div>
-    </li>
-    <li><a class="waves-effect" href="{% url 'imagepersona:upload' %}"><i class="material-icons">cloud_upload</i>Upload Images</a></li>
-    <li><a class="waves-effect" href="{% url 'imagepersona:photos' %}"><i class="material-icons prefix">photo_album</i>My Photos</a></li>
-    <li>
-      <div class="divider"></div>
-    </li>
-    <!-- <li><a class="subheader">Subheader</a></li> -->
-    <li><a class="waves-effect" href="{% url 'imagepersona:profile' %}"><i class="material-icons prefix">edit</i>Edit Profile</a></li>
-    <li><a class="waves-effect" href="{% url 'imagepersona:logout' %}"><i class="material-icons prefix">power_settings_new</i>Logout</a></li>
-  </ul>
 
   <main>
     {% block body %} {% endblock %}
@@ -185,26 +164,6 @@
     $(document).ready(function() {
       Materialize.updateTextFields();
     });
-    $(document).ready(function(){
-      // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-      $('.modal').modal();
-    });
-
-    function sharelink(album_id, person_id) {
-      console.log("it came here");
-      $.ajax({
-        type: "GET",
-        url: "/imagepersona/sharefolder/" + album_id + "/" + person_id,
-        data: {}
-      }).done(function( msg ) {
-        // $('#sharedlink').html("blah");
-        console.log(msg);
-        $('#sharedlink').html("" + msg.Link);
-        $('#modal1').modal('open');
-      }).fail(function( jqXHR, textStatus, errorThrown ) {
-        console.log(jqXHR, textStatus, errorThrown);
-      });
-    }
   </script>
 
   <!--Import jQuery before materialize.js-->

@@ -55,7 +55,13 @@ class ImageTag(models.Model):
 	def __str__(self):
 		return self.name
 
+# Sharing Subfolders via Link
+class linksharing(models.Model):
+	reference = models.CharField(max_length = 50, blank = False)
+	real = models.CharField(max_length = 80, blank = False)
 
+	def __str__(self):
+		return self.reference
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

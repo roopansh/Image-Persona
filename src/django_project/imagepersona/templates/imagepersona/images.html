@@ -43,11 +43,9 @@
       </div>
     </div>
   </form>
-  <form action="{% url 'imagepersona:sharefolder' album_id=album.pk person_id=personId %}" method="post" role="form" enctype="multipart/form-data"> {% csrf_token %}
-    <button class="btn waves-effect waves-light right red" type="submit" name="action" style="margin: 20px;">Share via link
+    <button class="btn waves-effect waves-light right red" style="margin: 20px;" onclick="sharelink('{{album.pk}}', '{{personId}}')">Share via link
     <i class="material-icons right">send</i>
   </button>
-  </form>
 </div>
 <div class="row" style="padding: 20px 10px;">
   {% for image in images %}
@@ -58,5 +56,15 @@
     </div>
   </div>
   {% endfor %}
+</div>
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+  <div class="modal-content">
+    <h4>Link Folder Sharing</h4>
+    <div id="sharedlink"></div>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+  </div>
 </div>
 {% endblock %}
