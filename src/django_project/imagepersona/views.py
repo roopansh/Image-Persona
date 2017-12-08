@@ -10,6 +10,7 @@ from django.conf import settings
 import httplib, urllib, base64, json
 import time
 from django.core.mail import send_mail
+from collections import Counter
 
 CF_headers = {
 	# Request headers for CF API
@@ -111,6 +112,7 @@ def upload(request):
 		for file in files:
 			newImage = Image()
 			newImage.image = file
+			newImage.owner = request.user
 			newImage.save()
 			savedImages.append(newImage)
 		# print(savedImages)
@@ -124,7 +126,7 @@ def upload(request):
 			# newImage.image = file
 			# newImage.save()
 			img_url = "http://" + request.get_host() + newImage.image.url
-			img_url = "http://weknowyourdreams.com/images/family/family-13.jpg"
+			#img_url = "http://weknowyourdreams.com/images/family/family-13.jpg"
 			body = json.dumps({ 'url': img_url })
 
 			try:
@@ -202,6 +204,33 @@ def photos(request):
 	if albums is not None:
 		context	['albums'] = albums
 	return render(request, 'imagepersona/photos.html', context)
+
+@login_required(login_url='/imagepersona/login/')
+def searchPhotos(request):
+	queryTerms = request.GET["query"].split()
+	result = Counter() # USE counter
+	for keyword in queryTerms:
+		# Tag Search
+		tags = ImageTag.objects.filter(name__icontains = keyword)
+		for tag in tags:
+			for image in tag.images.all():
+				if image.owner is request.user:
+					result[image] += 1
+		# Person Search
+		persons = ImageSubFolder.objects.filter(name__icontains = keyword)
+		for person in persons:
+			for image in person.images.all():
+				if image.owner == request.user:
+					result[image] += 2
+	res = result.most_common()
+	result = []
+	for item in res:
+		result.append(item[0])
+	context = {
+		"query" : request.GET["query"],
+		"result" : result,
+	}
+	return render(request, 'imagepersona/search.html', context)
 
 
 @login_required(login_url='/imagepersona/login/')

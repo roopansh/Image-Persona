@@ -1,0 +1,32 @@
+{% extends 'imagepersona/base_with_search.html' %}
+
+{% block title %} : Search Result for '{{query}}'{% endblock %}
+
+{% block breadcrumb %}
+<div class="col s4" style="height: 0px;">
+  <a href="{% url 'imagepersona:photos' %} " class="breadcrumb">My Photos</a>
+  <a href="!#" class="breadcrumb">Search Results</a>
+</div>
+{% endblock %}
+
+{% block body %}
+  <div class="row" style="padding: 20px 10px;">
+    {% for image in result %}
+    <div class="col s6 m4 l2" style="padding: 10px;">
+      <div style="border: thin solid #000000; height: auto;">
+        <img class="materialboxed" style="padding: 2px; height: auto; width: 100%;" src="/uploads/{{image}}">
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>Link Folder Sharing</h4>
+      <div id="sharedlink"></div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </div>
+{% endblock %}
