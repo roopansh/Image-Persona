@@ -17,7 +17,7 @@
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
-  
+
   <!-- Favicon -->
   <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
   <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
@@ -155,6 +155,10 @@
 
     function deleting() {
       Materialize.toast('Deleted the Album!', 5000, 'rounded');
+    }
+
+    function deleteConfirm(url) {
+      $('#finaldelete').attr("href", url);
     }
 
     if (String('{{profilepic}}') == 'updated') {
