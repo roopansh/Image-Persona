@@ -236,8 +236,11 @@ def searchPhotos(request):
 					if image.owner == request.user:
 						result[image] += 1.5
 	res = result.most_common()
+	topScore = res[0][1]
 	result = []
 	for item in res:
+		if item[1] <= settings.SEARCH_FACTOR * topScore :
+			break
 		result.append(item[0])
 	context = {
 		"query" : request.GET["query"],
@@ -317,7 +320,7 @@ def images(request, album_id, person_id):
 					top = item["faceRectangle"]["top"]
 					left = item["faceRectangle"]["left"]
 					right = item["faceRectangle"]["left"] + item["faceRectangle"]["width"] 
-					bottom = item["faceRectangle"]["left"] + item["faceRectangle"]["height"] 
+					bottom = item["faceRectangle"]["top"] + item["faceRectangle"]["height"] 
 					break
 			context = {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'displaypic':displaypic.image.url, 'top' : top, 'left' : left, 'right' : right, 'bottom' : bottom,}
 			return render(request, 'imagepersona/images.html', context)
