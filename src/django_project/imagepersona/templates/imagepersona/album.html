@@ -31,11 +31,12 @@
         <p>I am a very simple card. I am</p>
       </div> -->
         <hr style="margin: 0px;">
+        </a>
         <div class="card-content black-text" style="padding: 15px;">
           {{ item.name }}
+          <a href="{% url 'imagepersona:deleteSubAlbum' album_id=albumPk person_id=item.pk %}"><i class="material-icons right">delete</i></a>
         </div>
       </div>
-    </a>
   </div>
   {% endfor %}
 </div>

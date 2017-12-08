@@ -124,7 +124,7 @@ def upload(request):
 			# newImage.image = file
 			# newImage.save()
 			img_url = "http://" + request.get_host() + newImage.image.url
-			# img_url = "http://weknowyourdreams.com/images/family/family-13.jpg"
+			img_url = "http://weknowyourdreams.com/images/family/family-13.jpg"
 			body = json.dumps({ 'url': img_url })
 
 			try:
@@ -290,6 +290,8 @@ def editSubfolder(request, album_id, person_id):
 def deleteAlbum(request, album_id):
 	album = get_object_or_404(ImageFolder, pk = album_id)
 	myalbums = request.user.userprofile.albums.all()
+	toast = {'display' : 'true', 'message' : 'Album Not Deleted!'}
+	albumname = album.name
 	if(album in myalbums):
 		# Delete album and sub folders
 		for subalbum in album.subfolders.all():
@@ -298,7 +300,30 @@ def deleteAlbum(request, album_id):
 				image.delete()
 			subalbum.delete()
 		album.delete()
-	return redirect('imagepersona:photos')
+		toast["message"] = "Deleted album '" + albumname + "'"
+	context = {'toast':toast}
+	albums = request.user.userprofile.albums.all()
+	if albums is not None:
+		context	['albums'] = albums
+	return render(request, 'imagepersona/photos.html', context)
+
+@login_required(login_url='/imagepersona/login/')
+def deleteSubAlbum(request, album_id, person_id):
+	album = get_object_or_404(ImageFolder, pk = album_id)
+	person = get_object_or_404(ImageSubFolder, pk = person_id)
+	personname = person.name
+	albumname = album.name
+	toast = {'display' : 'true', 'message' : 'Person Not Deleted!'}
+	if(person in album.subfolders.all()):
+		for image in person.images.all():
+			image.image.delete(False)
+			image.delete()
+		person.delete()
+		toast["message"] = "Deleted photos of '" + personname + "' from '" + albumname + "'!"
+	return render(request, 'imagepersona/album.html', {'album_name':albumname, 'people':album.subfolders.all(), 'albumPk' : album_id, 'toast':toast})
+
+	return redirect('imagepersona:photos', {'toast':toast})
+
 
 @login_required(login_url='/imagepersona/login/')
 def sharefolder(request, album_id, person_id):
