@@ -107,6 +107,29 @@
   <main>
     {% block body %} {% endblock %}
   </main>
+
+  <!-- Modal Structure for Downloading-->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <p style="font-size: 19px;">Do you want to download all the photos in this folder?</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
+      <a id="finaldownload" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" target="_blank" onclick="downloadToast()">Confirm</a>
+    </div>
+  </div>
+
+
+
+  <div id="modal2" class="modal">
+    <div class="modal-content">
+      <p style="font-size: 19px;">Are you sure you want to delete all the photos in this folder?</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+      <a id="finaldelete" href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Confirm</a>
+    </div>
+  </div>
   <!--Import jQuery before materialize.js-->
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <!-- Compiled and minified JavaScript -->
@@ -114,6 +137,11 @@
   <script type="text/javascript">
 
     $(".button-collapse").sideNav();
+
+
+    $(document).ready(function(){
+      $('.tooltipped').tooltip({delay: 50});
+    });
 
     function readURL(input) {
       if (input.files && input.files[0]) {
@@ -231,6 +259,7 @@
         console.log(jqXHR, textStatus, errorThrown);
       });
     }
+
   </script>
 
   <!--Import jQuery before materialize.js-->

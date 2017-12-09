@@ -34,29 +34,5 @@
   </div>
   {% endfor %}
 </div>
-
-
-<!-- Modal Structure for Downloading-->
-<div id="modal1" class="modal">
-  <div class="modal-content">
-    <p><h4>Do you want to Download the complete Album?</h4></p>
-  </div>
-  <div class="modal-footer">
-    <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
-    <a id="finaldownload" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" target="_blank" onclick="downloadToast()">Confirm</a>
-  </div>
-</div>
-
-
-<!-- Modal Structure for Deleting-->
-<div id="modal2" class="modal">
-  <div class="modal-content">
-    <p><h4>Are you sure you want to delete this album?</h4></p>
-  </div>
-  <div class="modal-footer">
-    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-    <a id="finaldelete" href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Confirm</a>
-  </div>
-</div>
 {% endif %}
 {% endblock %}
