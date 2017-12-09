@@ -23,7 +23,9 @@
         <hr style="margin: 0px;">
         </a>
         <div class="card-content black-text" style="padding: 15px;">
+          <a href="{% url 'imagepersona:images' album_id=albumPk person_id=item.pk %}" style="color: black;">
           {{ item.name }}
+          </a>
           <a class="modal-trigger red-text" href="#modal2" onclick="subdeleteConfirm('{% url 'imagepersona:deleteSubAlbum' album_id=albumPk person_id=item.pk %}')"><i class="material-icons right">delete</i></a>
           <a class="modal-trigger blue-text" href="#modal1" onclick="downloadConfirm('{% url 'imagepersona:downloadSubAlbum' album_id=albumPk person_id=item.pk %}')"><i class="material-icons right">cloud_download</i></a>
           <a class="modal-trigger green-text" href="#modal3" onclick=""><i class="material-icons right">share</i></a>
