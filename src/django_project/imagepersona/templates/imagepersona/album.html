@@ -24,7 +24,9 @@
         </a>
         <div class="card-content black-text" style="padding: 15px;">
           {{ item.name }}
-          <a class="modal-trigger" href="#modal2" onclick="subdeleteConfirm('{% url 'imagepersona:deleteSubAlbum' album_id=albumPk person_id=item.pk %}')"><i class="material-icons right">delete</i></a>
+          <a class="modal-trigger red-text" href="#modal2" onclick="subdeleteConfirm('{% url 'imagepersona:deleteSubAlbum' album_id=albumPk person_id=item.pk %}')"><i class="material-icons right">delete</i></a>
+          <a class="modal-trigger blue-text" href="#modal1" onclick=""><i class="material-icons right">cloud_download</i></a>
+          <a class="modal-trigger green-text" href="#modal3" onclick=""><i class="material-icons right">share</i></a>
         </div>
       </div>
   </div>
@@ -37,7 +39,7 @@
   </div>
   <div class="modal-footer">
     <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-    <a id="finaldelete" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Confirm</a>
+    <a id="finaldelete" href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Confirm</a>
   </div>
 </div>
 
