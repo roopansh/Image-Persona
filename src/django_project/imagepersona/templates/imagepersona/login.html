@@ -35,13 +35,16 @@
                      <label for="id_password">Password</label>
                    </div>
                  </div>
-                 <div class="card-action">
-                 <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Submit
-                   <i class="material-icons right">send</i>
-                 </button>
-               </div>
+                 <div class="card-action center-align">
+                   <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Submit
+                     <i class="material-icons right">send</i>
+                   </button>
+                </div>
                </form>
              </div>
+            </div>
+            <div class="card-action center-align">
+              <a href="{% url 'imagepersona:forgotpassword' %}" class="">Forgot Password</a>
             </div>
           </div>
           <div id="register">
@@ -86,9 +89,11 @@
                    </div>
                  </div>
                  <div class="card-action">
+                  <div class="center-align">
                    <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Submit
                      <i class="material-icons right">send</i>
                    </button>
+                 </div>
                </div>
                </form>
              </div>

@@ -76,7 +76,9 @@ def register_user(request):
 		email = request.POST['email']
 		password = request.POST['password']
 		if User.objects.filter(username=username):
-			return render(request, 'imagepersona/login.html', {'register_error_message' : "Username already taken."})
+			return render(request, 'imagepersona/login.html', {'login_error_message' : "Username already taken.",'register_error_message' : "Username already taken."})
+		if User.objects.filter(email=email):
+			return render(request, 'imagepersona/login.html', {'register_error_message' : "Email already registered.", 'login_error_message' : "Email already registered."})
 		user = User.objects.create_user(username, email, password)
 		user.last_name = lastname
 		user.first_name = firstname
@@ -94,7 +96,7 @@ def register_user(request):
 				# TODO: Convert this to HTML
 				send_mail(
 				    'Verify your Account',
-				    'Dear ' + user.get_full_name() + ',\n\nClick on this link to verify your email.\n\n' + link_url + '\n\nIf you didn\'t register, please ignore.\n\n--\nTeam Image Persona',
+				    'Dear ' + user.get_full_name() + ',\n\nClick on this link to verify your email.\n\n' + link_url + '\n\nIf you didn\'t register, please ignore.\n\n--\n\nTeam Image Persona',
 				    'contact.imagepersona@gmail.com',
 				    [user.email],
 				    fail_silently=False,
@@ -465,3 +467,52 @@ def verify(request, unique_id):
 	user.is_active = True
 	user.save()
 	return render(request, 'imagepersona/login.html', {'login_error_message': 'Email has been verified!'})
+
+def forgotPasswordRequest(request):
+	if request.method == 'POST':
+		email = request.POST["email"]
+		try:
+			user = User.objects.get(email = email)
+			unique_id = get_random_string(length=20)
+			fp_object, created = forgotPassword.objects.get_or_create(user = user)
+
+			if created:
+				fp_object.reference = unique_id
+				fp_object.save()
+			link_url = "http://" + request.get_host() + '/imagepersona/reset_password/' + fp_object.reference
+			send_mail(
+			    'Account Recovery',
+			    'Dear ' + user.get_full_name() + ',\n\nClick on this link to reset your password.\n\n' + link_url + '\n\nIf you didn\'t request for password change, please contact us.\n\n--\n\nTeam Image Persona',
+			    'contact.imagepersona@gmail.com',
+			    [user.email],
+			    fail_silently=False,
+			)			
+		except Exception:
+			pass
+		return render(request, 'imagepersona/forgotPassword.html', {'confirm_message' : True, 'emailid' :email})
+	else:
+		return render(request, 'imagepersona/forgotPassword.html')
+
+def resetPassword(request, unique_id):
+	if request.method == "POST":
+		email = request.POST['email']
+		password = request.POST['password']
+		try:
+			user1 = User.objects.get(email=email)
+		except Exception:
+			return render(request, 'imagepersona/resetPassword.html', {'error' : 'Incorrect Email.',})
+		try:
+			fp_object = forgotPassword.objects.get(reference = unique_id)
+			user2 = fp_object.user
+		except Exception:
+			return render(request, 'imagepersona/resetPassword.html', {'error' : 'Incorrect Email or the Link has Expired.',})
+		if user1 == user2:
+			print("Success")
+			user1.set_password(password)
+			user1.save()
+			fp_object.delete()
+			return render(request, 'imagepersona/resetPassword.html', {'confirm_message' : True, })
+		else:
+			return render(request, 'imagepersona/resetPassword.html', {'error' : 'Incorrect Email.',})
+	else:
+		return render(request, 'imagepersona/resetPassword.html', {})
