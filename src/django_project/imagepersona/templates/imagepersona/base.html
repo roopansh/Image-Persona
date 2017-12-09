@@ -148,10 +148,8 @@
         <!-- <div style="font-size: 19px; display: inline;">
           Link:
         </div> -->
-        <div id="sharedlink" style="display: inline;">
-
-        </div style="display: inline;">
-        <a class="waves-effect btn blue darken-2" data-clipboard-target="#sharedlink"><i class="material-icons left">content_copy</i>Copy</a>
+        <input id="sharedlink" style="display: inline; width: 70%;">
+        <a class="waves-effect btn blue darken-2"data-clipboard-target="#sharedlink"><i class="material-icons left">content_copy</i>Copy</a>
       </div>
 
 
@@ -292,7 +290,7 @@
       }).done(function( msg ) {
         // $('#sharedlink').html("blah");
         console.log(msg);
-        $('#sharedlink').html("" + msg.Link);
+        $('#sharedlink').val("" + msg.Link);
         if(msg.linkStatus == "false") {
           $('#sharing').prop('checked', false);
         } else {
