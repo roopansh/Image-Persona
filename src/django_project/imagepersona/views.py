@@ -420,11 +420,11 @@ def downloadSubAlbum(request, album_id, person_id):
 		if(person in album.subfolders.all()):
 			s = StringIO.StringIO()
 			Zip = zipfile.ZipFile(s, 'w')
-			for image in subalbum.images.all():
+			for image in person.images.all():
 				Zip.write(image.image.path, os.path.basename(image.image.path))
 			Zip.close()
 			resp = HttpResponse(s.getvalue(), content_type = "application/x-zip-compressed")
-			resp['Content-Disposition'] = 'attachment; filename=%s' % (	str(person.name) + "-" str(album.name) + ".zip")
+			resp['Content-Disposition'] = 'attachment; filename=%s' % (	str(person.name) + "-" + str(album.name) + ".zip")
 			return resp
 	return Http404("Not Found!")
 
