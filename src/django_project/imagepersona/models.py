@@ -62,6 +62,7 @@ class ImageTag(models.Model):
 class linksharing(models.Model):
 	reference = models.CharField(max_length = 50, blank = False)
 	real = models.CharField(max_length = 80, blank = False)
+	status = models.CharField(max_length = 10, blank = False)
 
 	def __str__(self):
 		return self.reference
@@ -70,7 +71,6 @@ class linksharing(models.Model):
 class verifyEmail(models.Model):
 	reference = models.CharField(max_length = 50, blank = False)
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
-
 	def __str__(self):
 		return self.reference
 
