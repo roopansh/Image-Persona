@@ -70,8 +70,9 @@
       <nav>
         <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
         <div class="nav-wrapper" style="font-size: 18px;">
+          <a href="{% url 'imagepersona:upload' %}" class="brand-logo right" style="font-family:'Satisfy',cursive; display: inline-block;"><i class="material-icons prefix">photo_library</i>Image Persona</a>
+          {% block breadcrumb %}{% endblock %}
           {% block nav-title %}{% endblock %}
-          <a href="{% url 'imagepersona:upload' %}" class="brand-logo right" style="font-family:'Satisfy',cursive; display: inline-block;">Image Persona</a>
         </div>
       </nav>
     </div>
@@ -153,11 +154,11 @@
       Materialize.toast('Uploading and Grouping Photos!', 5000, 'rounded');
     }
 
-    function deleting() {
-      Materialize.toast('Deleted the Album!', 5000, 'rounded');
+    function deleteConfirm(url) {
+      $('#finaldelete').attr("href", url);
     }
 
-    function deleteConfirm(url) {
+    function subdeleteConfirm(url) {
       $('#finaldelete').attr("href", url);
     }
 

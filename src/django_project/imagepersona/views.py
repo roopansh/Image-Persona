@@ -10,6 +10,8 @@ from django.conf import settings
 import httplib, urllib, base64, json
 import time
 from django.core.mail import send_mail
+from collections import Counter
+from PIL import Image as PILImage
 
 CF_headers = {
 	# Request headers for CF API
@@ -111,6 +113,7 @@ def upload(request):
 		for file in files:
 			newImage = Image()
 			newImage.image = file
+			newImage.owner = request.user
 			newImage.save()
 			savedImages.append(newImage)
 		# print(savedImages)
@@ -124,7 +127,7 @@ def upload(request):
 			# newImage.image = file
 			# newImage.save()
 			img_url = "http://" + request.get_host() + newImage.image.url
-			# img_url = "http://weknowyourdreams.com/images/family/family-13.jpg"
+			#img_url = "http://weknowyourdreams.com/images/family/family-13.jpg"
 			body = json.dumps({ 'url': img_url })
 
 			try:
@@ -140,7 +143,8 @@ def upload(request):
 					resx = res[x]["faceId"].encode('ascii')
 					FaceIDs.append(resx)
 					FaceID_Img_Map[resx] = newImage.pk
-
+				newImage.json_response = data
+			
 				'''
 				conn.close()
 				conn = httplib.HTTPSConnection(settings.CV_BASE_URL)
@@ -163,7 +167,6 @@ def upload(request):
 				print(e)
 				return HttpResponse(e)
 
-			newImage.json_response = data
 			newImage.save()
 
 		body = json.dumps({"faceIds" : FaceIDs })
@@ -185,9 +188,14 @@ def upload(request):
 			newPerson = ImageSubFolder()
 			newPerson.name = str(count+1)
 			newPerson.save()
+			flag = True
 			for id in personList:
 				imgpk = FaceID_Img_Map[id]
 				newPerson.images.add(imgpk)
+				if flag:
+					newPerson.displaypic = imgpk
+					newPerson.personid = id
+					flag = False
 			newPerson.save()
 			newAlbum.subfolders.add(newPerson)
 
@@ -202,6 +210,46 @@ def photos(request):
 	if albums is not None:
 		context	['albums'] = albums
 	return render(request, 'imagepersona/photos.html', context)
+
+@login_required(login_url='/imagepersona/login/')
+def searchPhotos(request):
+	queryTerms = request.GET["query"].split()
+	result = Counter() # USE counter
+	for keyword in queryTerms:
+		# Tag Search
+		tags = ImageTag.objects.filter(name__icontains = keyword)
+		for tag in tags:
+			for image in tag.images.all():
+				if image.owner is request.user:
+					result[image] += 2
+		# Person Search
+		persons = ImageSubFolder.objects.filter(name__icontains = keyword)
+		for person in persons:
+			for image in person.images.all():
+				if image.owner == request.user:
+					result[image] += 3
+		# Album Search
+		albums = ImageFolder.objects.filter(name__icontains = keyword)
+		for album in albums:
+			for person in album.subfolders.all():
+				for image in person.images.all():
+					if image.owner == request.user:
+						result[image] += 1
+	res = result.most_common()
+	try:
+		topScore = res[0][1]
+	except Exception:
+		topScore = 0
+	result = []
+	for item in res:
+		if item[1] <= settings.SEARCH_FACTOR * topScore :
+			break
+		result.append(item[0])
+	context = {
+		"query" : request.GET["query"],
+		"result" : result,
+	}
+	return render(request, 'imagepersona/search.html', context)
 
 
 @login_required(login_url='/imagepersona/login/')
@@ -267,7 +315,25 @@ def images(request, album_id, person_id):
 		peopleInthisFolder = album.subfolders.all()
 		person = get_object_or_404(ImageSubFolder, pk = person_id)
 		if(person in peopleInthisFolder):
-			return render(request, 'imagepersona/images.html', {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk})
+			displaypic = Image.objects.get(pk = person.displaypic)
+			displayid = person.personid
+			json_response = json.loads(displaypic.json_response)
+			for item in json_response:
+				if item["faceId"] == displayid:
+					top = item["faceRectangle"]["top"]
+					left = item["faceRectangle"]["left"]
+					right = item["faceRectangle"]["left"] + item["faceRectangle"]["width"] 
+					bottom = item["faceRectangle"]["top"] + item["faceRectangle"]["height"] 
+					break
+			if not person.croppedDP :
+				person.croppedDP.save(displaypic.image.url.split('/')[-1],displaypic.image.file,save=True)
+				person.save()				
+				temp = PILImage.open(person.croppedDP.path)
+				tempImg = temp.crop((left, top, right, bottom))
+				tempImg.save(person.croppedDP.path)
+				
+			context = {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'displaypic':person.croppedDP.url}
+			return render(request, 'imagepersona/images.html', context)
 	raise Http404("Person group does not exist!")
 
 @login_required(login_url='/imagepersona/login/')
@@ -283,22 +349,48 @@ def editSubfolder(request, album_id, person_id):
 				person.name = request.POST['Personname']
 				person.save()
 				toast['message'] = 'Name updated to ' + person.name
-				return render(request, 'imagepersona/images.html', {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'toast' : toast})
+				return render(request, 'imagepersona/images.html', {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'toast' : toast, 'displaypic':person.croppedDP.url})
 	raise Http404("Person group does not exist!")
 
 @login_required(login_url='/imagepersona/login/')
 def deleteAlbum(request, album_id):
 	album = get_object_or_404(ImageFolder, pk = album_id)
 	myalbums = request.user.userprofile.albums.all()
+	toast = {'display' : 'true', 'message' : 'Album Not Deleted!'}
+	albumname = album.name
 	if(album in myalbums):
 		# Delete album and sub folders
 		for subalbum in album.subfolders.all():
 			for image in subalbum.images.all():
 				image.image.delete(False)
 				image.delete()
+			subalbum.croppedDP.delete(False)
 			subalbum.delete()
 		album.delete()
-	return redirect('imagepersona:photos')
+		toast["message"] = "Deleted album '" + albumname + "'"
+	context = {'toast':toast}
+	albums = request.user.userprofile.albums.all()
+	if albums is not None:
+		context	['albums'] = albums
+	return render(request, 'imagepersona/photos.html', context)
+
+@login_required(login_url='/imagepersona/login/')
+def deleteSubAlbum(request, album_id, person_id):
+	album = get_object_or_404(ImageFolder, pk = album_id)
+	person = get_object_or_404(ImageSubFolder, pk = person_id)
+	myalbums = request.user.userprofile.albums.all()
+	personname = person.name
+	albumname = album.name
+	toast = {'display' : 'true', 'message' : 'Person Not Deleted!'}
+	if(album in myalbums):
+		if(person in album.subfolders.all()):
+			person.croppedDP.delete(False)
+			person.delete()
+			toast["message"] = "Deleted photos of '" + personname + "' from '" + albumname + "'!"
+	return render(request, 'imagepersona/album.html', {'album_name':albumname, 'people':album.subfolders.all(), 'albumPk' : album_id, 'toast':toast})
+
+	return redirect('imagepersona:photos', {'toast':toast})
+
 
 @login_required(login_url='/imagepersona/login/')
 def sharefolder(request, album_id, person_id):

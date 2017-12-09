@@ -1,8 +1,11 @@
-{% extends 'imagepersona/baseNotloggedin.html' %} {% block title %}: {{PersonName}}{% endblock %} {% block nav-title %}
+{% extends 'imagepersona/baseNotloggedin.html' %}
+{% block title %}: {{PersonName}}{% endblock %}
+{% block breadcrumb %}
 <div class="col s4" style="height: 0px;">
   <a href="#!" class="breadcrumb">{{PersonName}}</a>
 </div>
-{% endblock %} {% block body %}
+{% endblock %}
+{% block body %}
 <div class="row" style="padding: 20px 10px;">
   {% for image in images %}
 

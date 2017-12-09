@@ -8,7 +8,7 @@ class Image(models.Model):
 	# album = models.ForeignKey(ImageFolder, on_delete=models.CASCADE)
 	image = models.ImageField(upload_to="images/")
 	json_response = models.CharField(blank=True, max_length=1000)
-	# owner = models.ForeignKey(UserProfile)
+	owner = models.ForeignKey(User)
 	# people = models.ManyToManyField(ImageSubFolder)
 
 	def __str__(self):
@@ -21,7 +21,9 @@ class ImageSubFolder(models.Model):
 	# directory = models.ForeignKey(ImageFolder, on_delete=models.CASCADE)
 	images = models.ManyToManyField(Image)
 	#displayPic = models.ImageField(upload_to="displaypic/")
-
+	displaypic = models.IntegerField(null=True, blank=True)
+	personid = models.CharField(max_length = 50, null=True, blank=True)
+	croppedDP = models.ImageField(null=True, blank=True, upload_to="images/")
 	def __str__(self):
 		return self.name
 

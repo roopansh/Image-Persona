@@ -1,0 +1,11 @@
+{% extends 'imagepersona/base.html' %}
+
+{% block nav-title %}
+<form action="{% url 'imagepersona:searchPhotos' %}" method="get" role="form" enctype="multipart/form-data">
+{% csrf_token %}
+    <div class=" col s3 input-field">
+      <i class="large material-icons prefix ">search</i>
+      <input id="id_search" name="query" type="search" placeholder="Search" required value="{{query}}">
+    </div>
+</form>
+{% endblock %}
