@@ -24,13 +24,13 @@
         {% csrf_token %}
         <div class="row">
          <div class="input-field col s4">
-          <i class="material-icons prefix">perm_identity</i>
+          <i class="material-icons prefix black-text">perm_identity</i>
            <input id="id_firstname" name="firstname" type="text" placeholder="{{user.first_name}}">
-           <label for="id_firstname">First Name</label>
+           <label for="id_firstname" class="black-text">First Name</label>
          </div>
          <div class="input-field col s4">
            <input id="id_lastname" name="lastname" type="text" placeholder="{{user.last_name}}">
-           <label for="id_lastname">Last Name</label>
+           <label for="id_lastname" class="black-text">Last Name</label>
          </div>
        </div>
 
@@ -44,23 +44,23 @@
         <div class="row">
           <div class="col s4">
             <div class="file-field input-field">
-              <div class="btn">
+              <div class="btn blue">
                 <span>Choose</span>
                 <input type="file" name="profile" onchange="readURL(this);">
               </div>
               <div class="file-path-wrapper">
-                <input class="file-path validate" type="text" placeholder="Profile photo">
+                <input class="file-path" type="text" placeholder="Profile photo">
               </div>
             </div>
           </div>
           <div class="col s4">
             <div class="file-field input-field">
-              <div class="btn">
+              <div class="btn blue">
                 <span>Choose</span>
                 <input type="file" name="cover" onchange="readURL1(this);">
               </div>
               <div class="file-path-wrapper">
-                <input class="file-path validate" type="text" placeholder="Cover photo">
+                <input class="file-path" type="text" placeholder="Cover photo">
               </div>
             </div>
           </div>
@@ -70,7 +70,7 @@
         </button> -->
         <div class="row">
           <div class="col s8">
-            <button class="btn waves-effect waves-light blue darken-4 right" type="submit" name="action" onclick="loading()">Update
+            <button class="btn waves-effect waves-light blue darken-2 right" type="submit" name="action" onclick="loading()">Update
               <i class="material-icons right">send</i>
             </button>
           </div>

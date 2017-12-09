@@ -16,24 +16,24 @@
     <form action="{% url 'imagepersona:upload' %}" method="post" role="form" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="file-field input-field">
-        <div class="btn">
+        <div class="btn blue">
           <span>File</span>
           <input type="file" name="files" multiple onchange="readURL(this);">
         </div>
         <div class="file-path-wrapper">
-          <input class="file-path validate" type="text" placeholder="Upload one or more files">
+          <input class="file-path" type="text" placeholder="Upload one or more files">
         </div>
       </div>
       <div class="row">
         <div class="input-field">
-          <i class="material-icons prefix">photo_library</i>
-          <input type="text" id="id_albumname" name="albumname" required="true" class="validate" data-length="20">
-          <label for="id_albumname">Album Name</label>
+          <i class="material-icons prefix black-text">photo_library</i>
+          <input type="text" id="id_albumname" name="albumname" required="true"  data-length="20">
+          <label for="id_albumname" class="black-text">Album Name</label>
         </div >
       </div>
 
-      <button class="btn waves-effect waves-light darken-4" type="submit" name="action" onclick="uploading();loading()">Submit
-        <i class="material-icons right">send</i>
+      <button class="btn waves-effect waves blue darken-2" type="submit" name="action" onclick="uploading();loading()">Submit
+        <i class="material-icons right ">send</i>
       </button>
     </form>
   </div>
