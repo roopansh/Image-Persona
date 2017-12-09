@@ -14,6 +14,7 @@ from collections import Counter
 from PIL import Image as PILImage
 import zipfile, StringIO
 import os
+from django.core.files import File
 from django.core.files.base import ContentFile
 
 CF_headers = {
@@ -205,7 +206,27 @@ def upload(request):
 					flag = False
 			newPerson.save()
 			newAlbum.subfolders.add(newPerson)
+		# Messy Images
+		res_ungroup = res["messyGroup"]
+		newPerson = ImageSubFolder()
+		newPerson.name = "Unclassified"
+		newPerson.save()
 
+		for image in savedImages:
+			json_response = json.loads(image.json_response)
+			flag = True
+			for item in json_response:
+				if(item["faceId"] not in res_ungroup):
+					flag = False
+					break
+			if(flag):
+				newPerson.images.add(image)
+		
+		fileopen = open(settings.MEDIA_ROOT + "/unclassified.png", 'rb')
+		django_file = File(fileopen)
+		newPerson.croppedDP.save(str(newAlbum.name) + "-Unclassified.png", django_file, save=True)
+		newPerson.save()
+		newAlbum.subfolders.add(newPerson)
 		newAlbum.save()
 		return redirect('imagepersona:album', album_id = newAlbum.pk)
 	return render(request, 'imagepersona/upload.html')
