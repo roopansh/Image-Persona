@@ -1,4 +1,4 @@
-from django.http import HttpResponse, Http404, JsonResponse#, HttpResponceRedirect
+from django.http import HttpResponse, Http404, JsonResponse, HttpResponseNotFound#, HttpResponceRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login, logout
@@ -151,7 +151,7 @@ def upload(request):
 					FaceIDs.append(resx)
 					FaceID_Img_Map[resx] = newImage.pk
 				newImage.json_response = data
-			
+
 				'''
 				conn.close()
 				conn = httplib.HTTPSConnection(settings.CV_BASE_URL)
@@ -330,15 +330,15 @@ def images(request, album_id, person_id):
 					if item["faceId"] == displayid:
 						top = item["faceRectangle"]["top"]
 						left = item["faceRectangle"]["left"]
-						right = item["faceRectangle"]["left"] + item["faceRectangle"]["width"] 
-						bottom = item["faceRectangle"]["top"] + item["faceRectangle"]["height"] 
+						right = item["faceRectangle"]["left"] + item["faceRectangle"]["width"]
+						bottom = item["faceRectangle"]["top"] + item["faceRectangle"]["height"]
 						person.croppedDP.save(displaypic.image.url.split('/')[-1],displaypic.image.file,save=True)
 						person.save()
 						temp = PILImage.open(person.croppedDP.path)
 						tempImg = temp.crop((left, top, right, bottom))
 						tempImg.save(person.croppedDP.path)
 						break
-				
+
 			context = {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'displaypic':person.croppedDP.url}
 			return render(request, 'imagepersona/images.html', context)
 	raise Http404("Person group does not exist!")
@@ -436,6 +436,7 @@ def downloadSubAlbum(request, album_id, person_id):
 def sharefolder(request, album_id, person_id):
 	album = get_object_or_404(ImageFolder, pk = album_id)
 	myalbums = request.user.userprofile.albums.all()
+	status = request.GET['sharing']
 	if(album in myalbums):
 		peopleInthisFolder = album.subfolders.all()
 		person = get_object_or_404(ImageSubFolder, pk = person_id)
@@ -444,20 +445,26 @@ def sharefolder(request, album_id, person_id):
 			if(len(about) > 0):
 				unique_id = about[0].reference
 				link_url = "http://" + request.get_host() + '/imagepersona/share/' + unique_id
-				return JsonResponse({'Link' : link_url})
+				if(status != 'undefined'):
+					about[0].status = status
+				about[0].save()
+				return JsonResponse({'Link' : link_url, 'linkStatus' : about[0].status})
 			unique_id = get_random_string(length=20)
 			# Check whether this string has already been made or not
 			link = linksharing()
 			link.reference = unique_id
 			link.real = person.pk
+			link.status = 'true'
 			link.save()
 			link_url = "http://" + request.get_host() + '/imagepersona/share/' + unique_id
-			return JsonResponse({'Link' : link_url})
+			return JsonResponse({'Link' : link_url, 'linkStatus' : link.status})
 	return HttpResponse("hello")
 
 def share(request, unique_id):
 	# links = linksharing.all()
 	foundlink = get_object_or_404(linksharing, reference = unique_id)
+	if(foundlink.status == 'false'):
+		raise Http404("Page may have been removed or never existed.")
 	person = get_object_or_404(ImageSubFolder, pk = foundlink.real)
 	return render(request, 'imagepersona/imagesShared.html', {'images' : person.images.all(), 'PersonName' : person.name})
 
