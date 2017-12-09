@@ -21,19 +21,23 @@
   <!-- Favicon -->
   <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
   <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+  <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css">
 
   <style>
     /* label color */
+
     .search .prefix {
       color: #FFFFFF !important;
     }
 
     /* label focus color */
+
     .search input[type=text]:focus+label {
       color: #FFFFFF !important;
     }
 
     /* placeholder color */
+
     .search input[type=text]::placeholder {
       color: #FFFFFF !important;
     }
@@ -47,7 +51,7 @@
 
     /* valid color */
 
-    .search  input[type=text].valid {
+    .search input[type=text].valid {
       border-bottom: 1px solid #FFFFFF !important;
       box-shadow: 0 1px 0 0 #FFFFFF !important;
     }
@@ -75,8 +79,7 @@
         <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
         <div class="nav-wrapper" style="font-size: 18px;">
           <a href="{% url 'imagepersona:upload' %}" class="brand-logo right" style="font-family:'Satisfy',cursive; display: inline-block;"><i class="material-icons prefix">photo_library</i>Image Persona</a>
-          {% block breadcrumb %}{% endblock %}
-          {% block nav-title %}{% endblock %}
+          {% block breadcrumb %}{% endblock %} {% block nav-title %}{% endblock %}
         </div>
       </nav>
     </div>
@@ -94,7 +97,7 @@
         <a href="{% url 'imagepersona:profile' %}"><span class="white-text email">{{ user.email }}</span></a>
       </div>
     </li>
-    <li ><a class="waves-effect black-text" href="{% url 'imagepersona:upload' %}"><i class="material-icons prefix black-text">cloud_upload</i>Upload Images</a></li>
+    <li><a class="waves-effect black-text" href="{% url 'imagepersona:upload' %}"><i class="material-icons prefix black-text">cloud_upload</i>Upload Images</a></li>
     <li><a class="waves-effect" href="{% url 'imagepersona:photos' %}"><i class="material-icons prefix black-text">photo_album</i>My Photos</a></li>
     <li>
       <div class="divider grey"></div>
@@ -149,7 +152,7 @@
           Link:
         </div> -->
         <input id="sharedlink" style="display: inline; width: 70%;">
-        <a class="waves-effect btn blue darken-2"data-clipboard-target="#sharedlink"><i class="material-icons left">content_copy</i>Copy</a>
+        <a class="waves-effect btn blue darken-2" data-clipboard-target="#sharedlink"><i class="material-icons left">content_copy</i>Copy</a>
       </div>
 
 
@@ -171,21 +174,27 @@
     $(".button-collapse").sideNav();
 
 
-    $(document).ready(function(){
-      $('.tooltipped').tooltip({delay: 50});
+
+    $(document).ready(function() {
+      $('.materialboxed').materialbox();
+    });
+
+
+    $(document).ready(function() {
+      $('.tooltipped').tooltip({
+        delay: 50
+      });
     });
 
     function readURL(input) {
       if (input.files && input.files[0]) {
-
-
         $('#abcd').html("");
-
         for (var i = 0; i < input.files.length; i++) {
           var reader = new FileReader();
           reader.onload = function(e) {
             console.log(e);
-            $('#abcd').append('<img src="' + e.target.result + '" width="250" style="padding: 10px 10px"/>');
+            $('#abcd').append('<a tabindex="1"><img src="' + e.target.result + '" class="materialboxed"/></a>');
+            $('.materialboxed').materialbox();
           };
           console.log(input.files[i]);
           reader.readAsDataURL(input.files[i]);
@@ -203,7 +212,8 @@
           var reader = new FileReader();
           reader.onload = function(e) {
             console.log(e);
-            $('#abcd1').append('<img src="' + e.target.result + '" width="250" style="padding: 10px 10px"/>');
+            $('#abcd1').append('<a tabindex="1"><img src="' + e.target.result + '"  class="materialboxed"/></a>');
+            $('.materialboxed').materialbox();
           };
           console.log(input.files[i]);
           reader.readAsDataURL(input.files[i]);
@@ -218,7 +228,7 @@
     function uploading() {
       var albumname = $('#id_albumname').val();
       console.log(albumname);
-      if(albumname == "") {
+      if (albumname == "") {
         return;
       } else {
         loading();
@@ -239,7 +249,7 @@
       $('#finaldownload').attr("href", url);
     }
 
-    function downloadToast(){
+    function downloadToast() {
       Materialize.toast('Zipping photos!', 4000, 'rounded');
     }
 
@@ -261,17 +271,13 @@
     }
 
     $(document).ready(function() {
-      $('.materialboxed').materialbox();
-    });
-
-    $(document).ready(function() {
       $('.carousel').carousel();
     });
 
     $(document).ready(function() {
       Materialize.updateTextFields();
     });
-    $(document).ready(function(){
+    $(document).ready(function() {
       // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
       $('.modal').modal();
     });
@@ -279,7 +285,7 @@
     function sharelink(t, album_id, person_id) {
       console.log(t.id);
       var stat;
-      if(t.id == "sharing"){
+      if (t.id == "sharing") {
         stat = $('#sharing').is(":checked");
       }
       $('#sharing').attr('onchange', "sharelink(this, '" + album_id + "', '" + person_id + "')");
@@ -287,21 +293,20 @@
         type: "GET",
         url: "/imagepersona/sharefolder/" + album_id + "/" + person_id + "/?sharing=" + stat,
         data: {}
-      }).done(function( msg ) {
+      }).done(function(msg) {
         // $('#sharedlink').html("blah");
         console.log(msg);
         $('#sharedlink').val("" + msg.Link);
-        if(msg.linkStatus == "false") {
+        if (msg.linkStatus == "false") {
           $('#sharing').prop('checked', false);
         } else {
           $('#sharing').prop('checked', true);
         }
         $('#modal3').modal('open');
-      }).fail(function( jqXHR, textStatus, errorThrown ) {
+      }).fail(function(jqXHR, textStatus, errorThrown) {
         console.log(jqXHR, textStatus, errorThrown);
       });
     }
-
   </script>
 
   <!--Import jQuery before materialize.js-->
