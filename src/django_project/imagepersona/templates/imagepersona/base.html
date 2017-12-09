@@ -67,11 +67,11 @@
   </style>
 </head>
 
-<body class="grey lighten-4">
+<body class="blue-grey lighten-5">
 
   <div class="row">
     <div class="navbar-fixed">
-      <nav>
+      <nav class="blue darken-4">
         <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
         <div class="nav-wrapper" style="font-size: 18px;">
           <a href="{% url 'imagepersona:upload' %}" class="brand-logo right" style="font-family:'Satisfy',cursive; display: inline-block;"><i class="material-icons prefix">photo_library</i>Image Persona</a>
@@ -87,21 +87,21 @@
     <li>
       <div class="user-view">
         <div class="background">
-          <img src="{{ user.userprofile.coverpic.url }}" width="100%" class="responsive-img">
+          <img src="{{ user.userprofile.coverpic.url }}" width="100%" class="responsive-img" style="filter: blur(2px);">
         </div>
         <a href="{% url 'imagepersona:profile' %}"><img class="circle responsive-img" src="{{ user.userprofile.profilepic.url }}"></a>
         <a href="{% url 'imagepersona:profile' %}"><span class="white-text name">{{ user.get_full_name }}</span></a>
         <a href="{% url 'imagepersona:profile' %}"><span class="white-text email">{{ user.email }}</span></a>
       </div>
     </li>
-    <li><a class="waves-effect" href="{% url 'imagepersona:upload' %}"><i class="material-icons">cloud_upload</i>Upload Images</a></li>
-    <li><a class="waves-effect" href="{% url 'imagepersona:photos' %}"><i class="material-icons prefix">photo_album</i>My Photos</a></li>
+    <li ><a class="waves-effect black-text" href="{% url 'imagepersona:upload' %}"><i class="material-icons prefix black-text">cloud_upload</i>Upload Images</a></li>
+    <li><a class="waves-effect" href="{% url 'imagepersona:photos' %}"><i class="material-icons prefix black-text">photo_album</i>My Photos</a></li>
     <li>
-      <div class="divider"></div>
+      <div class="divider grey"></div>
     </li>
     <!-- <li><a class="subheader">Subheader</a></li> -->
-    <li><a class="waves-effect" href="{% url 'imagepersona:profile' %}"><i class="material-icons prefix">edit</i>Edit Profile</a></li>
-    <li><a class="waves-effect" href="{% url 'imagepersona:logout' %}"><i class="material-icons prefix">power_settings_new</i>Logout</a></li>
+    <li><a class="waves-effect black-text" href="{% url 'imagepersona:profile' %}"><i class="material-icons prefix black-text">edit</i>Edit Profile</a></li>
+    <li><a class="waves-effect black-text" href="{% url 'imagepersona:logout' %}"><i class="material-icons prefix black-text">power_settings_new</i>Logout</a></li>
   </ul>
 
   <main>
