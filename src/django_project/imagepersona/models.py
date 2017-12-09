@@ -74,6 +74,15 @@ class verifyEmail(models.Model):
 	def __str__(self):
 		return self.reference
 
+# Forgot Password
+class forgotPassword(models.Model):
+	reference = models.CharField(max_length = 50, blank = False) # Unique ID
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.user.get_full_name()
+
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
 	if created:
