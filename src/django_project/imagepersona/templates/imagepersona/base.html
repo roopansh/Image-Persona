@@ -112,6 +112,7 @@
   <!-- Compiled and minified JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
   <script type="text/javascript">
+
     $(".button-collapse").sideNav();
 
     function readURL(input) {
@@ -155,7 +156,15 @@
     }
 
     function uploading() {
-      Materialize.toast('Uploading and Grouping Photos!', 5000, 'rounded');
+      var albumname = $('#id_albumname').val();
+      console.log(albumname);
+      if(albumname == "") {
+        return;
+      } else {
+        loading();
+        Materialize.toast('Uploading and Grouping Photos!', 5000, 'rounded');
+      }
+
     }
 
     function deleteConfirm(url) {
