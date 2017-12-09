@@ -328,12 +328,12 @@ def images(request, album_id, person_id):
 						left = item["faceRectangle"]["left"]
 						right = item["faceRectangle"]["left"] + item["faceRectangle"]["width"] 
 						bottom = item["faceRectangle"]["top"] + item["faceRectangle"]["height"] 
+						person.croppedDP.save(displaypic.image.url.split('/')[-1],displaypic.image.file,save=True)
+						person.save()
+						temp = PILImage.open(person.croppedDP.path)
+						tempImg = temp.crop((left, top, right, bottom))
+						tempImg.save(person.croppedDP.path)
 						break
-					person.croppedDP.save(displaypic.image.url.split('/')[-1],displaypic.image.file,save=True)
-					person.save()				
-					temp = PILImage.open(person.croppedDP.path)
-					tempImg = temp.crop((left, top, right, bottom))
-					tempImg.save(person.croppedDP.path)
 				
 			context = {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'displaypic':person.croppedDP.url}
 			return render(request, 'imagepersona/images.html', context)
@@ -404,8 +404,8 @@ def deleteSubAlbum(request, album_id, person_id):
 	toast = {'display' : 'true', 'message' : 'Person Not Deleted!'}
 	if(album in myalbums):
 		if(person in album.subfolders.all()):
-			if subalbum.croppedDP:
-				subalbum.croppedDP.delete(False)
+			if person.croppedDP:
+				person.croppedDP.delete(False)
 			person.delete()
 			toast["message"] = "Deleted photos of '" + personname + "' from '" + albumname + "'!"
 	return render(request, 'imagepersona/album.html', {'album_name':albumname, 'people':album.subfolders.all(), 'albumPk' : album_id, 'toast':toast})
