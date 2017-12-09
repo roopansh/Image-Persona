@@ -26,7 +26,7 @@
         <hr style="margin: 0px;">
         </a>
         <div class="card-content black-text" style="padding: 15px;">
-          {{ myalbum.name }}
+          <a href="{% url 'imagepersona:album' album_id=myalbum.pk %}" style="color: black;">{{ myalbum.name }}</a>
           <a class="modal-trigger red-text" href="#modal2" onclick="deleteConfirm('{% url 'imagepersona:deleteAlbum' album_id=myalbum.pk %}')"><i class="material-icons right">delete</i></a>
           <a class="modal-trigger blue-text" href="#modal1" onclick="downloadConfirm('{% url 'imagepersona:downloadAlbum' album_id=myalbum.pk %}')"><i class="material-icons right">cloud_download</i></a>
         </div>
