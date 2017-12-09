@@ -49,6 +49,9 @@
               <div class="row">
                <form class="col s12" role="form" action="{% url 'imagepersona:register' %}" method="post" enctype="multipart/form-data">
                   {% csrf_token %}
+                  <div class="row">
+                    <div class="warning">{{ register_error_message }}</div>
+                  </div>
                  <div class="row">
                    <div class="input-field col s6">
                      <i class="material-icons prefix">perm_identity</i>
