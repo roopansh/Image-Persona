@@ -24,6 +24,7 @@ class ImageSubFolder(models.Model):
 	displaypic = models.IntegerField(null=True, blank=True)
 	personid = models.CharField(max_length = 50, null=True, blank=True)
 	croppedDP = models.ImageField(null=True, blank=True, upload_to="images/")
+
 	def __str__(self):
 		return self.name
 

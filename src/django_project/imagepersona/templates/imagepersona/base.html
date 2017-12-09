@@ -24,41 +24,40 @@
 
   <style>
     /* label color */
-    .search .input-field label {
-      color: #000000 !important;
+    .search .prefix {
+      color: #FFFFFF !important;
     }
 
     /* label focus color */
-
-    .search .input-field input[type=text]:focus+label {
+    .search input[type=search]:focus+label {
       color: #FFFFFF !important;
     }
 
     /* label underline focus color */
 
-    .search .input-field input[type=text]:focus {
+    .search input[type=search]:focus {
       border-bottom: 1px solid #FFFFFF !important;
       box-shadow: 0 1px 0 0 #FFFFFF !important;
     }
 
     /* valid color */
 
-    .search .input-field input[type=text].valid {
+    .search  input[type=search].valid {
       border-bottom: 1px solid #FFFFFF !important;
       box-shadow: 0 1px 0 0 #FFFFFF !important;
     }
 
     /* invalid color */
 
-    .search .input-field input[type=text].invalid {
+    .search input[type=search].invalid {
       border-bottom: 1px solid #FFFFFF !important;
       box-shadow: 0 1px 0 0 #FFFFFF !important;
     }
 
     /* icon prefix focus color */
 
-    .search .input-field .prefix.active {
-      color: #FFFFFF !important;
+    .search .prefix.active {
+      color: #000000 !important;
     }
   </style>
 </head>
@@ -160,6 +159,14 @@
 
     function subdeleteConfirm(url) {
       $('#finaldelete').attr("href", url);
+    }
+
+    function downloadConfirm(url) {
+      $('#finaldownload').attr("href", url);
+    }
+
+    function downloadToast(){
+      Materialize.toast('Creating Zip to download Photos!', 4000, 'rounded');
     }
 
     if (String('{{profilepic}}') == 'updated') {

@@ -12,6 +12,9 @@ import time
 from django.core.mail import send_mail
 from collections import Counter
 from PIL import Image as PILImage
+import zipfile, StringIO
+import os
+from django.core.files.base import ContentFile
 
 CF_headers = {
 	# Request headers for CF API
@@ -315,22 +318,22 @@ def images(request, album_id, person_id):
 		peopleInthisFolder = album.subfolders.all()
 		person = get_object_or_404(ImageSubFolder, pk = person_id)
 		if(person in peopleInthisFolder):
-			displaypic = Image.objects.get(pk = person.displaypic)
-			displayid = person.personid
-			json_response = json.loads(displaypic.json_response)
-			for item in json_response:
-				if item["faceId"] == displayid:
-					top = item["faceRectangle"]["top"]
-					left = item["faceRectangle"]["left"]
-					right = item["faceRectangle"]["left"] + item["faceRectangle"]["width"] 
-					bottom = item["faceRectangle"]["top"] + item["faceRectangle"]["height"] 
-					break
 			if not person.croppedDP :
-				person.croppedDP.save(displaypic.image.url.split('/')[-1],displaypic.image.file,save=True)
-				person.save()				
-				temp = PILImage.open(person.croppedDP.path)
-				tempImg = temp.crop((left, top, right, bottom))
-				tempImg.save(person.croppedDP.path)
+				displaypic = Image.objects.get(pk = person.displaypic)
+				displayid = person.personid
+				json_response = json.loads(displaypic.json_response)
+				for item in json_response:
+					if item["faceId"] == displayid:
+						top = item["faceRectangle"]["top"]
+						left = item["faceRectangle"]["left"]
+						right = item["faceRectangle"]["left"] + item["faceRectangle"]["width"] 
+						bottom = item["faceRectangle"]["top"] + item["faceRectangle"]["height"] 
+						break
+					person.croppedDP.save(displaypic.image.url.split('/')[-1],displaypic.image.file,save=True)
+					person.save()				
+					temp = PILImage.open(person.croppedDP.path)
+					tempImg = temp.crop((left, top, right, bottom))
+					tempImg.save(person.croppedDP.path)
 				
 			context = {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'displaypic':person.croppedDP.url}
 			return render(request, 'imagepersona/images.html', context)
@@ -364,7 +367,10 @@ def deleteAlbum(request, album_id):
 			for image in subalbum.images.all():
 				image.image.delete(False)
 				image.delete()
-			subalbum.croppedDP.delete(False)
+			if subalbum.croppedDP:
+				subalbum.croppedDP.delete(False)
+			if subalbum.zippedFiles:
+				subalbum.zippedFiles.delete(False)
 			subalbum.delete()
 		album.delete()
 		toast["message"] = "Deleted album '" + albumname + "'"
@@ -373,6 +379,23 @@ def deleteAlbum(request, album_id):
 	if albums is not None:
 		context	['albums'] = albums
 	return render(request, 'imagepersona/photos.html', context)
+
+@login_required(login_url='/imagepersona/login/')
+def downloadAlbum(request, album_id):
+	album = get_object_or_404(ImageFolder, pk = album_id)
+	myalbums = request.user.userprofile.albums.all()
+	if(album in myalbums):
+		s = StringIO.StringIO()
+		Zip = zipfile.ZipFile(s, 'w')
+		for subalbum in album.subfolders.all():
+			subdirpath = str(subalbum.name) + "/"
+			for image in subalbum.images.all():
+				Zip.write(image.image.path, subdirpath + os.path.basename(image.image.path))
+		Zip.close()
+		resp = HttpResponse(s.getvalue(), content_type = "application/x-zip-compressed")
+		resp['Content-Disposition'] = 'attachment; filename=%s' % (	str(album.name)+".zip")
+		return resp
+	return Http404("Not Found")
 
 @login_required(login_url='/imagepersona/login/')
 def deleteSubAlbum(request, album_id, person_id):
@@ -384,7 +407,10 @@ def deleteSubAlbum(request, album_id, person_id):
 	toast = {'display' : 'true', 'message' : 'Person Not Deleted!'}
 	if(album in myalbums):
 		if(person in album.subfolders.all()):
-			person.croppedDP.delete(False)
+			if subalbum.croppedDP:
+				subalbum.croppedDP.delete(False)
+			if subalbum.zippedFiles:
+				subalbum.zippedFiles.delete(False)
 			person.delete()
 			toast["message"] = "Deleted photos of '" + personname + "' from '" + albumname + "'!"
 	return render(request, 'imagepersona/album.html', {'album_name':albumname, 'people':album.subfolders.all(), 'albumPk' : album_id, 'toast':toast})
