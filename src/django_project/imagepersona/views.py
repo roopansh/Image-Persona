@@ -93,8 +93,8 @@ def register_user(request):
 				link_url = "http://" + request.get_host() + '/imagepersona/verify/' + unique_id
 				# TODO: Convert this to HTML
 				send_mail(
-				    'Verify your email',
-				    'Click on this link to verify your email.\n\n' + link_url + '\n\nIf you didn\'t register, please ignore.',
+				    'Verify your Account',
+				    'Dear ' + user.get_full_name() + ',\n\nClick on this link to verify your email.\n\n' + link_url + '\n\nIf you didn\'t register, please ignore.\n\n--\nTeam Image Persona',
 				    'contact.imagepersona@gmail.com',
 				    [user.email],
 				    fail_silently=False,
