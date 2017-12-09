@@ -364,6 +364,7 @@ def deleteAlbum(request, album_id):
 			for image in subalbum.images.all():
 				image.image.delete(False)
 				image.delete()
+			subalbum.croppedDP.delete(False)
 			subalbum.delete()
 		album.delete()
 		toast["message"] = "Deleted album '" + albumname + "'"
@@ -383,6 +384,7 @@ def deleteSubAlbum(request, album_id, person_id):
 	toast = {'display' : 'true', 'message' : 'Person Not Deleted!'}
 	if(album in myalbums):
 		if(person in album.subfolders.all()):
+			person.croppedDP.delete(False)
 			person.delete()
 			toast["message"] = "Deleted photos of '" + personname + "' from '" + albumname + "'!"
 	return render(request, 'imagepersona/album.html', {'album_name':albumname, 'people':album.subfolders.all(), 'albumPk' : album_id, 'toast':toast})
