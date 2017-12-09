@@ -8,51 +8,37 @@
 {% endblock %} {% block body %}
 
 
-<div class="col s12 m7 l5">
-  <div class="card horizontal">
-    <div class="card-image">
-      <img class="circle responsive-img" src="{{displaypic}}">
-    </div>
-    <div class="card-stacked">
-      <div class="card-content">
-        <div class="row" style="padding: 20px 10px 0px 10px;">
-          <form action="{% url 'imagepersona:editSubfolder' album_id=album.pk person_id=personId %}" method="post" role="form" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="input-field col s9 m3 l2">
-              <input value="{{PersonName}}" id="first_name2" type="text" class="validate" name="Personname" required="true" data-length="20">
-              <label class="active" for="first_name2">Name</label>
-            </div>
-            <div class="col s2 m1" style="margin: 20px;">
-              <button class="btn waves-effect waves-light blue darken-4 right" type="submit" name="action" onclick="loading()">Update
-               <i class="material-icons right">send</i>
-             </button>
-            </div>
-            <div class="col s1 m1 l1" style="display:none; margin: 20px 0px;" id="loader">
-              <div class="preloader-wrapper small active">
-                <div class="spinner-layer spinner-blue-only">
-                  <div class="circle-clipper left">
-                    <div class="circle"></div>
-                  </div>
-                  <div class="gap-patch">
-                    <div class="circle"></div>
-                  </div>
-                  <div class="circle-clipper right">
-                    <div class="circle"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-          <!-- <button class="btn waves-effect waves-light right red" style="margin: 20px;" >Share via link
-            <i class="material-icons right">send</i>
-          </button> -->
-        </div>
-
+<div class="">
+  <div class="row" style="padding: 20px 10px 0px 10px;">
+    <form action="{% url 'imagepersona:editSubfolder' album_id=album.pk person_id=personId %}" method="post" role="form" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="input-field col s9 m3 l2">
+        <input value="{{PersonName}}" id="first_name2" type="text" class="validate" name="Personname" required="true" data-length="20">
+        <label class="active" for="first_name2">Name</label>
       </div>
-    </div>
+      <div class="col s2 m1" style="margin: 20px;">
+        <button class="btn waves-effect waves-light blue darken-4 right" type="submit" name="action" onclick="loading()">Update
+          <i class="material-icons right">send</i>
+         </button>
+      </div>
+      <div class="col s1 m1 l1" style="display:none; margin: 20px 0px;" id="loader">
+        <div class="preloader-wrapper small active">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
-
 <!-- Need to improve this -->
 <div class="row" style="padding: 20px 10px;">
   <div class="col s12 m8 l11 offset-l1 offset-m1">
