@@ -75,6 +75,8 @@ def register_user(request):
 		username = request.POST['username']
 		email = request.POST['email']
 		password = request.POST['password']
+		if User.objects.filter(username=username):
+			return render(request, 'imagepersona/login.html', {'register_error_message' : "Username already taken."})
 		user = User.objects.create_user(username, email, password)
 		user.last_name = lastname
 		user.first_name = firstname
@@ -92,7 +94,7 @@ def register_user(request):
 				# TODO: Convert this to HTML
 				send_mail(
 				    'Verify your email',
-				    'Click on this link to verify your email. If you didnt register, please ignore.' + link_url,
+				    'Click on this link to verify your email.\n\n' + link_url + '\n\nIf you didn\'t register, please ignore.',
 				    'contact.imagepersona@gmail.com',
 				    [user.email],
 				    fail_silently=False,
