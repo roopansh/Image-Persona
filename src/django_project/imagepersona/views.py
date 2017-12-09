@@ -369,8 +369,6 @@ def deleteAlbum(request, album_id):
 				image.delete()
 			if subalbum.croppedDP:
 				subalbum.croppedDP.delete(False)
-			if subalbum.zippedFiles:
-				subalbum.zippedFiles.delete(False)
 			subalbum.delete()
 		album.delete()
 		toast["message"] = "Deleted album '" + albumname + "'"
@@ -383,8 +381,7 @@ def deleteAlbum(request, album_id):
 @login_required(login_url='/imagepersona/login/')
 def downloadAlbum(request, album_id):
 	album = get_object_or_404(ImageFolder, pk = album_id)
-	myalbums = request.user.userprofile.albums.all()
-	if(album in myalbums):
+	if(album in request.user.userprofile.albums.all()):
 		s = StringIO.StringIO()
 		Zip = zipfile.ZipFile(s, 'w')
 		for subalbum in album.subfolders.all():
@@ -395,7 +392,7 @@ def downloadAlbum(request, album_id):
 		resp = HttpResponse(s.getvalue(), content_type = "application/x-zip-compressed")
 		resp['Content-Disposition'] = 'attachment; filename=%s' % (	str(album.name)+".zip")
 		return resp
-	return Http404("Not Found")
+	return Http404("Not Found!")
 
 @login_required(login_url='/imagepersona/login/')
 def deleteSubAlbum(request, album_id, person_id):
@@ -409,14 +406,27 @@ def deleteSubAlbum(request, album_id, person_id):
 		if(person in album.subfolders.all()):
 			if subalbum.croppedDP:
 				subalbum.croppedDP.delete(False)
-			if subalbum.zippedFiles:
-				subalbum.zippedFiles.delete(False)
 			person.delete()
 			toast["message"] = "Deleted photos of '" + personname + "' from '" + albumname + "'!"
 	return render(request, 'imagepersona/album.html', {'album_name':albumname, 'people':album.subfolders.all(), 'albumPk' : album_id, 'toast':toast})
 
 	return redirect('imagepersona:photos', {'toast':toast})
 
+@login_required(login_url='/imagepersona/login/')
+def downloadSubAlbum(request, album_id, person_id):
+	album = get_object_or_404(ImageFolder, pk = album_id)
+	person = get_object_or_404(ImageSubFolder, pk = person_id)
+	if(album in request.user.userprofile.albums.all()):
+		if(person in album.subfolders.all()):
+			s = StringIO.StringIO()
+			Zip = zipfile.ZipFile(s, 'w')
+			for image in subalbum.images.all():
+				Zip.write(image.image.path, os.path.basename(image.image.path))
+			Zip.close()
+			resp = HttpResponse(s.getvalue(), content_type = "application/x-zip-compressed")
+			resp['Content-Disposition'] = 'attachment; filename=%s' % (	str(person.name) + "-" str(album.name) + ".zip")
+			return resp
+	return Http404("Not Found!")
 
 @login_required(login_url='/imagepersona/login/')
 def sharefolder(request, album_id, person_id):

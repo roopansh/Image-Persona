@@ -19,6 +19,7 @@ urlpatterns = [
 	url(r'^album/delete/(?P<album_id>[0-9]+)/$', views.deleteAlbum, name='deleteAlbum'),
 	url(r'^album/download/(?P<album_id>[0-9]+)/$', views.downloadAlbum, name='downloadAlbum'),
 	url(r'^images/delete/(?P<album_id>[0-9]+)/(?P<person_id>[0-9]+)/$', views.deleteSubAlbum, name='deleteSubAlbum'),
+	url(r'^images/download/(?P<album_id>[0-9]+)/(?P<person_id>[0-9]+)/$', views.downloadSubAlbum, name='downloadSubAlbum'),
 	url(r'^sharefolder/(?P<album_id>[0-9]+)/(?P<person_id>[0-9]+)/$', views.sharefolder, name='sharefolder'),
 	url(r'^share/(?P<unique_id>[a-zA-Z0-9]+)/$', views.share, name='share'),
 	url(r'^verify/(?P<unique_id>[a-zA-Z0-9]+)/$', views.verify, name='verify'),
