@@ -106,3 +106,5 @@ db.sqlite3
 # Media Files
 src/django_project/uploads/images/
 src/django_project/uploads/users/
+src/django_project/media/users/
+src/django_project/media/images/
