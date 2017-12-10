@@ -464,11 +464,12 @@ def ClassifyImages(savedImages, newAlbum, user, host):
 	FaceID_Img_Map = {}
 	apicallcount = 0
 	wait = True
+	if len(APIcalls.objects.all()) <= 0:
+		wait = False
 	print(user.email)
 	while wait:
 		latestHit = APIcalls.objects.latest('time')
 		now = datetime.utcnow().replace(tzinfo=utc)
-		print((latestHit.time - now).total_seconds())
 		if (latestHit.time - now).total_seconds() < -65 :
 			wait = False
 		else:
