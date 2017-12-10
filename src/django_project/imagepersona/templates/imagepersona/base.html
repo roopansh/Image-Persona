@@ -331,6 +331,11 @@
         console.log(jqXHR, textStatus, errorThrown);
       });
     }
+
+    function FABtoggle(t) {
+      console.log('#' + t.id);
+      $('#' + t.id).toggleClass("active");
+    }
   </script>
 
   <!--Import jQuery before materialize.js-->
