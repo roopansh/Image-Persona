@@ -102,7 +102,7 @@ input[type="color"],
   border-color: #00008B;
 }
 p {
-	font: normal 16px "Myriad Pro", arial, sans-serif;
+	font: normal 16px Quicksand, arial, sans-serif;
 }
 
 h1,h2,h3,h4,h5,h6 { color: #767676;}
@@ -119,7 +119,7 @@ h2 {
 	font-size: 35px;
 	line-height: 38px;
 	font-weight: 600;
-	font-family: 'Roboto medium', serif;
+	font-family: Quicksand, serif;
 
 }
 
@@ -137,15 +137,15 @@ h4 {
 	font-size: 24px;
 	line-height: 26px;
 	font-weight: 500;
-	font-family:'Roboto';
-	text-transform: uppercase;
+	font-family:Quicksand;
+	/*text-transform: uppercase;*/
 	}
 
 h5 {
 	font-size: 20px;
 	line-height: 22px;
 	font-weight: 600;
-	font-family: "Myriad Pro" , sans-serif;
+	font-family: Pacifico , sans-serif;
 	text-transform: uppercase;
 	margin: 0;
 	text-decoration: none;
@@ -376,7 +376,7 @@ a:hover{
 .single_banner_text h5{
 	font-size:16px;
 	color:#81868e;
-	font-family:'opensans-regular';
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-weight:100;
 	letter-spacing:.37rem;
 }
@@ -391,7 +391,7 @@ a:hover{
 .main_abouts_content{}
 .single_abouts{}
 .single_abouts h2{
-	font-family:'Roboto Mediam';
+	font-family: Pacifico;
 	font-weight:500;
 	font-size:2.5rem;
 	color:#333b46;
@@ -400,13 +400,13 @@ a:hover{
     max-width: 455px;
     line-height: 2.5rem;
     font-size: 1.9rem;
-    font-family: opensans;
+    font-family: Quicksand;
 }
 
 
 /* wedo section */
 .head_title h2{
-	font-family:'Roboto';
+	font-family:Quicksand;
 	font-size:20px;
 	font-weight:500;
 	color:#333b46;
@@ -496,7 +496,7 @@ a:hover{
 
 .sinle_counter h4{
 	color:#fff;
-	font-family:'Roboto';
+	font-family:Quicksand;
 	font-weight:300;
 }
 .sinle_counter h4 i{
@@ -506,7 +506,7 @@ a:hover{
 }
 .sinle_counter p{
 	color:#fff;
-	font-family:'Roboto';
+	font-family:Satisfy;
 	font-weight:300;
 }
 
@@ -561,7 +561,7 @@ a:hover{
 }
 .single_steps h4{
 	margin:30px auto 20px auto;
-	font-family:'Roboto';
+	font-family:Pacifico;
 	font-weight:300;
 }
 .single_steps p{
@@ -676,13 +676,13 @@ a:hover{
 .main_business_content h2{
     color: #fff;
     font-size: 30px;
-    font-family: 'Roboto';
+    font-family: Quicksand;
     font-weight: 300;
 }
 .main_business_content h4{
 	color:#fff;
     font-size: 20px;
-    font-family: 'Roboto';
+    font-family: Quicksand;
     font-weight: 300;
 }
 
@@ -762,7 +762,7 @@ a:hover{
 
 .single_subcribs h4{
 	font-size:20px;
-	font-family:'Roboto';
+	font-family:Quicksand;
 	font-weight:500;
 	color:#fff;
 }
@@ -793,7 +793,7 @@ border: 1px solid #fff;
     height: 50px;
     margin-left: -5px;
     color: #fff;
-	font-family:'Roboto';
+	font-family:Quicksand;
 	font-weight:600;
     font-size:12px;
 	width:20%;
@@ -822,12 +822,12 @@ border: 1px solid #fff;
 .single_team_name h4{
 	font-size:17px;
 	color:#333b46;
-	font-family:'Roboto';
+	font-family:Quicksand;
 	font-weight:500;
 }
 .single_team_name p{
 	font-size:12px;
-	font-family:'Roboto';
+	font-family:Quicksand;
 	font-weight:300;
 }
 
@@ -899,7 +899,7 @@ color:#fff;
 	margin-top:40px;
 	color:#00008B;
 	font-size:20px;
-	font-family:'Roboto';
+	font-family:Quicksand;
 	font-weight:500;
 }
 .owl-theme .owl-controls {
