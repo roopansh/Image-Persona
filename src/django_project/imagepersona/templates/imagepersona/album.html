@@ -30,7 +30,7 @@
           <a href="{% url 'imagepersona:images' album_id=albumPk person_id=item.pk %}" style="color: black;">
           {{ item.name|truncatechars:15 }}
           </a>
-          <div id="FAB{{ item.name|cut:" " }}" class="fixed-action-btn vertical" style="position: absolute; bottom: 6px; right: 10px;" onclick="FABtoggle(this);">
+          <div id="FAB{{ item.name|cut:" " }}" class="fixed-action-btn vertical" style="position: absolute; bottom: 6px; right: 10px; z-index: 0;" onclick="FABtoggle(this);">
             <a class="btn-floating btn-small red">
               <i class="material-icons">more_vert</i>
             </a>
