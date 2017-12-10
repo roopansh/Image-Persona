@@ -8,6 +8,7 @@ from django.utils.crypto import get_random_string
 from .models import *
 from django.conf import settings
 import httplib, urllib, base64, json
+from datetime import datetime
 import time
 from django.core.mail import send_mail
 from collections import Counter
@@ -17,6 +18,7 @@ import os
 from django.core.files import File
 from django.core.files.base import ContentFile
 import threading
+from django.utils.timezone import utc
 
 CF_headers = {
 	# Request headers for CF API
@@ -47,7 +49,7 @@ CV_params = urllib.urlencode({
 
 unclassifiedFile = open(settings.MEDIA_ROOT + "/unclassified.png", 'rb')
 unclassified_DP_django_file = File(unclassifiedFile)
-		
+
 
 def index(request):
 	return HttpResponse("Main Index Page")
@@ -114,14 +116,15 @@ def register_user(request):
 
 @login_required(login_url='/imagepersona/login/')
 def upload(request):
-	if request.method=='POST': 
+	if request.method=='POST':
 		newAlbum = ImageFolder()
 		newAlbum.name = request.POST["albumname"]
 		newAlbum.save()
 		request.user.userprofile.albums.add(newAlbum)
 		savedImages = []
 		for file in request.FILES.getlist("files"):
-			if file.split('.')[-1] in ['jpg','jpeg','png','gif', 'bmp']:
+			print(str(file).split('.')[-1])
+			if str(file).split('.')[-1] in ['jpg','jpeg','png','gif', 'bmp']:
 				newImage = Image()
 				newImage.image = file
 				newImage.owner = request.user
@@ -459,12 +462,23 @@ def resetPassword(request, unique_id):
 def ClassifyImages(savedImages, newAlbum, user, host):
 	FaceIDs = []
 	FaceID_Img_Map = {}
-	count = 0
+	apicallcount = 0
+	wait = True
+	print(user.email)
+	while wait:
+		latestHit = APIcalls.objects.latest('time')
+		now = datetime.utcnow().replace(tzinfo=utc)
+		print((latestHit.time - now).total_seconds())
+		if (latestHit.time - now).total_seconds() < -65 :
+			wait = False
+		else:
+			time.sleep(15)
+
 	for newImage in savedImages:
-		if count >= 20:
-			count = 0
+		if apicallcount >= 20:
+			apicallcount = 0
 			time.sleep(61)
-		count = count + 1
+		apicallcount = apicallcount + 1
 		img_url = "http://" + host + newImage.image.url
 		body = json.dumps({ 'url': img_url })
 		try:
@@ -475,6 +489,11 @@ def ClassifyImages(savedImages, newAlbum, user, host):
 			data = response.read()
 			res = json.loads(data)
 			count = len(res)
+			# Register API call in databse
+			apicall = APIcalls()
+			apicall.image = str(apicallcount) + img_url
+			apicall.time = datetime.utcnow().replace(tzinfo=utc)
+			apicall.save()
 			for x in range(0,count):	# For all the people present in the photo
 				resx = res[x]["faceId"].encode('ascii')
 				FaceIDs.append(resx)
@@ -539,14 +558,14 @@ def ClassifyImages(savedImages, newAlbum, user, host):
 
 	for image in savedImages:
 		newPerson.images.add(image)
-	
+
 	newAlbum.subfolders.add(newPerson)
 	newAlbum.save()
 
 	# Send Completion Mail
 	send_mail(
 		'Successfully Grouped',
-		'Dear ' + user.get_full_name() + ',\n\nYour album "'+ newAlbum.name +'"" has been processed Completely.\n\nPlease visit http://' + host + '/album/' + newAlbum.pk + '/ to view your album.\n\nThank you for using Image-Persona\n\n--\nTeam Image Persona',
+		'Dear ' + str(user.get_full_name()) + ',\n\nYour album ' + str(newAlbum.name) + ' has been processed Completely.\nhttp://' + str(host) + '/imagepersona/album/' + str(newAlbum.pk) + '/\n\n--\nTeam Image Persona',
 		'contact.imagepersona@gmail.com',
 		[user.email],
 		fail_silently=False,
