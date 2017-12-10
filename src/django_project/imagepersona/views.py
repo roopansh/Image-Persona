@@ -16,6 +16,7 @@ import zipfile, StringIO
 import os
 from django.core.files import File
 from django.core.files.base import ContentFile
+import threading
 
 CF_headers = {
 	# Request headers for CF API
@@ -100,11 +101,11 @@ def register_user(request):
 				link_url = "http://" + request.get_host() + '/imagepersona/verify/' + unique_id
 				# TODO: Convert this to HTML
 				send_mail(
-				    'Verify your Account',
-				    'Dear ' + user.get_full_name() + ',\n\nClick on this link to verify your email.\n\n' + link_url + '\n\nIf you didn\'t register, please ignore.\n\n--\n\nTeam Image Persona',
-				    'contact.imagepersona@gmail.com',
-				    [user.email],
-				    fail_silently=False,
+					'Verify your Account',
+					'Dear ' + user.get_full_name() + ',\n\nClick on this link to verify your email.\n\n' + link_url + '\n\nIf you didn\'t register, please ignore.\n\n--\n\nTeam Image Persona',
+					'contact.imagepersona@gmail.com',
+					[user.email],
+					fail_silently=False,
 				)
 				user.is_active = False
 				user.save()
@@ -113,121 +114,25 @@ def register_user(request):
 
 @login_required(login_url='/imagepersona/login/')
 def upload(request):
-	if request.method=='POST':
-		files = request.FILES.getlist("files")
+	if request.method=='POST': 
 		newAlbum = ImageFolder()
 		newAlbum.name = request.POST["albumname"]
 		newAlbum.save()
 		request.user.userprofile.albums.add(newAlbum)
-		FaceIDs = []
-		FaceID_Img_Map = {}
 		savedImages = []
-		for file in files:
+		for file in request.FILES.getlist("files"):
 			newImage = Image()
 			newImage.image = file
 			newImage.owner = request.user
 			newImage.save()
 			savedImages.append(newImage)
-		# print(savedImages)
-		count = 0
-		for newImage in savedImages:
-			if count >= 20:
-				count = 0
-				time.sleep(61)
-			count = count + 1
-			# newImage = Image()
-			# newImage.image = file
-			# newImage.save()
-			img_url = "http://" + request.get_host() + newImage.image.url
-			#img_url = "http://weknowyourdreams.com/images/family/family-13.jpg"
-			body = json.dumps({ 'url': img_url })
 
-			try:
-				conn = httplib.HTTPSConnection(settings.CF_BASE_URL)
+		# Start a thread to Group Images
+		t = threading.Thread(target=ClassifyImages, args=(savedImages, newAlbum, request.user, request.get_host()))
+		t.daemon = True
+		t.start()
 
-				# Face Detection and retrieving FaceID's
-				conn.request("POST", "/face/v1.0/detect?%s" % CF_detect_params, body, CF_headers)
-				response = conn.getresponse()
-				data = response.read()
-				res = json.loads(data)
-				count = len(res)
-				for x in range(0,count):	# For all the people present in the photo
-					resx = res[x]["faceId"].encode('ascii')
-					FaceIDs.append(resx)
-					FaceID_Img_Map[resx] = newImage.pk
-				newImage.json_response = data
-
-				'''
-				conn.close()
-				conn = httplib.HTTPSConnection(settings.CV_BASE_URL)
-				'''
-				# Computer Vision for Tagging
-				conn.request("POST", "/vision/v1.0/analyze?%s" % CV_params, body, CV_headers)
-				response = conn.getresponse()
-				data = response.read()
-				res = json.loads(data)
-				res = res[u'tags']
-				for tag in res:
-					if tag["confidence"] > settings.TAG_CONFIDENCE_THRESHHOLD:
-						TagObject, created = ImageTag.objects.get_or_create(name=tag["name"].encode("ascii"))
-						TagObject.images.add(newImage)
-						TagObject.save()
-
-				conn.close()
-
-			except Exception as e:
-				print(e)
-				return HttpResponse(e)
-
-			newImage.save()
-
-		body = json.dumps({"faceIds" : FaceIDs })
-
-		try:
-			conn = httplib.HTTPSConnection(settings.CF_BASE_URL)
-			conn.request("POST", "/face/v1.0/group?%s" % CF_group_params, body, CF_headers)
-			response = conn.getresponse()
-			data = response.read()
-			res = json.loads(data)
-			conn.close()
-		except Exception as e:
-			print(e)
-			return HttpResponse(e)
-
-		# Grouping people
-		res_group = res["groups"]
-		for count,personList in enumerate(res_group):
-			newPerson = ImageSubFolder()
-			newPerson.name = str(count+1)
-			newPerson.save()
-			flag = True
-			for id in personList:
-				imgpk = FaceID_Img_Map[id]
-				newPerson.images.add(imgpk)
-				if flag:
-					newPerson.displaypic = imgpk
-					newPerson.personid = id
-					flag = False
-			newPerson.save()
-			newAlbum.subfolders.add(newPerson)
-
-		# Messy Images
-		newPerson = ImageSubFolder()
-		newPerson.name = "Unclassified"
-		newPerson.croppedDP.save(str(newAlbum.name) + "-Unclassified.png", unclassified_DP_django_file, save=True)
-		newPerson.save()
-
-		for person in newAlbum.subfolders.all():
-			for image in person.images.all():
-				if image in savedImages:
-					savedImages.remove(image)
-
-		for image in savedImages:
-			newPerson.images.add(image)
-		
-		newAlbum.subfolders.add(newPerson)
-		newAlbum.save()
-		return redirect('imagepersona:album', album_id = newAlbum.pk)
+		return render(request, 'imagepersona/album.html', {'album_name':newAlbum.name, 'people':newAlbum.subfolders.all(), 'albumPk' : newAlbum.pk, 'Message':'Images are being grouped. An email will be sent to you when the Grouping finishes!'})
 	return render(request, 'imagepersona/upload.html')
 
 @login_required(login_url='/imagepersona/login/')
@@ -513,11 +418,11 @@ def forgotPasswordRequest(request):
 				fp_object.save()
 			link_url = "http://" + request.get_host() + '/imagepersona/reset_password/' + fp_object.reference
 			send_mail(
-			    'Account Recovery',
-			    'Dear ' + user.get_full_name() + ',\n\nClick on this link to reset your password.\n\n' + link_url + '\n\nIf you didn\'t request for password change, please contact us.\n\n--\n\nTeam Image Persona',
-			    'contact.imagepersona@gmail.com',
-			    [user.email],
-			    fail_silently=False,
+				'Account Recovery',
+				'Dear ' + user.get_full_name() + ',\n\nClick on this link to reset your password.\n\n' + link_url + '\n\nIf you didn\'t request for password change, please contact us.\n\n--\n\nTeam Image Persona',
+				'contact.imagepersona@gmail.com',
+				[user.email],
+				fail_silently=False,
 			)
 		except Exception:
 			pass
@@ -548,3 +453,100 @@ def resetPassword(request, unique_id):
 			return render(request, 'imagepersona/resetPassword.html', {'error' : 'Incorrect Email.',})
 	else:
 		return render(request, 'imagepersona/resetPassword.html', {})
+
+
+def ClassifyImages(savedImages, newAlbum, user, host):
+	FaceIDs = []
+	FaceID_Img_Map = {}
+	count = 0
+	for newImage in savedImages:
+		if count >= 20:
+			count = 0
+			time.sleep(61)
+		count = count + 1
+		img_url = "http://" + host + newImage.image.url
+		body = json.dumps({ 'url': img_url })
+		try:
+			# Face Detection and retrieving FaceID's
+			conn = httplib.HTTPSConnection(settings.CF_BASE_URL)
+			conn.request("POST", "/face/v1.0/detect?%s" % CF_detect_params, body, CF_headers)
+			response = conn.getresponse()
+			data = response.read()
+			res = json.loads(data)
+			count = len(res)
+			for x in range(0,count):	# For all the people present in the photo
+				resx = res[x]["faceId"].encode('ascii')
+				FaceIDs.append(resx)
+				FaceID_Img_Map[resx] = newImage.pk
+			newImage.json_response = data
+
+			# Computer Vision for Tagging
+			conn.request("POST", "/vision/v1.0/analyze?%s" % CV_params, body, CV_headers)
+			response = conn.getresponse()
+			data = response.read()
+			res = json.loads(data)
+			res = res[u'tags']
+			for tag in res:
+				if tag["confidence"] > settings.TAG_CONFIDENCE_THRESHHOLD:
+					TagObject, created = ImageTag.objects.get_or_create(name=tag["name"].encode("ascii"))
+					TagObject.images.add(newImage)
+					TagObject.save()
+			conn.close()
+
+		except Exception as e:
+			return HttpResponse(e)
+		newImage.save()
+
+	body = json.dumps({"faceIds" : FaceIDs })
+	try:
+		conn = httplib.HTTPSConnection(settings.CF_BASE_URL)
+		conn.request("POST", "/face/v1.0/group?%s" % CF_group_params, body, CF_headers)
+		response = conn.getresponse()
+		data = response.read()
+		res = json.loads(data)
+		conn.close()
+	except Exception as e:
+		return HttpResponse(e)
+
+	# Grouping people
+	res_group = res["groups"]
+	for count,personList in enumerate(res_group):
+		newPerson = ImageSubFolder()
+		newPerson.name = str(count+1)
+		newPerson.save()
+		flag = True
+		for id in personList:
+			imgpk = FaceID_Img_Map[id]
+			newPerson.images.add(imgpk)
+			if flag:
+				newPerson.displaypic = imgpk
+				newPerson.personid = id
+				flag = False
+		newPerson.save()
+		newAlbum.subfolders.add(newPerson)
+
+	# Messy Images
+	newPerson = ImageSubFolder()
+	newPerson.name = "Unclassified"
+	newPerson.croppedDP.save(str(newAlbum.name) + "-Unclassified.png", unclassified_DP_django_file, save=True)
+	newPerson.save()
+
+	for person in newAlbum.subfolders.all():
+		for image in person.images.all():
+			if image in savedImages:
+				savedImages.remove(image)
+
+	for image in savedImages:
+		newPerson.images.add(image)
+	
+	newAlbum.subfolders.add(newPerson)
+	newAlbum.save()
+
+	# Send Completion Mail
+	send_mail(
+		'Successfully Grouped',
+		'Dear ' + user.get_full_name() + ',\n\nYour album "'+ newAlbum.name +'"" has been processed Completely.\n\nPlease visit http://' + host + '/album/' + newAlbum.pk + '/ to view your album.\n\nThank you for using Image-Persona\n\n--\nTeam Image Persona',
+		'contact.imagepersona@gmail.com',
+		[user.email],
+		fail_silently=False,
+	)
