@@ -338,24 +338,6 @@ def images(request, album_id, person_id):
 	if(album in myalbums):
 		peopleInthisFolder = album.subfolders.all()
 		person = get_object_or_404(ImageSubFolder, pk = person_id)
-		# if(person in peopleInthisFolder):
-		# 	if not person.croppedDP :
-		# 		displaypic = Image.objects.get(pk = person.displaypic)
-		# 		displayid = person.personid
-		# 		json_response = json.loads(displaypic.json_response)
-		# 		for item in json_response:
-		# 			if item["faceId"] == displayid:
-		# 				top = item["faceRectangle"]["top"]
-		# 				left = item["faceRectangle"]["left"]
-		# 				right = item["faceRectangle"]["left"] + item["faceRectangle"]["width"]
-		# 				bottom = item["faceRectangle"]["top"] + item["faceRectangle"]["height"]
-		# 				person.croppedDP.save(displaypic.image.url.split('/')[-1],displaypic.image.file,save=True)
-		# 				person.save()
-		# 				temp = PILImage.open(person.croppedDP.path)
-		# 				tempImg = temp.crop((left, top, right, bottom))
-		# 				tempImg.save(person.croppedDP.path)
-		# 				break
-
 		context = {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'displaypic':person.croppedDP.url}
 		return render(request, 'imagepersona/images.html', context)
 	raise Http404("Person group does not exist!")
