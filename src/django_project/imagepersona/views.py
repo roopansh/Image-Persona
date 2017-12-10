@@ -408,7 +408,10 @@ def downloadAlbum(request, album_id):
 		for subalbum in album.subfolders.all():
 			subdirpath = str(subalbum.name) + "/"
 			for image in subalbum.images.all():
-				Zip.write(image.image.path, subdirpath + os.path.basename(image.image.path))
+				try:
+					Zip.write(image.image.path, subdirpath + os.path.basename(image.image.path))
+				except Exception:
+					pass
 		Zip.close()
 		resp = HttpResponse(s.getvalue(), content_type = "application/x-zip-compressed")
 		resp['Content-Disposition'] = 'attachment; filename=%s' % (	str(album.name)+".zip")
@@ -442,7 +445,10 @@ def downloadSubAlbum(request, album_id, person_id):
 			s = StringIO.StringIO()
 			Zip = zipfile.ZipFile(s, 'w')
 			for image in person.images.all():
-				Zip.write(image.image.path, os.path.basename(image.image.path))
+				try:
+					Zip.write(image.image.path, os.path.basename(image.image.path))
+				except Exception:
+					pass
 			Zip.close()
 			resp = HttpResponse(s.getvalue(), content_type = "application/x-zip-compressed")
 			resp['Content-Disposition'] = 'attachment; filename=%s' % (	str(person.name) + "-" + str(album.name) + ".zip")
