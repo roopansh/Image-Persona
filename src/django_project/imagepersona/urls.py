@@ -5,7 +5,8 @@ from django.views.generic import RedirectView
 app_name='imagepersona'
 
 urlpatterns = [
-	url(r'^$', RedirectView.as_view(url='upload',permanent=False)),
+	# url(r'^$', RedirectView.as_view(url='upload',permanent=False)),
+	url(r'^$', views.index, name='index'),
 	url(r'^login/$', views.login_user, name='login'),
 	url(r'^register/$', views.register_user, name='register'),
 	url(r'^logout/$', views.logout_user, name='logout'),

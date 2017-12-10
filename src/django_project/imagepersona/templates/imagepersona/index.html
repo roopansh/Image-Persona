@@ -1,24 +1,27 @@
 <!DOCTYPE HTML>
 <html lang="en-US">
 <head>
+	{% load staticfiles %}
 	<meta charset="UTF-8">
 	<title>Image Persona</title>
-	<link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="{% static 'css/font-awesome/css/font-awesome.min.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/fonts/stylesheet.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/fonts/fonts.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/animat/animate.min.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/fancybox/jquery.fancybox.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/nivo-lightbox/nivo-lightbox.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/themes/default/default.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/owl-carousel/owl.carousel.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/owl-carousel/owl.theme.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/owl-carousel/owl.transitions.css' %}" />
 
-	<link rel="stylesheet" href="css/fonts/stylesheet.css" />
-	<link rel="stylesheet" href="css/fonts/fonts.css" />
-	<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
-	<link rel="stylesheet" href="css/animat/animate.min.css" />
-	<link rel="stylesheet" href="css/fancybox/jquery.fancybox.css" />
-	<link rel="stylesheet" href="css/nivo-lightbox/nivo-lightbox.css" />
-	<link rel="stylesheet" href="css/themes/default/default.css" />
-	<link rel="stylesheet" href="css/owl-carousel/owl.carousel.css" />
-	<link rel="stylesheet" href="css/owl-carousel/owl.theme.css" />
-	<link rel="stylesheet" href="css/owl-carousel/owl.transitions.css">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Satisfy|Rubik|Poiret+One">
 
-	<link rel="stylesheet" href="css/style.css" />
-	<link rel="stylesheet" href="css/responsive.css" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Satisfy|Rubik">
+	<link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+  <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
 </head>
 <body>
 
@@ -40,8 +43,7 @@
 							<span class="icon-bar"></span>
 						  </button>
 						  <a class="navbar-brand" href="#">
-							<div class="logo">
-								<!-- <img src="images/" alt="" /> -->
+							<div class="logo" style="font-family: Poiret One,Helvetica,Arial,sans-serif; font-size: 28px;">
 								Image Persona
 							</div>
 						  </a>
@@ -51,7 +53,7 @@
 						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
 						  <ul class="nav navbar-nav navbar-right">
-							<li class="active"><a href="#!">Login</a></li>
+							<li class="active"><a href="{% url 'imagepersona:login' %}">Register</a></li>
 							<!-- <li><a href="#abouts">ABOUT</a></li>
 							<li><a href="#service">Service</a></li>
 							<li><a href="#portfolio">Portfolio</a></li>
@@ -114,7 +116,7 @@
 
 					<div class="col-md-6 col-sm-6 col-xs-12">
 						<div class="single_abouts wow fadeInRight" data-wow-duration="1s">
-							<img src="images/upload1.png" alt="" />
+							<img src="{% static 'images/upload1.png' %}" alt="" />
 						</div>
 					</div>
 				</div>
@@ -127,7 +129,7 @@
 				<div class="main_abouts_content">
 					<div class="col-md-6 col-sm-6 col-xs-12">
 						<div class="single_abouts wow fadeInRight" data-wow-duration="1s">
-							<img src="images/browse.png" alt="" />
+							<img src="{% static 'images/browse.png' %}" alt="" />
 						</div>
 					</div>
 
@@ -157,7 +159,7 @@
 
 					<div class="col-md-6 col-sm-6 col-xs-12">
 						<div class="single_abouts wow fadeInRight" data-wow-duration="1s">
-							<img src="images/edit.png" alt="" />
+							<img src="{% static 'images/edit.png' %}" alt="" />
 						</div>
 					</div>
 				</div>
@@ -169,7 +171,7 @@
 				<div class="main_abouts_content">
 					<div class="col-md-6 col-sm-6 col-xs-12">
 						<div class="single_abouts wow fadeInRight" data-wow-duration="1s">
-							<img src="images/share.png" alt="" />
+							<img src="{% static 'images/share.png' %}" alt="" />
 						</div>
 					</div>
 
@@ -199,7 +201,7 @@
 
 					<div class="col-md-6 col-sm-6 col-xs-12">
 						<div class="single_abouts wow fadeInRight" data-wow-duration="1s">
-							<img src="images/download.png" alt="" />
+							<img src="{% static 'images/download.png' %}" alt="" />
 						</div>
 					</div>
 				</div>
@@ -211,7 +213,7 @@
 				<div class="main_abouts_content">
 					<div class="col-md-6 col-sm-6 col-xs-12">
 						<div class="single_abouts wow fadeInRight" data-wow-duration="1s">
-							<img src="images/unclassified.png" alt="" />
+							<img src="{% static 'images/unclassified.png' %}" alt="" />
 						</div>
 					</div>
 
@@ -241,7 +243,7 @@
 
 					<div class="col-md-6 col-sm-6 col-xs-12">
 						<div class="single_abouts wow fadeInRight" data-wow-duration="1s">
-							<img src="images/search.png" alt="" />
+							<img src="{% static 'images/search.png' %}" alt="" />
 						</div>
 					</div>
 				</div>
@@ -350,36 +352,36 @@
 
 
 
-	<script type="text/javascript" src="js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="{% static 'js/jquery/jquery.js' %}"></script>
 
-	<script type="text/javascript" src="js/script.js"></script>
+	<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
 
-	<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
 
-	<script type="text/javascript" src="js/fancybox/jquery.fancybox.pack.js"></script>
+	<script type="text/javascript" src="{% static 'js/fancybox/jquery.fancybox.pack.js' %}"></script>
 
-	<script type="text/javascript" src="js/nivo-lightbox/nivo-lightbox.min.js"></script>
+	<script type="text/javascript" src="{% static 'js/nivo-lightbox/nivo-lightbox.min.js' %}"></script>
 
-	<script type="text/javascript" src="js/owl-carousel/owl.carousel.min.js"></script>
-
-
+	<script type="text/javascript" src="{% static 'js/owl-carousel/owl.carousel.min.js' %}"></script>
 
 
 
-	<script type="text/javascript" src="js/jquery-easing/jquery.easing.1.3.js"></script>
-	<script type="text/javascript" src="js/wow/wow.min.js"></script>
-	<!--<script type="text/javascript" src="js/counterup/counterup.min.js"></script>-->
-
-	<!--<script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>-->
-	<!--<script type="text/javascript" src="js/counterup/jquery.counterup.min.js"></script>-->
 
 
-	<script type="text/javascript" src="js/isotop/isotope.min.js"></script>
-	<script type="text/javascript" src="js/isotop/isotop.function.js"></script>
+	<script type="text/javascript" src="{% static 'js/jquery-easing/jquery.easing.1.3.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/wow/wow.min.js' %}"></script>
+	<!--<script type="text/javascript" src="{% static 'js/counterup/counterup.min.js' %}"></script>-->
 
-	<script type="text/javascript" src="js/masonry/masonry.min.js"></script>
+	<!--<script src="{% static 'http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js' %}"></script>-->
+	<!--<script type="text/javascript" src="{% static 'js/counterup/jquery.counterup.min.js' %}"></script>-->
 
-	<script type="text/javascript" src="js/mixitup/jquery.mixitup.min.js"></script>
-	<script type="text/javascript" src="js/masonry/masonry.pkgd.min.js"></script>
+
+	<script type="text/javascript" src="{% static 'js/isotop/isotope.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/isotop/isotop.function.js' %}"></script>
+
+	<script type="text/javascript" src="{% static 'js/masonry/masonry.min.js' %}"></script>
+
+	<script type="text/javascript" src="{% static 'js/mixitup/jquery.mixitup.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/masonry/masonry.pkgd.min.js' %}"></script>
 </body>
 </html>
