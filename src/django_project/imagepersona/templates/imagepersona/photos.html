@@ -26,9 +26,16 @@
         <hr style="margin: 0px;">
         </a>
         <div class="card-content black-text" style="padding: 15px;">
-          <a href="{% url 'imagepersona:album' album_id=myalbum.pk %}" style="color: black;">{{ myalbum.name }}</a>
-          <a class="modal-trigger red-text" href="#modal2" onclick="deleteConfirm('{% url 'imagepersona:deleteAlbum' album_id=myalbum.pk %}')"><i class="material-icons right">delete</i></a>
-          <a class="modal-trigger blue-text" href="#modal1" onclick="downloadConfirm('{% url 'imagepersona:downloadAlbum' album_id=myalbum.pk %}')"><i class="material-icons right">cloud_download</i></a>
+          <a href="{% url 'imagepersona:album' album_id=myalbum.pk %}" style="color: black;">{{ myalbum.name|truncatechars:15 }}</a>
+          <div id="FAB{{ item.name|cut:" " }}" class="fixed-action-btn vertical" style="position: absolute; bottom: 6px; right: 10px;" onclick="FABtoggle(this);">
+            <a class="btn-floating btn-small red">
+              <i class="material-icons">more_vert</i>
+            </a>
+            <ul>
+              <li><a class="modal-trigger btn-floating blue" href="#modal1" onclick="downloadConfirm('{% url 'imagepersona:downloadAlbum' album_id=myalbum.pk %}')"><i class="material-icons right">cloud_download</i></a></li>
+              <li><a class="modal-trigger btn-floating red" href="#modal2" onclick="deleteConfirm('{% url 'imagepersona:deleteAlbum' album_id=myalbum.pk %}')"><i class="material-icons right">delete</i></a></li>
+            </ul>
+          </div>
         </div>
       </div>
   </div>

@@ -2,8 +2,8 @@
 
 <div class="col s4" style="height: 0px;">
   <a href="{% url 'imagepersona:photos' %} " class="breadcrumb">My Photos</a>
-  <a href="{% url 'imagepersona:album' album_id=album.pk %}" class="breadcrumb">{{album.name}}</a>
-  <a href="#!" class="breadcrumb">{{PersonName}}</a>
+  <a href="{% url 'imagepersona:album' album_id=album.pk %}" class="breadcrumb">{{album.name|truncatechars:12}}</a>
+  <a href="#!" class="breadcrumb">{{PersonName|truncatechars:12}}</a>
 </div>
 {% endblock %} {% block body %}
 
