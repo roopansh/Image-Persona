@@ -7,6 +7,11 @@
 </div>
 {% endblock %}
 {% block body %}
+{% if Message %}
+  <div class="center-align">
+    <p class="flow-text">{{ Message }}</p>
+  </div>
+{% else %}
 <div class="row" style="padding: 20px 10px;">
   {% for item in people %}
   <div class="col s6 m4 l2">
@@ -35,11 +40,10 @@
               <li><a class="modal-trigger btn-floating red" href="#modal2" onclick="subdeleteConfirm('{% url 'imagepersona:deleteSubAlbum' album_id=albumPk person_id=item.pk %}')"><i class="material-icons right">delete</i></a></li>
             </ul>
           </div>
-
         </div>
-      </div>
+    </div>
+    {% endfor %}
   </div>
-  {% endfor %}
-</div>
 
+{% endif %}
 {% endblock %}
