@@ -52,7 +52,7 @@ unclassified_DP_django_file = File(unclassifiedFile)
 
 
 def index(request):
-	return HttpResponse("Main Index Page")
+	return render(request, 'imagepersona/index.html')
 
 # user log in
 def login_user(request):
