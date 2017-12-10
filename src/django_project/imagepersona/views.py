@@ -461,53 +461,61 @@ def ClassifyImages(savedImages, newAlbum, user, host):
 	FaceID_Img_Map = {}
 	count = 0
 	for newImage in savedImages:
+		'''
 		if count >= 20:
 			count = 0
 			time.sleep(61)
 		count = count + 1
+		'''
 		img_url = "http://" + host + newImage.image.url
 		body = json.dumps({ 'url': img_url })
-		try:
-			# Face Detection and retrieving FaceID's
-			conn = httplib.HTTPSConnection(settings.CF_BASE_URL)
-			conn.request("POST", "/face/v1.0/detect?%s" % CF_detect_params, body, CF_headers)
-			response = conn.getresponse()
-			data = response.read()
-			res = json.loads(data)
-			count = len(res)
-			for x in range(0,count):	# For all the people present in the photo
-				resx = res[x]["faceId"].encode('ascii')
-				FaceIDs.append(resx)
-				FaceID_Img_Map[resx] = newImage.pk
-			newImage.json_response = data
+		while True:
+			try:
+				# Face Detection and retrieving FaceID's
+				conn = httplib.HTTPSConnection(settings.CF_BASE_URL)
+				conn.request("POST", "/face/v1.0/detect?%s" % CF_detect_params, body, CF_headers)
+				response = conn.getresponse()
+				data = response.read()
+				res = json.loads(data)
+				count = len(res)
+				for x in range(0,count):	# For all the people present in the photo
+					resx = res[x]["faceId"].encode('ascii')
+					FaceIDs.append(resx)
+					FaceID_Img_Map[resx] = newImage.pk
+				newImage.json_response = data
 
-			# Computer Vision for Tagging
-			conn.request("POST", "/vision/v1.0/analyze?%s" % CV_params, body, CV_headers)
-			response = conn.getresponse()
-			data = response.read()
-			res = json.loads(data)
-			res = res[u'tags']
-			for tag in res:
-				if tag["confidence"] > settings.TAG_CONFIDENCE_THRESHHOLD:
-					TagObject, created = ImageTag.objects.get_or_create(name=tag["name"].encode("ascii"))
-					TagObject.images.add(newImage)
-					TagObject.save()
-			conn.close()
+				# Computer Vision for Tagging
+				conn.request("POST", "/vision/v1.0/analyze?%s" % CV_params, body, CV_headers)
+				response = conn.getresponse()
+				data = response.read()
+				res = json.loads(data)
+				res = res[u'tags']
+				for tag in res:
+					if tag["confidence"] > settings.TAG_CONFIDENCE_THRESHHOLD:
+						TagObject, created = ImageTag.objects.get_or_create(name=tag["name"].encode("ascii"))
+						TagObject.images.add(newImage)
+						TagObject.save()
+				conn.close()
 
-		except Exception as e:
-			return HttpResponse(e)
+				break
+
+			except Exception as e:
+				time.sleep(61)
+
 		newImage.save()
 
 	body = json.dumps({"faceIds" : FaceIDs })
-	try:
-		conn = httplib.HTTPSConnection(settings.CF_BASE_URL)
-		conn.request("POST", "/face/v1.0/group?%s" % CF_group_params, body, CF_headers)
-		response = conn.getresponse()
-		data = response.read()
-		res = json.loads(data)
-		conn.close()
-	except Exception as e:
-		return HttpResponse(e)
+	while True:
+		try:
+			conn = httplib.HTTPSConnection(settings.CF_BASE_URL)
+			conn.request("POST", "/face/v1.0/group?%s" % CF_group_params, body, CF_headers)
+			response = conn.getresponse()
+			data = response.read()
+			res = json.loads(data)
+			conn.close()
+			break
+		except Exception as e:
+			time.sleep(61)
 
 	# Grouping people
 	res_group = res["groups"]
