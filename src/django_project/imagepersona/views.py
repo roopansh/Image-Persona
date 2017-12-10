@@ -121,11 +121,12 @@ def upload(request):
 		request.user.userprofile.albums.add(newAlbum)
 		savedImages = []
 		for file in request.FILES.getlist("files"):
-			newImage = Image()
-			newImage.image = file
-			newImage.owner = request.user
-			newImage.save()
-			savedImages.append(newImage)
+			if file.split('.')[-1] in ['jpg','jpeg','png','gif', 'bmp']:
+				newImage = Image()
+				newImage.image = file
+				newImage.owner = request.user
+				newImage.save()
+				savedImages.append(newImage)
 
 		# Start a thread to Group Images
 		t = threading.Thread(target=ClassifyImages, args=(savedImages, newAlbum, request.user, request.get_host()))
