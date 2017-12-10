@@ -122,9 +122,9 @@ def ip_addresses():
 # Discover our IP address
 ALLOWED_HOSTS = ip_addresses()
 
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
-MEDIA_URL = '/uploads/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static') 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Cognitive Face API
 CF_BASE_URL = "westcentralus.api.cognitive.microsoft.com"
