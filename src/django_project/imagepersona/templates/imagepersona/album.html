@@ -13,8 +13,7 @@
     <a href="{% url 'imagepersona:images' album_id=albumPk person_id=item.pk %}" style="color: white;">
       <div class="card">
         <div class="card-image" style="overflow: hidden; position: relative; height: 150px;">
-          <!-- need to change the image to static url -->
-          <img src="{{item.croppedDP.url}}">
+          <img src="{% if item.croppedDP %}{{item.croppedDP.url}}{% else %}/uploads/folder.png{% endif %}">
           <!-- <span class="card-title">Card Title</span> -->
         </div>
         <!-- <div class="card-content orange darken-4" height="500px" style="he">
