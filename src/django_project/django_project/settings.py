@@ -128,11 +128,11 @@ MEDIA_URL = '/media/'
 
 # Cognitive Face API
 CF_BASE_URL = "westcentralus.api.cognitive.microsoft.com"
-CF_KEY = "41e8def285514e09bf6e5f66c24181d8"
+CF_KEY = "3bc12e030c6c4175b38cc8d0b0c93bf3"
 
 # Computer Vision API
 CV_BASE_URL = "westcentralus.api.cognitive.microsoft.com"
-CV_KEY = "1f05f5c2ad21413a825a189da1e74170"
+CV_KEY = "30e1641cbc4e456da493cd151c7e48ba"
 TAG_CONFIDENCE_THRESHHOLD = 0.5
 
 # Email SMTP 
