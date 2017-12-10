@@ -17,12 +17,12 @@
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
-  <style>
-    /* label color */
 
+  <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css">
   <!-- Favicon -->
   <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
   <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+
 
   <style>
     /* label color */
@@ -65,14 +65,15 @@
   </style>
 </head>
 
-<body class="grey lighten-4">
+<body class="blue-grey lighten-5">
 
   <div class="row">
     <div class="navbar-fixed">
-      <nav>
+      <nav class="blue darken-4">
         <div class="nav-wrapper" style="font-size: 18px;">
           {% block nav-title %}{% endblock %}
-          <a href="{% url 'imagepersona:upload' %}" class="brand-logo right" style="font-family:'Satisfy',cursive; display: inline-block;">Image Persona</a>
+          {% block breadcrumb %}{% endblock %}
+          <a href="{% url 'imagepersona:upload' %}" class="brand-logo right" style="font-family:'Satisfy',cursive; display: inline-block;"><i class="material-icons prefix">photo_library</i>Image Persona</a>
         </div>
       </nav>
     </div>
