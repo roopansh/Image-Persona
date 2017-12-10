@@ -82,6 +82,12 @@ class forgotPassword(models.Model):
 	def __str__(self):
 		return self.user.get_full_name()
 
+class APIcalls(models.Model):
+	image = models.CharField(max_length = 50, blank = False)
+	time = models.DateTimeField(auto_now_add=False)
+
+	def __str__(self):
+		return self.image
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
