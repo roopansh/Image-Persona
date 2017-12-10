@@ -3,7 +3,7 @@
 {% block breadcrumb %}
 <div class="col s4" style="height: 0px;">
   <a href="{% url 'imagepersona:photos' %}" class="breadcrumb">My Photos</a>
-  <a href="#!" class="breadcrumb">{{album_name}}</a>
+  <a href="#!" class="breadcrumb">{{album_name|truncatechars:12}}</a>
 </div>
 {% endblock %}
 {% block body %}
@@ -12,27 +12,33 @@
     <p class="flow-text">{{ Message }}</p>
   </div>
 {% else %}
-  <div class="row" style="padding: 20px 10px;">
-    {% for item in people %}
-    <div class="col s6 m4 l2">
-      <a href="{% url 'imagepersona:images' album_id=albumPk person_id=item.pk %}" style="color: white;">
-        <div class="card">
-          <div class="card-image" style="overflow: hidden; position: relative; width: 100%; padding-top: 100%;">
-            <img src="{% if item.croppedDP %}{{item.croppedDP.url}}{% else %}/media/folder.png{% endif %}" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;">
-            <!-- <span class="card-title">Card Title</span> -->
-          </div>
-          <!-- <div class="card-content orange darken-4" height="500px" style="he">
-          <p>I am a very simple card. I am</p>
-        </div> -->
-          <hr style="margin: 0px;">
+<div class="row" style="padding: 20px 10px;">
+  {% for item in people %}
+  <div class="col s6 m4 l2">
+    <a href="{% url 'imagepersona:images' album_id=albumPk person_id=item.pk %}" style="color: white;">
+      <div class="card">
+        <div class="card-image" style="overflow: hidden; position: relative; width: 100%; padding-top: 100%;">
+          <img src="{% if item.croppedDP %}{{item.croppedDP.url}}{% else %}/media/folder.png{% endif %}" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;">
+          <!-- <span class="card-title">Card Title</span> -->
+        </div>
+        <!-- <div class="card-content orange darken-4" height="500px" style="he">
+        <p>I am a very simple card. I am</p>
+      </div> -->
+        <hr style="margin: 0px;">
+        </a>
+        <div class="card-content black-text" style="padding: 15px;">
+          <a href="{% url 'imagepersona:images' album_id=albumPk person_id=item.pk %}" style="color: black;">
+          {{ item.name|truncatechars:15 }}
           </a>
-          <div class="card-content black-text" style="padding: 15px;">
-            <a href="{% url 'imagepersona:images' album_id=albumPk person_id=item.pk %}" style="color: black;">
-            {{ item.name|truncatechars:9 }}
+          <div id="FAB{{ item.name|cut:" " }}" class="fixed-action-btn vertical" style="position: absolute; bottom: 6px; right: 10px;" onclick="FABtoggle(this);">
+            <a class="btn-floating btn-small red">
+              <i class="material-icons">more_vert</i>
             </a>
-            <a class="modal-trigger red-text" href="#modal2" onclick="subdeleteConfirm('{% url 'imagepersona:deleteSubAlbum' album_id=albumPk person_id=item.pk %}')"><i class="material-icons right">delete</i></a>
-            <a class="modal-trigger blue-text" href="#modal1" onclick="downloadConfirm('{% url 'imagepersona:downloadSubAlbum' album_id=albumPk person_id=item.pk %}')"><i class="material-icons right">cloud_download</i></a>
-            <a class="modal-trigger green-text" href="#modal3" onclick="sharelink(this,'{{albumPk}}', '{{item.pk}}')"><i class="material-icons right">share</i></a>
+            <ul>
+              <li><a class="modal-trigger btn-floating green" href="#modal3" onclick="sharelink(this,'{{albumPk}}', '{{item.pk}}')"><i class="material-icons right">share</i></a></li>
+              <li><a class="modal-trigger btn-floating blue" href="#modal1" onclick="downloadConfirm('{% url 'imagepersona:downloadSubAlbum' album_id=albumPk person_id=item.pk %}')"><i class="material-icons right">cloud_download</i></a></li>
+              <li><a class="modal-trigger btn-floating red" href="#modal2" onclick="subdeleteConfirm('{% url 'imagepersona:deleteSubAlbum' album_id=albumPk person_id=item.pk %}')"><i class="material-icons right">delete</i></a></li>
+            </ul>
           </div>
         </div>
     </div>
