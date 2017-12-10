@@ -44,6 +44,10 @@ CV_params = urllib.urlencode({
 	'language': 'en',
 })
 
+unclassifiedFile = open(settings.MEDIA_ROOT + "/unclassified.png", 'rb')
+unclassified_DP_django_file = File(unclassifiedFile)
+		
+
 def index(request):
 	return HttpResponse("Main Index Page")
 
@@ -206,26 +210,21 @@ def upload(request):
 					flag = False
 			newPerson.save()
 			newAlbum.subfolders.add(newPerson)
+
 		# Messy Images
-		res_ungroup = res["messyGroup"]
 		newPerson = ImageSubFolder()
 		newPerson.name = "Unclassified"
+		newPerson.croppedDP.save(str(newAlbum.name) + "-Unclassified.png", unclassified_DP_django_file, save=True)
 		newPerson.save()
 
+		for person in newAlbum.subfolders.all():
+			for image in person.images.all():
+				if image in savedImages:
+					savedImages.remove(image)
+
 		for image in savedImages:
-			json_response = json.loads(image.json_response)
-			flag = True
-			for item in json_response:
-				if(item["faceId"] not in res_ungroup):
-					flag = False
-					break
-			if(flag):
-				newPerson.images.add(image)
+			newPerson.images.add(image)
 		
-		fileopen = open(settings.MEDIA_ROOT + "/unclassified.png", 'rb')
-		django_file = File(fileopen)
-		newPerson.croppedDP.save(str(newAlbum.name) + "-Unclassified.png", django_file, save=True)
-		newPerson.save()
 		newAlbum.subfolders.add(newPerson)
 		newAlbum.save()
 		return redirect('imagepersona:album', album_id = newAlbum.pk)
