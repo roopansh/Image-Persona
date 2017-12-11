@@ -7,10 +7,12 @@
 </div>
 {% endblock %}
 {% block body %}
-{% if Message %}
-  <div class="center-align">
-    <p class="flow-text">{{ Message }}</p>
-  </div>
+{% if messages %}
+    {% for message in messages %}
+      <div class="center-align">
+        <p class="flow-text">{{ message }}</p>
+      </div>
+    {% endfor %}
 {% else %}
 <div class="row" style="padding: 20px 10px;">
   {% for item in people %}

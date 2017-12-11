@@ -19,7 +19,7 @@ from django.core.files import File
 from django.core.files.base import ContentFile
 import threading
 from django.utils.timezone import utc
-
+from django.contrib import messages
 CF_headers = {
 	# Request headers for CF API
 	'Content-Type': 'application/json',
@@ -136,8 +136,8 @@ def upload(request):
 		t = threading.Thread(target=ClassifyImages, args=(savedImages, newAlbum, request.user, request.get_host()))
 		t.daemon = True
 		t.start()
-
-		return render(request, 'imagepersona/album.html', {'album_name':newAlbum.name, 'people':newAlbum.subfolders.all(), 'albumPk' : newAlbum.pk, 'Message':'Images are being grouped. An email will be sent to you when the Grouping finishes!'})
+		messages.success(request, 'Photos Uploaded Successfully. Photos are being grouped. An email will be sent to you when the Grouping finishes!')
+		return redirect('imagepersona:album', album_id=newAlbum.pk)
 	return render(request, 'imagepersona/upload.html')
 
 @login_required(login_url='/imagepersona/login/')
