@@ -1,7 +1,7 @@
 {% extends 'imagepersona/base_with_search.html' %}
 {% block title %}: {{album_name}}{% endblock %}
 {% block breadcrumb %}
-<div class="col s4" style="height: 0px;">
+<div class="col s9 m4" style="height: 0px;">
   <a href="{% url 'imagepersona:photos' %}" class="breadcrumb">My Photos</a>
   <a href="#!" class="breadcrumb">{{album_name|truncatechars:12}}</a>
 </div>

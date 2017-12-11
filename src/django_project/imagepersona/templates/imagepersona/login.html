@@ -43,8 +43,8 @@
                </form>
              </div>
             </div>
-            <div class="card-action center-align">
-              <a href="{% url 'imagepersona:forgotpassword' %}" class="">Forgot Password</a>
+            <div class="card-action center">
+              <a href="{% url 'imagepersona:forgotpassword' %}" class="grey-text">Forgot Password</a>
             </div>
           </div>
           <div id="register">
@@ -56,12 +56,12 @@
                     <div class="warning">{{ register_error_message }}</div>
                   </div>
                  <div class="row">
-                   <div class="input-field col s6">
+                   <div class="input-field col m6 s12">
                      <i class="material-icons prefix">perm_identity</i>
                      <input id="id_firstname" name="firstname" type="text" class="validate" required="true">
                      <label for="id_firstname">First Name</label>
                    </div>
-                   <div class="input-field col s6">
+                   <div class="input-field col m6 s12">
                      <input id="id_lastname" name="lastname" type="text" class="validate">
                      <label for="id_lastname">Last Name</label>
                    </div>
@@ -76,13 +76,13 @@
                  </div>
 
                  <div class="row">
-                   <div class="input-field col s6">
+                   <div class="input-field col m6 s12">
                     <i class="material-icons prefix">person</i>
                      <input id="id_username" name="username" type="text" class="validate" required="true">
                      <label for="id_username">Username</label>
                    </div>
 
-                   <div class="input-field col s6">
+                   <div class="input-field col m6 s12">
                      <i class="material-icons prefix">lock</i>
                      <input id="id_password" name="password" type="password" class="validate" required="true">
                      <label for="id_password">Password</label>

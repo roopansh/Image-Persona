@@ -1,7 +1,16 @@
-{% extends 'imagepersona/base_with_search.html' %}
+{% extends 'imagepersona/base.html' %}
 {% load static %}
 {% block title %}: My Photos{% endblock %}
-
+{% block nav-title %}
+<form action="{% url 'imagepersona:searchPhotos' %}" method="get" role="form" enctype="multipart/form-data">
+{% csrf_token %}
+    <div class=" col s4 input-field search">
+      <i class="large material-icons prefix">search</i>
+      <input id="id_search" name="query" type="text" placeholder="Search" required value="{{query}}">
+    </div>
+</div>
+</form>
+{% endblock %}
 {% block breadcrumb %}
 <div class="col s4" style="height: 0px;">
   <a href="/imagepersona/photos/" class="breadcrumb">My Photos</a>
