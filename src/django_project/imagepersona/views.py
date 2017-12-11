@@ -63,6 +63,7 @@ def login_user(request):
 		if user is not None:
 			if user.is_active:
 				login(request, user)
+				return redirect('imagepersona:upload')
 				return render(request, 'imagepersona/upload.html')
 			else:
 				return render(request, 'imagepersona/login.html', {'login_error_message': 'Pending email verfication'})
@@ -344,8 +345,6 @@ def deleteSubAlbum(request, album_id, person_id):
 			person.delete()
 			toast["message"] = "Deleted photos of '" + personname + "' from '" + albumname + "'!"
 	return render(request, 'imagepersona/album.html', {'album_name':albumname, 'people':album.subfolders.all(), 'albumPk' : album_id, 'toast':toast})
-
-	return redirect('imagepersona:photos', {'toast':toast})
 
 @login_required(login_url='/imagepersona/login/')
 def downloadSubAlbum(request, album_id, person_id):
