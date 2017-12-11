@@ -1,26 +1,24 @@
-{% extends 'imagepersona/base.html' %}
-
-{% block title %}: Upload {% endblock %}
-{% block breadcrumb %}
+{% extends 'imagepersona/base.html' %} {% block title %}: Upload {% endblock %} {% block breadcrumb %}
 <div class="col s4" style="height: 0px;">
   <a href="#" class="breadcrumb">Upload Images</a>
 </div>
 
-{% endblock %}
-
-{% block body %}
+{% endblock %} {% block body %}
 
 <div class="row">
-  <div class="col s6 offset-s3" style="padding-top: 20px;">
-	<ul class="collection with-header">
-		<li class="collection-header"><h4>Instructions</h4></li>
-		<li class="collection-item">Image size should be between <b>1KB to 4MB</b></li>
-		<li class="collection-item">Maximum there can be only <b>64 faces in a image</b>.</li>
-		<li class="collection-item"><b>JPEG, PNG, GIF</b>(the first frame), and <b>BMP</b> are supported.</li>
-		<li class="collection-item">Some faces may not be detected for technical challenges, e.g. very large face angles (head-pose) or large occlusion. Frontal and near-frontal faces have the best results.</li>
-		<li class="collection-item">Wait for the images to be uploaded before refreshing the window. You'll be redirected when upload finishes. Don't close them window or click back till then.</li>
-		<li class="collection-item">Needs atleast 2 images of a person to form his folder.</li>
-	</ul>
+  <div class="col s6" style="padding-top: 20px;">
+    <ul class="collection with-header">
+      <li class="collection-header">
+        <h4>Instructions</h4></li>
+      <li class="collection-item">Image size should be between <b>1KB to 4MB</b></li>
+      <li class="collection-item">Maximum there can be only <b>64 faces in a image</b>.</li>
+      <li class="collection-item"><b>JPEG, PNG, GIF</b>(the first frame), and <b>BMP</b> are supported.</li>
+      <li class="collection-item">Some faces may not be detected for technical challenges, e.g. very large face angles (head-pose) or large occlusion. Frontal and near-frontal faces have the best results.</li>
+      <li class="collection-item">Wait for the images to be uploaded before refreshing the window. You'll be redirected when upload finishes. Don't close them window or click back till then.</li>
+      <li class="collection-item">Needs atleast 2 images of a person to form his folder.</li>
+    </ul>
+  </div>
+  <div class="col s6" style="padding-top: 20px;">
     <form action="{% url 'imagepersona:upload' %}" method="post" role="form" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="file-field input-field">
@@ -35,25 +33,25 @@
       <div class="row">
         <div class="input-field">
           <i class="material-icons prefix black-text">photo_library</i>
-          <input type="text" id="id_albumname" name="albumname" required="true"  data-length="20">
+          <input type="text" id="id_albumname" name="albumname" required="true" data-length="20">
           <label for="id_albumname" class="black-text">Album Name</label>
-        </div >
+        </div>
       </div>
 
       <button class="btn waves-effect waves blue darken-2" type="submit" name="action" onclick="uploading();">Submit
         <i class="material-icons right ">send</i>
       </button>
     </form>
-  </div>
-  <div class="progress col s6 offset-s3 " style="display:none;" id="loader">
+    <div class="progress" style="display:none;" id="loader">
       <div class="indeterminate"></div>
+    </div>
   </div>
 
 </div>
 <div class="row">
   <div class="col s10 offset-s1">
-      <div id="abcd" class="gallery center">
-      </div>
+    <div id="abcd" class="gallery center">
+    </div>
   </div>
 </div>
 
