@@ -16,18 +16,18 @@
     <form action="{% url 'imagepersona:profile' %}" method="post" role="form" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="row">
-        <div class="input-field col s4 offset-s2">
+        <div class="input-field col m4 s10 offset-s1 offset-m2">
           <i class="material-icons prefix black-text">perm_identity</i>
           <input id="id_firstname" name="firstname" type="text" placeholder="{{user.first_name}}">
           <label for="id_firstname" class="black-text">First Name</label>
         </div>
-        <div class="input-field col s4">
+        <div class="input-field col m4 s10 offset-s1">
           <input id="id_lastname" name="lastname" type="text" placeholder="{{user.last_name}}">
           <label for="id_lastname" class="black-text">Last Name</label>
         </div>
       </div>
       <div class="row">
-        <div class="col s4 offset-s2">
+        <div class="col m4 offset-m2 s10 offset-s1">
           <div class="file-field input-field">
             <div class="btn blue">
               <span>Choose</span>
@@ -38,7 +38,7 @@
             </div>
           </div>
         </div>
-        <div class="col s4">
+        <div class="col m4 s10 offset-s1">
           <div class="file-field input-field">
             <div class="btn blue">
               <span>Choose</span>
@@ -66,12 +66,12 @@
   </div>
 </div>
 <div class="row">
-  <div class="col s4 offset-s3">
+  <div class="col m4 offset-m3 s10">
     <div id="abcd" class="gallery">
 
     </div>
   </div>
-  <div class="col s3">
+  <div class="col m3 s10">
     <div id="abcd1" class="gallery">
 
     </div>

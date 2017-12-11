@@ -1,6 +1,6 @@
 {% extends 'imagepersona/base_with_search.html' %} {% block title %}: {{PersonName}}{% endblock %} {% block breadcrumb %}
 
-<div class="col s4" style="height: 0px;">
+<div class="col s10 m4" style="height: 0px;">
   <a href="{% url 'imagepersona:photos' %} " class="breadcrumb">My Photos</a>
   <a href="{% url 'imagepersona:album' album_id=album.pk %}" class="breadcrumb">{{album.name|truncatechars:12}}</a>
   <a href="#!" class="breadcrumb">{{PersonName|truncatechars:12}}</a>
@@ -10,7 +10,7 @@
 
 <div class="">
   <div class="row" style="padding: 20px 10px 0px 10px;">
-    <div class="col s1">
+    <div class="col s3 m1">
       <div class="card">
         <div class="card-image" style="overflow: hidden; position: relative; width: 100%; padding-top: 100%;">
           <img src="{% if displaypic %}{{displaypic}}{% else %}/media/folder.png{% endif %}" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;">
@@ -20,12 +20,12 @@
 
     <form action="{% url 'imagepersona:editSubfolder' album_id=album.pk person_id=personId %}" method="post" role="form" enctype="multipart/form-data" style="display: inline;">
       {% csrf_token %}
-      <div class="input-field col s9 m3 l2">
+      <div class="input-field col s6 m3 l2">
         <input value="{{PersonName}}" id="first_name2" type="text" class="validate" name="Personname" required="true" data-length="20">
         <label class="active" for="first_name2">Name</label>
       </div>
-      <div class="col s2 m1" style="margin: 20px;">
-        <button class="btn waves-effect waves-light blue darken-4 right" type="submit" name="action" onclick="loading()">Update
+      <div class="col s1 m1" style="margin: 20px; padding: 3px;">
+        <button class="btn waves-effect waves-light blue darken-4 right" type="submit" name="action" onclick="loading()"><div class="hide-on-small-only">Update</div>
           <i class="material-icons right">send</i>
          </button>
       </div>
