@@ -6,8 +6,6 @@
   <a href="#!" class="breadcrumb">{{PersonName|truncatechars:12}}</a>
 </div>
 {% endblock %} {% block body %}
-
-
 <div class="">
   <div class="row" style="padding: 20px 10px 0px 10px;">
     <div class="col s3 m1">
@@ -57,4 +55,13 @@
     </div>
   </div>
 </div>
+{% endblock %}
+{% block scripts %}
+  <script>
+    {% if messages %}
+          {% for message in messages %}
+              Materialize.toast('{{message}}', 4000, 'rounded')
+          {% endfor %}
+    {% endif %}
+  </script>
 {% endblock %}

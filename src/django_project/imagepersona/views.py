@@ -278,7 +278,6 @@ def images(request, album_id, person_id):
 @login_required(login_url='/imagepersona/login/')
 def editSubfolder(request, album_id, person_id):
 	if request.method=='POST':
-		toast = {'display' : 'true', 'message' : 'Name not updated!'}
 		album = get_object_or_404(ImageFolder, pk = album_id)
 		myalbums = request.user.userprofile.albums.all()
 		if(album in myalbums):
@@ -287,8 +286,8 @@ def editSubfolder(request, album_id, person_id):
 			if(person in peopleInthisFolder):
 				person.name = request.POST['Personname']
 				person.save()
-				toast['message'] = 'Name updated to ' + person.name
-				return render(request, 'imagepersona/images.html', {'images' : person.images.all(), 'PersonName' : person.name, 'album' : album, 'personId' : person.pk, 'toast' : toast, 'displaypic':person.croppedDP.url})
+				messages.success(request, 'Name updated to ' + str(person.name))
+				return redirect('imagepersona:images', album_id=album_id, person_id=person_id)
 	raise Http404("Person group does not exist!")
 
 @login_required(login_url='/imagepersona/login/')
