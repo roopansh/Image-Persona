@@ -208,6 +208,7 @@ def profile(request):
 			userpro.save()
 			# newImage.image = profile
 			# newImage.save()
+			messages.success(request, 'Profile Picture Updated!')
 			updates['profilepic'] = 'updated'
 		if request.FILES.getlist("cover"):
 			cover = request.FILES.getlist("cover")
@@ -219,20 +220,22 @@ def profile(request):
 			userpro.save()
 			# newImage.image = cover
 			# newImage.save()
+			messages.success(request, 'Cover Picture Updated!')
 			updates['coverpic'] = 'updated'
 		if request.POST["firstname"]:
 			firstname = request.POST["firstname"].strip().encode("ascii")
 			if firstname != "":
 				request.user.first_name = firstname
+				messages.success(request, 'First Name Updated!')
 				updates['firstname'] = 'updated'
 		if request.POST["lastname"]:
 			lastname = request.POST["lastname"].strip().encode("ascii")
 			if lastname != "":
 				request.user.last_name = lastname
+				messages.success(request, 'Last Name Updated!')
 				updates['lastname'] = 'updated'
 		request.user.save()
-
-		return render(request, 'imagepersona/profile.html', updates)
+		return redirect('imagepersona:profile')
 	return render(request, 'imagepersona/profile.html')
 
 @login_required(login_url='/imagepersona/login/')

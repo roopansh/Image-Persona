@@ -3,13 +3,10 @@
   <a href="#" class="breadcrumb">My Profile</a>
 </div>
 {% endblock %} {% block body %}
-
 <div class="row">
   <div class="col s6 offset-s2" style="padding-top: 20px;">
     <!-- Some guidelines and a status bar showing upload status, etc. -->
-
   </div>
-
 </div>
 <div class="">
   <div class="" style="padding-top: 20px;">
@@ -77,4 +74,13 @@
     </div>
   </div>
 </div>
+{% endblock %}
+{% block scripts %}
+  <script>
+    {% if messages %}
+          {% for message in messages %}
+              Materialize.toast('{{message}}', 4000, 'rounded')
+          {% endfor %}
+    {% endif %}
+  </script>
 {% endblock %}
