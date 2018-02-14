@@ -20,6 +20,7 @@ from django.core.files.base import ContentFile
 import threading
 from django.utils.timezone import utc
 from django.contrib import messages
+
 CF_headers = {
 	# Request headers for CF API
 	'Content-Type': 'application/json',
@@ -106,7 +107,7 @@ def register_user(request):
 				send_mail(
 					'Verify your Account',
 					'Dear ' + user.get_full_name() + ',\n\nClick on this link to verify your email.\n\n' + link_url + '\n\nIf you didn\'t register, please ignore.\n\n--\n\nTeam Image Persona',
-					'contact.imagepersona@gmail.com',
+					'noreply.imagepersona@gmail.com',
 					[user.email],
 					fail_silently=False,
 				)
@@ -425,7 +426,7 @@ def forgotPasswordRequest(request):
 			send_mail(
 				'Account Recovery',
 				'Dear ' + user.get_full_name() + ',\n\nClick on this link to reset your password.\n\n' + link_url + '\n\nIf you didn\'t request for password change, please contact us.\n\n--\n\nTeam Image Persona',
-				'contact.imagepersona@gmail.com',
+				'noreply.imagepersona@gmail.com',
 				[user.email],
 				fail_silently=False,
 			)
@@ -568,7 +569,7 @@ def ClassifyImages(savedImages, newAlbum, user, host):
 	send_mail(
 		'Successfully Grouped',
 		'Dear ' + str(user.get_full_name()) + ',\n\nYour album ' + str(newAlbum.name) + ' has been processed Completely.\nhttp://' + str(host) + '/imagepersona/album/' + str(newAlbum.pk) + '/\n\n--\nTeam Image Persona',
-		'contact.imagepersona@gmail.com',
+		'noreply.imagepersona@gmail.com',
 		[user.email],
 		fail_silently=False,
 	)

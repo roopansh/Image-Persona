@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '1!g-3jb1l5jl7q8ub9=&#t4lm0!zkbzu8=x6c82og6#7uw5&qk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -110,6 +110,7 @@ import netifaces
 
 # Find out what the IP addresses are at run time
 # This is necessary because otherwise Gunicorn will reject the connections
+'''
 def ip_addresses():
     ip_list = []
     for interface in netifaces.interfaces():
@@ -118,28 +119,28 @@ def ip_addresses():
             if x in addrs:
                 ip_list.append(addrs[x][0]['addr'])
     return ip_list
-
+'''
 # Discover our IP address
-ALLOWED_HOSTS = ip_addresses()
+# ALLOWED_HOSTS = ip_addresses()
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static') 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 # Cognitive Face API
 CF_BASE_URL = "westcentralus.api.cognitive.microsoft.com"
-CF_KEY = "3bc12e030c6c4175b38cc8d0b0c93bf3"
+CF_KEY = "f004adf03e904975bec7e22d855a018d"
 
 # Computer Vision API
 CV_BASE_URL = "westcentralus.api.cognitive.microsoft.com"
-CV_KEY = "30e1641cbc4e456da493cd151c7e48ba"
+CV_KEY = "9daf4bde4f874737ae7743362ac54d46"
 TAG_CONFIDENCE_THRESHHOLD = 0.5
 
-# Email SMTP 
+# Email SMTP
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'contact.imagepersona@gmail.com'
+EMAIL_HOST_USER = 'noreply.imagepersona@gmail.com'
 EMAIL_HOST_PASSWORD = 'thisispassword'
 
 # Search Factor
