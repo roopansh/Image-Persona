@@ -6,7 +6,7 @@ Django Web App for sorting of Images based on people present in it.
 
 ## Project Authors
 ###### Mahim Goyal
-B.Tech undergraduate (Computer Science & Engineering)  
+B.Tech undergraduate (Electronics & Electrical Engineering)  
 Indian Institute of Technology Guwahati  
 India  
 [E-Mail](mailto:mahim97@gmail.com)  |  [LinkedIn](https://www.linkedin.com/in/mahimg/)
