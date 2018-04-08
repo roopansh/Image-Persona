@@ -2,6 +2,10 @@
 
 Django Web App for sorting of Images based on people present in it.
 
+## What is it ?
+
+[https://www.youtube.com/watch?v=k7_h2YZyFRQ](https://www.youtube.com/watch?v=k7_h2YZyFRQ)
+
 --------------------------------
 
 ## Project Authors
