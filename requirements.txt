@@ -1,5 +1,5 @@
 Django==1.8.7
-httplib2==0.9.1
+httplib2==0.18.0
 urllib3==1.13.1
 netifaces==0.10.6
 Pillow==3.1.2
